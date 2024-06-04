@@ -11,6 +11,8 @@ export const Home = () => {
 		<div className="text-center mt-5 ">
 			<h3>example text</h3>
 			<Link to={"/clientportal"}>aaaa</Link>
+			<br></br>
+			<Link to={"/adminportal"}>bbbb</Link>
 		</div>
 	);
 };

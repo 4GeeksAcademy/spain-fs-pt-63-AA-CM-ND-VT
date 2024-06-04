@@ -8,6 +8,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 import ClientPortal from "./pages/clientportal/clientportal";
+import AdminPortal from "./pages/adminportal/adminportal";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -27,7 +28,8 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<ClientPortal />} path="/clientportal" /> {/* Añade la ruta para ClientPortal */}
+                        <Route element={<ClientPortal />} path="/clientportal" />
+                        <Route element={<AdminPortal />} path="/adminportal" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                     </Routes>
                     <Footer />
