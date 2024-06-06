@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../../styles/clientportal.css';
 import UserBookings from './userbookings';
 import UserProfile from './userprofile';
+
 const ClientPortal = () => {
     const [activeTab, setActiveTab] = useState('reservas');
 
