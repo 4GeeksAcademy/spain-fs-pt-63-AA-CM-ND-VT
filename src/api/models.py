@@ -233,6 +233,7 @@ if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
             # do not serialize the password, its a security breach
+        }
 
 class Services(db.Model):
     id = db.Column(db.Integer, primary_key=True)
