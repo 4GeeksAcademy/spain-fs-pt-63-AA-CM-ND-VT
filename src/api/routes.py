@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Company, Service
+from api.models import db, Users, Companies, Services, Requests, MasterServices, Bookings, Ratings
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 
@@ -45,6 +45,13 @@ def handle_company(company_id):
     if request.method == 'GET':
         # Implement your get_services function logic here
         return get_services(company_id)
+    
+@api.route('/clientportal/<int:user_id>', methods=['GET'])
+def handle_user(user_id):
+    client_portal = Users.query.get(user_id)
+    if client_portal is None:
+        return jsonify({'ERROR': 'Client not found or does not exist'}), 404
+                
 
 
 @api.route('/<int:user_id>/services/<int:company_id>', methods=['GET'])
@@ -74,33 +81,93 @@ def handle_get_requests(user_id, company_id):
     response = get_user_requests(user_id, company_id)
     return jsonify(response), 200
 
-# Dummy implementations of functions called in the routes above
-def add_user(body):
-    # Logic to add a user
-    pass
 
-def get_user(user_id):
-    # Logic to get a user
-    pass
+@app.route('/add_request', methods=['POST'])
+def add_request():
+    data = request.get_json()
+    
+    bookings_id = data.get('bookings_id')
+    status = data.get('status')
+    comment = data.get('comment')
 
-def add_service(company_id, body):
-    # Logic to add a service
-    pass
+    if not bookings_id or not status:
+        return jsonify({"error": "Faltan datos"}), 400
 
-def get_services(company_id):
-    # Logic to get services of a company
-    pass
+    new_request = Requests(
+        bookings_id=bookings_id, 
+        status=status, 
+        comment=comment
+    )
 
-def add_member(user_id, company_id, body):
-    # Logic to add a member to a company
-    pass
+    try:
+        db.session.add(new_request)
+        db.session.commit()
+        return jsonify({"message": "Request agregada exitosamente", "request": new_request.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
 
-def add_request(request_id, body):
-    # Logic to add a request
-    pass
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
+            # do not serialize the password, its a security breach
+        
+@app.route('/add_user', methods=['POST'])
+def add_user():
+    data = request.get_json()
+    
+    name = data.get('name')
+    email = data.get('email')
+    password = data.get('password')
+    rol = data.get('rol')
 
-def get_user_requests(user_id, company_id):
-    # Logic to get user requests for a company
-    pass
+    if not name or not email or not password or not rol:
+        return jsonify({"error": "Faltan datos"}), 400
 
+    hashed_password = generate_password_hash(password)
+    new_user = Users(name=name, email=email, password=hashed_password, rol=rol)
+
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"message": "Usuario agregado exitosamente", "user": new_user.serialize()}), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "El correo electrónico ya está en uso"}), 400
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/add_service', methods=['POST'])
+def add_service():
+    data = request.get_json()
+    
+    name = data.get('name')
+    description = data.get('description')
+    type_id = data.get('type')
+    price = data.get('price')
+    duration = data.get('duration')
+    companies_id = data.get('companies_id')
+    available = data.get('available')
+
+    if not all([name, description, type_id, price, duration, companies_id, available is not None]):
+        return jsonify({"error": "Faltan datos"}), 400
+
+    new_service = Services(
+        name=name, 
+        description=description, 
+        type=type_id, 
+        price=price, 
+        duration=duration, 
+        companies_id=companies_id, 
+        available=available
+    )
+
+    try:
+        db.session.add(new_service)
+        db.session.commit()
+        return jsonify({"message": "Servicio agregado exitosamente", "service": new_service.serialize()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
 
