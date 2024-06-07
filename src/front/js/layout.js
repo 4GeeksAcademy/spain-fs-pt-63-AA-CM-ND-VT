@@ -40,15 +40,15 @@ const Layout = () => {
                         <Route element={<Home />} path="/" />
                         {/* <Route element={<Demo />} path="/demo" /> */}
                         {/* <Route element={<Single />} path="/single/:theid" /> */}
-                        <Route element={<ClientPortal />} path="/clientportal" />
-                        <Route element={<UserBookings />} path="userbookings" />
-                        <Route element={<UserProfile />} path="userprofile" />
+                        <Route element={<ClientPortal />} path="/clientportal/:user_id" />
+                        <Route element={<UserBookings />} path="/userbookings/:user_id" />
+                        <Route element={<UserProfile />} path="/userprofile/:user_id" />
                         <Route element={<AdminPortal />} path="/adminportal" />
-                        <Route element={<AdminBookings />} path="adminbookings" />
-                        <Route element={<AdminServices />} path="adminservices" />
-                        <Route element={<CompanyProfile />} path="companyprofile" />
+                        <Route element={<AdminBookings />} path="/adminbookings" />
+                        <Route element={<AdminServices />} path="/adminservices" />
+                        <Route element={<CompanyProfile />} path="/companyprofile/:user_id" />
                         <Route element={<Services />} path="/services" />
-                        <Route element={<CompanyProfileForUser />} path="/services/companyprofile" />
+                        <Route element={<CompanyProfileForUser />} path="/services/companyprofile/:user_id" />
                         <Route element={<Signin />} path="/signin" />
                         <Route element={<Login />} path="/login" />
                         <Route element={<h1>Not found!</h1>} path="*" />
