@@ -6,6 +6,7 @@ from api.models import db, Users, Companies, Bookings, MasterServices, Ratings, 
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
