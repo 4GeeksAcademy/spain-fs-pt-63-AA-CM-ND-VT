@@ -1,29 +1,20 @@
 from flask_sqlalchemy import SQLAlchemy
-import bcrypt
+from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy.orm import validates
+from sqlalchemy import event
 
 db = SQLAlchemy()
 
-# Este es el modelo de usuario
 class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)  # Increased length for hashed passwords
+    password = db.Column(db.String(128), nullable=False)  
     rol = db.Column(db.String(50), nullable=False)
 
-    def __init__(self, name, email, password, rol):
-        self.name = name
-        self.email = email
-        self.password = self.hash_password(password)
-        self.rol = rol
-
-    def hash_password(self, password):
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return f'<Users {self.email}>'
@@ -36,6 +27,12 @@ class Users(db.Model):
             "rol": self.rol,
         }
 
+# Evento para encriptar la contraseña antes de insertar o actualizar el objeto
+@event.listens_for(Users, 'before_insert')
+@event.listens_for(Users, 'before_update')
+def hash_user_password(mapper, connect, target):
+    if target.password:  # solo si la contraseña no está vacía
+        target.password = generate_password_hash(target.password).decode('utf-8')
 
 class Companies(db.Model):
     __tablename__ = 'companies'

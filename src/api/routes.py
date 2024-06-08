@@ -6,7 +6,6 @@ from api.models import db, Users, Companies, Bookings, MasterServices, Ratings, 
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-import bcrypt
 
 api = Blueprint('api', __name__)
 
@@ -19,24 +18,24 @@ def landing():
 
 
 @api.route('/signin', methods=['POST'])
-def sign_in():
+def signin():
     data = request.get_json()
-    hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    new_user = Users(name=data['name'], email=data['email'], password=hashed_password.decode('utf-8'), rol=data['rol'])
+    new_user = Users(name=data['name'], email=data['email'], 
+                     password=data['password'], rol=data['rol'])
     try:
         db.session.add(new_user)
         db.session.commit()
         return jsonify(new_user.serialize()), 201
-    except IntegrityError:
+    except Exception as ex:
         db.session.rollback()
-        return jsonify({'error': 'User with this email already exists'}), 400
+        return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
 
 
 @api.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = Users.query.filter_by(email=data['email']).first()
-    if user and bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
+    if user and user.check_password(data['password']):
         access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token)
     return jsonify({'error': 'Invalid credentials'}), 401
