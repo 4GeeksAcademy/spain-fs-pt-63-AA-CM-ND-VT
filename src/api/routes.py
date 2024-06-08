@@ -13,7 +13,6 @@ api = Blueprint('api', __name__)
 # Allow CORS requests to this API
 CORS(api)
 
-
 @api.route('/landing', methods=['GET'])
 def landing():
     return jsonify({'message': 'Welcome to the landing page!'})
