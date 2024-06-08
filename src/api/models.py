@@ -1,14 +1,29 @@
 from flask_sqlalchemy import SQLAlchemy
+import bcrypt
+from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
+# Este es el modelo de usuario
 class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(128), nullable=False)  # Increased length for hashed passwords
     rol = db.Column(db.String(50), nullable=False)
+
+    def __init__(self, name, email, password, rol):
+        self.name = name
+        self.email = email
+        self.password = self.hash_password(password)
+        self.rol = rol
+
+    def hash_password(self, password):
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     def __repr__(self):
         return f'<Users {self.email}>'
@@ -21,12 +36,14 @@ class Users(db.Model):
             "rol": self.rol,
         }
 
+
 class Companies(db.Model):
     __tablename__ = 'companies'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     location = db.Column(db.String(50), nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('Users', backref=db.backref('companies', lazy=True))
 
     def __repr__(self):
         return f'<Companies {self.name}>'
@@ -63,6 +80,10 @@ class Services(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     companies_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     available = db.Column(db.Boolean, nullable=False)
+
+    master_service = db.relationship('MasterServices', backref=db.backref('services', lazy=True))
+    company = db.relationship('Companies', backref=db.backref('services', lazy=True))
+
     def __repr__(self):
         return f'<Services {self.name}>'
     
@@ -85,6 +106,9 @@ class Bookings(db.Model):
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     start_day_date = db.Column(db.DateTime, nullable=False)
     start_time_date = db.Column(db.DateTime, nullable=False)
+
+    service = db.relationship('Services', backref=db.backref('bookings', lazy=True))
+    user = db.relationship('Users', backref=db.backref('bookings', lazy=True))
     
     def __repr__(self):
         return f'<Bookings {self.id}>'
@@ -106,6 +130,15 @@ class Ratings(db.Model):
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     services_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
 
+    user = db.relationship('Users', backref=db.backref('ratings', lazy=True))
+    service = db.relationship('Services', backref=db.backref('ratings', lazy=True))
+
+    @validates('stars')
+    def validate_stars(self, key, stars):
+        if stars < 1 or stars > 5:
+            raise ValueError('Stars must be between 1 and 5')
+        return stars
+
     def __repr__(self):
         return f'<Ratings {self.id}>'
     
@@ -125,6 +158,8 @@ class Requests(db.Model):
     status = db.Column(db.String(20), nullable=False)
     comment = db.Column(db.String(120), nullable=True)
 
+    booking = db.relationship('Bookings', backref=db.backref('requests', lazy=True))
+
     def __repr__(self):
         return f'<Requests {self.id}>'
     
@@ -135,6 +170,3 @@ class Requests(db.Model):
             "bookings_id": self.bookings_id,
             "status": self.status
         }
-
-
-
