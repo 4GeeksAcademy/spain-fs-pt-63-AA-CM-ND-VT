@@ -12,6 +12,7 @@ api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+bcrypt=Bcrypt()
 
 @api.route('/landing', methods=['GET'])
 def landing():
@@ -36,11 +37,14 @@ def signin():
 def login():
     data = request.get_json()
     user = Users.query.filter_by(email=data['email']).first()
-    if user and user.check_password(data['password']):
-        access_token = create_access_token(identity=user.id)
-        return jsonify(access_token=access_token)
-    return jsonify({'error': 'Invalid credentials'}), 401
 
+    if not user or not bcrypt.check_password_hash(user.password, data['password']):
+        return jsonify({"msg": "Bad email or password"}), 401
+    
+    access_token = create_access_token(identity=user.id)
+    return jsonify(access_token=access_token)
+    # if user and user.check_password(data['password']):
+    # return jsonify({'error': 'Invalid credentials'}), 401
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
