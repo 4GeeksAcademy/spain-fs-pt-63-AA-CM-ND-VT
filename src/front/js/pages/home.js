@@ -3,9 +3,18 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
+import ImageInput from "../component/imageInput";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen/index";
 
 export const Home = () => {
     const { store, actions } = useContext(Context);
+
+    const cld = new Cloudinary({
+        cloud: {
+            cloudName: 'dszc6zmjd'
+        }
+    })
 
     return (
         <div className="text-center mt-5">
@@ -19,6 +28,8 @@ export const Home = () => {
                 <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/signin">Signin</Link></li>
             </ul>
+            <ImageInput />
+            <AdvancedImage  cldImg={cld.image("cld-sample")} className="perso" />
         </div>
     );
 };
