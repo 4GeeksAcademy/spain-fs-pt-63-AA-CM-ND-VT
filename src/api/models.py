@@ -12,6 +12,7 @@ class Users(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)  
     rol = db.Column(db.String(50), nullable=False)
+    image =db.Column(db.String(75),nullable=True)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -41,6 +42,7 @@ class Companies(db.Model):
     location = db.Column(db.String(50), nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('Users', backref=db.backref('companies', lazy=True))
+    image =db.Column(db.String(75),nullable=True)
 
     def __repr__(self):
         return f'<Companies {self.name}>'
@@ -77,6 +79,7 @@ class Services(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     companies_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     available = db.Column(db.Boolean, nullable=False)
+    image =db.Column(db.String(75),nullable=True)
 
     master_service = db.relationship('MasterServices', backref=db.backref('services', lazy=True))
     company = db.relationship('Companies', backref=db.backref('services', lazy=True))
