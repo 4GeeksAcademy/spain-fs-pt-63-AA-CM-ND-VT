@@ -1,39 +1,45 @@
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			token: null,
-            message: null
+			username: null,
+			user_id: null,
+			rol: null
 		},
 		actions: {
 			login: async (email, password) => {
-                const opts = {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        "email": email,
-                        "password": password
-                    })
-                }
-                try {
-                    const resp = await fetch(
+				const opts = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				}
+				try {
+					const resp = await fetch(
 						`${process.env.BACKEND_URL}/api/login`,
 						opts
 					);
-                    if (resp.status !== 200) {
-                        alert("There has been some error");
-                        return false;
-                    }
-                    const data = await resp.json();
-                    sessionStorage.setItem("token", data.access_token);
-                    setStore({ token: data.access_token });
-                    return true;
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return false;
+					}
+					const data = await resp.json();
+					sessionStorage.setItem("token", data.access_token);
+					setStore({ token: data.access_token });
+					setStore({ username: data.username });
+					setStore({ user_id: data.user_id });
+					setStore({ rol: data.rol })
+					return true;
 
-                } catch (error) {
-                    console.log(error);
-                }
-            },
+				} catch (error) {
+					console.log(error);
+				}
+			},
 
 			signup: async (email, password, name, rol) => {
 				const opts = {
@@ -69,9 +75,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncToken: () => {
-                const token = sessionStorage.getItem("token");
-                if (token && token !== "" && token !== undefined) setStore({ token: token });
-            },
+				const token = localStorage.getItem("token");
+				const user_id = localStorage.getItem("user_id");
+				const username = localStorage.getItem("username");
+				const rol = localStorage.getItem("rol");
+
+				if (token) {
+					setStore({
+						...store,
+						token: token,
+						user_id: user_id,
+						username: username,
+						rol: rol
+					});
+				}
+			},
+
+			logout: async () => {
+				const opts = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": "Bearer " + getStore().token
+					}
+				};
+				try {
+					await fetch(`${process.env.BACKEND_URL}/api/logout`, opts);
+					sessionStorage.removeItem("token");
+					setStore({ token: null, username: null, user_id: null, rol: null });
+				} catch (error) {
+					console.log(error);
+				}
+			},
 		},
 	};
 };

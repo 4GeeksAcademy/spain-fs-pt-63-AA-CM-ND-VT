@@ -1,0 +1,34 @@
+/* Navbar.css */
+.navbar {
+    padding: 1rem;
+}
+
+.nav-link {
+    margin-right: 1rem;
+    color: #5a5a5a !important;
+    font-size: 1.2rem;
+}
+
+.navbar-nav .nav-link {
+    color: #5a5a5a !important;
+}
+
+.btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}

@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, Users, Companies, Bookings, MasterServices, Ratings, Requests, Services
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity,unset_jwt_cookies
 from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
@@ -17,7 +17,6 @@ bcrypt=Bcrypt()
 @api.route('/landing', methods=['GET'])
 def landing():
     return jsonify({'message': 'Welcome to the landing page!'})
-
 
 @api.route('/signin', methods=['POST'])
 def signin():
@@ -32,6 +31,12 @@ def signin():
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
 
+@api.route("/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    response = jsonify({"msg": "Logout successful"})
+    unset_jwt_cookies(response)
+    return response, 200
 
 @api.route('/login', methods=['POST'])
 def login():
@@ -42,9 +47,7 @@ def login():
         return jsonify({"msg": "Bad email or password"}), 401
     
     access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token)
-    # if user and user.check_password(data['password']):
-    # return jsonify({'error': 'Invalid credentials'}), 401
+    return jsonify(access_token=access_token, user_id=user.id, username=user.name, rol=user.rol)
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
