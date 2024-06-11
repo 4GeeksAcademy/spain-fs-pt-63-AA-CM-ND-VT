@@ -41,7 +41,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ user_id: data.user_id });
 					setStore({ rol: data.rol })
 					setStore({ companyname: data.companyname });
-					setStore({ compnay_id: data.company_id });
+					setStore({ company_id: data.company_id });
 
 					return true;
 
@@ -162,9 +162,56 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			// ---- apartado servicios
 
-			createService: async () => {
-				
+			createService: async (serviceData) => {
+				const store = getStore();
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${store.token}`
+					},
+					body: JSON.stringify(serviceData),
+				};
+				try {
+					const resp = await fetch(
+						`${process.env.BACKEND_URL}/api/services`,
+						opts
+					);
+					if (resp.status !== 201) {
+						alert("There has been some error");
+						return false;
+					}
+					const data = await resp.json();
+					alert("Service created successfully");
+					return true;
+				} catch (error) {
+					console.log(error);
+					return false;
+				}
 			},
+
+			getMasterServices: async () => {
+				const store = getStore();
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${store.token}`
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/master_services`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			}
 		},
 	};
 };

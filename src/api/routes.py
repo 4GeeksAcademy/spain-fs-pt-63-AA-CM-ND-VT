@@ -102,6 +102,10 @@ def create_request():
     db.session.commit()
     return jsonify(new_request.serialize()), 201
 
+@api.route('/master_services', methods=['GET'])
+def get_master_services():
+    master_services = MasterServices.query.all()
+    return jsonify([service.serialize() for service in master_services]), 200
 
 @api.route('/services', methods=['GET'])
 def get_services():
@@ -110,24 +114,24 @@ def get_services():
 
 
 @api.route('/services', methods=['POST'])
-@jwt_required()
 def add_service():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = Users.query.get(current_user_id)
-    if user.rol != 'company':
-        return jsonify({'error': 'User is not a company owner'}), 400
+    companyid = data.get('companyid')
+
+
     new_service = Services(
         name=data['name'],
         description=data['description'],
         type=data['type'],
         price=data['price'],
         duration=data['duration'],
-        companies_id=user.id,  # Use the current user's ID to link the service to their company
-        available=data['available']
+        companies_id=companyid,  # Use the provided user's ID to link the service to their company
+        available=data['available'],
+        image=data['image']
     )
     db.session.add(new_service)
     db.session.commit()
+
     return jsonify(new_service.serialize()), 201
 
 
