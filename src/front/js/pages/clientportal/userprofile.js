@@ -3,7 +3,7 @@ import React from 'react';
 const CompanyProfileForUser = () => {
     return (
         <div>
-            <h2>Perfil empresa para cliente</h2>
+            <h2>Perfil del Usuario</h2>
 
         </div>
     );

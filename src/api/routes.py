@@ -75,7 +75,7 @@ def client_portal(user_id):
     return jsonify(user.serialize())
 
 
-@api.route('/companyportal/<int:user_id>', methods=['GET'])
+@api.route('/adminportal/<int:user_id>', methods=['GET'])
 @jwt_required()
 def company_portal(user_id):
     user = Users.query.get_or_404(user_id)
