@@ -43,7 +43,7 @@ const Signin = () => {
               </p>
             </div>
           </div>
-          <div className="card col-md-4 p-3" onClick={() => handleRoleSelection("admin")}>
+          <div className="card col-md-4 p-3" onClick={() => handleRoleSelection("company")}>
             <div className="card-body">
               <h5 className="card-title">Company</h5>
               <p className="card-text">
