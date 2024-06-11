@@ -6,9 +6,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			username: null,
 			user_id: null,
 			rol: null,
-			image: null
+			image: null,
+			companyname: null,
+			company_id: null
 		},
 		actions: {
+
+			// ---- apartado sesiones
+
 			login: async (email, password) => {
 				const opts = {
 					method: 'POST',
@@ -35,6 +40,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ username: data.username });
 					setStore({ user_id: data.user_id });
 					setStore({ rol: data.rol })
+					setStore({ companyname: data.companyname });
+					setStore({ compnay_id: data.company_id });
+
 					return true;
 
 				} catch (error) {
@@ -144,11 +152,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// ---- apartado imagenes
+
 			uploadWorkImage: async (imgId) => {
 				const store = getStore();
 				const image = imgId
 				setStore({ ...store, image: image })
-			}
+			},
+
+			// ---- apartado servicios
+
+			createService: async () => {
+				
+			},
 		},
 	};
 };

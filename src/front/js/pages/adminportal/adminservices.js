@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useContext } from "react";
+import { Context } from "../../store/appContext";
 
 const AdminServices = () => {
+    const { store, actions } = useContext(Context);
+
+    const handleCreate = async () => {
+        await actions.createService();
+    };
+
     return (
-        <div>
-            <h2>Administración de Servicios</h2>
-            <ul>
-                <li>Servicio 1: Descripción del servicio 1</li>
-                <li>Servicio 2: Descripción del servicio 2</li>
-                <li>Servicio 3: Descripción del servicio 3</li>
-            </ul>
+        <div className="flex">
+            <button className="btn-success rounded py-1 px-2" onClick={handleCreate}>Create</button>
         </div>
     );
 };
