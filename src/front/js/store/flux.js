@@ -183,6 +183,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return [];
 					}
 					const data = await resp.json();
+					console.log(data);
 					return data;
 				} catch (error) {
 					console.log(error);

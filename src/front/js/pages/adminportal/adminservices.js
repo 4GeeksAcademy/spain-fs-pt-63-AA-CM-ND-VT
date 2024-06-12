@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
-import ServiceCard from "../../component/serviceCard";
+import ServiceCardAdmin from "../../component/serviceCardAdmin";
+import ImageInput from "../../component/imageInput";
 
 const AdminServices = () => {
     const { store, actions } = useContext(Context);
@@ -9,15 +10,15 @@ const AdminServices = () => {
     const [serviceData, setServiceData] = useState({
         name: "",
         description: "",
-        type: "", 
+        type: "",
         price: "",
         duration: "",
         available: false,
         image: "",
-        companyid: store.company_id // Asegúrate de pasar correctamente el company_id
+        companyid: store.company_id
     });
-    const [refresh, setRefresh] = useState(false); 
-    const [services, setServices] = useState([]); 
+    const [refresh, setRefresh] = useState(false);
+    const [services, setServices] = useState([]);
 
     useEffect(() => {
         const fetchMasterServices = async () => {
@@ -32,7 +33,7 @@ const AdminServices = () => {
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
-            if (store.company_id) {  
+            if (store.company_id) {
                 const response = await actions.getServicesByCompany(store.company_id);
                 if (response) {
                     setServices(response);
@@ -52,11 +53,15 @@ const AdminServices = () => {
         setServiceData({ ...serviceData, available: e.target.checked });
     };
 
+    const handleImageUpload = (imgId) => {
+        setServiceData({ ...serviceData, image: imgId });
+    };
+
     const handleSubmit = async () => {
         const success = await actions.createService(serviceData);
         if (success) {
             setShowModal(false);
-            setRefresh(!refresh); 
+            setRefresh(!refresh);
         }
     };
 
@@ -114,13 +119,13 @@ const AdminServices = () => {
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="image">Image</label>
-                                        <input type="text" className="form-control" id="image" name="image" value={serviceData.image} onChange={handleChange} />
+                                        <ImageInput onUpload={handleImageUpload} />
                                     </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
+                                <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -132,13 +137,14 @@ const AdminServices = () => {
                 <div className="container">
                     <div className="row">
                         {services.map(service => (
-                            <div key={service.id} className="col-md-4">
-                                <ServiceCard service={service} />
+                            <div key={service.id} className="col-12">
+                                <ServiceCardAdmin service={service} />
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

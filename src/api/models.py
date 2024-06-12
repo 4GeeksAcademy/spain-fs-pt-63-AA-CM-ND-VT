@@ -27,6 +27,7 @@ class Users(db.Model):
             "name": self.name,
             "email": self.email,
             "rol": self.rol,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 # Evento para encriptar la contraseña antes de insertar o actualizar el objeto
@@ -54,6 +55,7 @@ class Companies(db.Model):
             "name": self.name,
             "location": self.location,
             "owner": self.owner,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 class MasterServices(db.Model):
@@ -98,7 +100,8 @@ class Services(db.Model):
             "price": self.price,
             "duration": self.duration,
             "companies_id": self.companies_id,
-            "available": self.available
+            "available": self.available,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 class Bookings(db.Model):
@@ -172,5 +175,3 @@ class Requests(db.Model):
             "bookings_id": self.bookings_id,
             "status": self.status
         }
-
-
