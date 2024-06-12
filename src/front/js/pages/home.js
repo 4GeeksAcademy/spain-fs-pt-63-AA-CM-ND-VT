@@ -26,7 +26,8 @@ export const Home = () => {
                 <li className="nav-item"><Link className="nav-link" to="/services/companyprofile/:user_id">Company Profile for User</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
                 <li className="nav-item"><Link className="nav-link" to="/signin">Signin</Link></li>
-                <li className="nav-item">{store.companyname ? store.companyname :"no"}</li>
+                <li className="nav-item">{store.companyname ? store.companyname  :"no"}</li>
+                <li className="nav-item">{store.company_id ? store.company_id  :"no"}</li>
             </ul>
             <ImageInput />
             <AdvancedImage  cldImg={cld.image("cld-sample")} className="perso" />

@@ -109,9 +109,17 @@ def get_master_services():
 
 @api.route('/services', methods=['GET'])
 def get_services():
-    services = Services.query.all()
+    companies_id = request.args.get('companies_id')
+    if companies_id:
+        services = Services.query.filter_by(companies_id=companies_id).all()
+    else:
+        services = Services.query.all()
     return jsonify([service.serialize() for service in services]), 200
 
+@api.route('/all_services', methods=['GET'])
+def get_all_services():
+    services = Services.query.all()
+    return jsonify([service.serialize() for service in services]), 200
 
 @api.route('/services', methods=['POST'])
 def add_service():
@@ -131,7 +139,6 @@ def add_service():
     db.session.commit()
 
     return jsonify(new_service.serialize()), 201
-
 
 @api.route('/bookings', methods=['POST'])
 @jwt_required()

@@ -14,9 +14,9 @@ const AdminServices = () => {
         duration: "",
         available: false,
         image: "",
-        companyid: store.company_id 
+        companyid: store.company_id // Asegúrate de pasar correctamente el company_id
     });
-    const [refresh, setRefresh] = useState(false);
+    const [refresh, setRefresh] = useState(false); 
     const [services, setServices] = useState([]); 
 
     useEffect(() => {
@@ -32,9 +32,11 @@ const AdminServices = () => {
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
-            const response = await actions.getServicesByCompany(store.company_id);
-            if (response) {
-                setServices(response);
+            if (store.company_id) {  // Asegúrate de que company_id esté disponible
+                const response = await actions.getServicesByCompany(store.company_id);
+                if (response) {
+                    setServices(response);
+                }
             }
         };
 
@@ -63,7 +65,7 @@ const AdminServices = () => {
             <button className="btn btn-success rounded py-1 px-2" onClick={() => setShowModal(true)}>
                 Create
             </button>
-
+            <h3>{store.company_id}</h3>
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
                     <div className="modal-dialog" role="document">

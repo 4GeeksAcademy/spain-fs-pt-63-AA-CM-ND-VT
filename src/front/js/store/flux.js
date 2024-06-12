@@ -44,7 +44,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ rol: data.rol })
 					setStore({ companyname: data.companyname });
 					setStore({ company_id: data.company_id });
-
 					return true;
 
 				} catch (error) {
@@ -148,7 +147,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					await fetch(`${process.env.BACKEND_URL}/api/logout`, opts);
 					sessionStorage.removeItem("token");
-					setStore({ token: null, username: null, user_id: null, rol: null });
+					setStore({
+						token: null, username: null, user_id: null, rol: null, companyname: null,
+						company_id: null
+					});
 				} catch (error) {
 					console.log(error);
 				}
@@ -165,6 +167,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// ---- apartado servicios
 
 			getServicesByCompany: async (companyId) => {
+				console.log(companyId);
 				const store = getStore();
 				const opts = {
 					method: "GET",
@@ -174,7 +177,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/services?company_id=${companyId}`, opts);
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services?companies_id=${companyId}`, opts);
 					if (resp.status !== 200) {
 						alert("There has been some error");
 						return [];
@@ -185,7 +188,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},
+			},			
 
 			getAllServices: async () => {
 				const store = getStore();
@@ -197,7 +200,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				};
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/services`, opts);
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/all_services`, opts);
 					if (resp.status !== 200) {
 						alert("There has been some error");
 						return [];
@@ -208,7 +211,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},
+			},			
 
 			createService: async (serviceData) => {
 				const store = getStore();

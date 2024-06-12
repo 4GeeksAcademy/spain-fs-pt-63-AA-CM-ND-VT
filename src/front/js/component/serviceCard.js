@@ -11,6 +11,8 @@ const ServiceCard = ({ service }) => {
                 <p className="card-text">Price: ${service.price}</p>
                 <p className="card-text">Duration: {service.duration} minutes</p>
                 <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
+                <p className="card-text">Available: {service.companyid}</p>
+
             </div>
         </div>
     );
