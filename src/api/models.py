@@ -69,6 +69,7 @@ class MasterServices(db.Model):
             "id": self.id,
             "type": self.type,
         }
+    
 
 class Services(db.Model):
     __tablename__ = 'services'
