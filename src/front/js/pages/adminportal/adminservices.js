@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
+import ServiceCard from "../../component/serviceCard";
 
 const AdminServices = () => {
     const { store, actions } = useContext(Context);
@@ -8,13 +9,15 @@ const AdminServices = () => {
     const [serviceData, setServiceData] = useState({
         name: "",
         description: "",
-        type: "", // This will store the selected master service ID
+        type: "", 
         price: "",
         duration: "",
         available: false,
         image: "",
-        companyid: store.company_id // Pass the user ID from the store
+        companyid: store.company_id 
     });
+    const [refresh, setRefresh] = useState(false);
+    const [services, setServices] = useState([]); 
 
     useEffect(() => {
         const fetchMasterServices = async () => {
@@ -26,6 +29,17 @@ const AdminServices = () => {
 
         fetchMasterServices();
     }, [actions]);
+
+    useEffect(() => {
+        const fetchServicesByCompany = async () => {
+            const response = await actions.getServicesByCompany(store.company_id);
+            if (response) {
+                setServices(response);
+            }
+        };
+
+        fetchServicesByCompany();
+    }, [actions, store.company_id, refresh]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,6 +54,7 @@ const AdminServices = () => {
         const success = await actions.createService(serviceData);
         if (success) {
             setShowModal(false);
+            setRefresh(!refresh); 
         }
     };
 
@@ -109,6 +124,19 @@ const AdminServices = () => {
                     </div>
                 </div>
             )}
+
+            <div className="mt-4">
+                <h2>Services by Company</h2>
+                <div className="container">
+                    <div className="row">
+                        {services.map(service => (
+                            <div key={service.id} className="col-md-4">
+                                <ServiceCard service={service} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

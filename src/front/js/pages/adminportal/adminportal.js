@@ -6,7 +6,6 @@ import CompanyProfile from './companyprofile';
 
 const AdminPortal = () => {
     const [activeTab, setActiveTab] = useState('adminbookings');
-
     const renderContent = () => {
         switch (activeTab) {
             case 'adminbookings':

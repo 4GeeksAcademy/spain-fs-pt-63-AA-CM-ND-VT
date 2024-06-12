@@ -8,7 +8,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			rol: null,
 			image: null,
 			companyname: null,
-			company_id: null
+			company_id: null,
+			services: [],
+			masterServices: [],
 		},
 		actions: {
 
@@ -161,6 +163,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			// ---- apartado servicios
+
+			getServicesByCompany: async (companyId) => {
+				const store = getStore();
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${store.token}`
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services?company_id=${companyId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
+
+			getAllServices: async () => {
+				const store = getStore();
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${store.token}`
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
 
 			createService: async (serviceData) => {
 				const store = getStore();

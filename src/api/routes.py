@@ -110,15 +110,13 @@ def get_master_services():
 @api.route('/services', methods=['GET'])
 def get_services():
     services = Services.query.all()
-    return jsonify([service.serialize() for service in services])
+    return jsonify([service.serialize() for service in services]), 200
 
 
 @api.route('/services', methods=['POST'])
 def add_service():
     data = request.get_json()
     companyid = data.get('companyid')
-
-
     new_service = Services(
         name=data['name'],
         description=data['description'],
