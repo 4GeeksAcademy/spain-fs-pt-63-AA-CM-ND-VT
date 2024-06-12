@@ -211,7 +211,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},			
+			},					
 
 			createService: async (serviceData) => {
 				const store = getStore();

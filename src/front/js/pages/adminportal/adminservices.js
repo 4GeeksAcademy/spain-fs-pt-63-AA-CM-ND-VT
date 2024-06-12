@@ -32,7 +32,7 @@ const AdminServices = () => {
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
-            if (store.company_id) {  // Asegúrate de que company_id esté disponible
+            if (store.company_id) {  
                 const response = await actions.getServicesByCompany(store.company_id);
                 if (response) {
                     setServices(response);
