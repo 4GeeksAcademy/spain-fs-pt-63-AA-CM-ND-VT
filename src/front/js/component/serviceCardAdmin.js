@@ -3,7 +3,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 
-const ServiceCard = ({ service }) => {
+const ServiceCardAdmin = ({ service }) => {
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
@@ -37,4 +37,4 @@ const ServiceCard = ({ service }) => {
     );
 };
 
-export default ServiceCard;
+export default ServiceCardAdmin;

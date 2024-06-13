@@ -154,16 +154,15 @@ def add_service():
 @jwt_required()
 def create_booking():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = Users.query.get(current_user_id)
-    if user.rol != 'client':
-        return jsonify({'error': 'User is not a client'}), 400
+    userid = data.get('user_id')
+    serviceid=data.get('services_id')
     new_booking = Bookings(
-        services_id=data['services_id'],
-        users_id=current_user_id,
+        services_id=serviceid,
+        users_id=userid,
         start_day_date=data['start_day_date'],
         start_time_date=data['start_time_date']
     )
     db.session.add(new_booking)
     db.session.commit()
     return jsonify(new_booking.serialize()), 201
+

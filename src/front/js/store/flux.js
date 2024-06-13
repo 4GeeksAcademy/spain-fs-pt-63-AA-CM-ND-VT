@@ -263,7 +263,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			}
+			},
+
+			reserveService: async (reservationData) => {
+				const store = getStore();
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Authorization": `Bearer ${store.token}`
+					},
+					body: JSON.stringify(reservationData),
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/bookings`, opts);
+					if (resp.status !== 201) {
+						alert("There has been some error");
+						return false;
+					}
+					const data = await resp.json();
+					alert("Service reserved successfully");
+					return true;
+				} catch (error) {
+					console.log(error);
+					return false;
+				}
+			},
 		},
 	};
 };
