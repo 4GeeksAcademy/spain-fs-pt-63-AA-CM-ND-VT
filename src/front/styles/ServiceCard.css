@@ -4,6 +4,7 @@
 }
 
 .card-img-left {
+  cursor: default;
   position: relative;
   overflow: hidden;
   height: 100%; /* Ajusta la altura del contenedor */

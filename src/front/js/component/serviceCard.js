@@ -3,12 +3,14 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import { Context } from '../store/appContext';
+import { useNavigate } from "react-router-dom";
 
 const ServiceCard = ({ service }) => {
     const { store, actions } = useContext(Context);
     const [show, setShow] = useState(false);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const navigate = useNavigate();
 
     const cld = new Cloudinary({
         cloud: {
@@ -23,16 +25,21 @@ const ServiceCard = ({ service }) => {
             services_id: service.id,
             start_day_date: date,
             start_time_date: time,
-            user_id:store.user_id
+            user_id: store.user_id
         };
-        console.log(reservationData);
-        // Lógica para enviar la reserva al backend
         const success = await actions.reserveService(reservationData);
         if (success) {
             console.log("Service reserved:", reservationData);
             setShow(false);
         } else {
             alert("Failed to reserve the service. Please try again.");
+        }
+    };
+
+    const handleCompany = async () => {
+        const success = await actions.updateCompanyPageId(service.id);
+        if (success) {
+            navigate(`/services/companyprofile/${store.companypage_id}`);
         }
     };
 
@@ -58,8 +65,8 @@ const ServiceCard = ({ service }) => {
                 </div>
                 <div className="col-md-2">
                     <div className="mt-3">
-                        <button className="btn btn-info rounded py-1 px-2 m-2">Company</button>
-                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => setShow(true)}>Reserve</button>
+                        <button className="btn btn-info rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
                     </div>
                 </div>
             </div>

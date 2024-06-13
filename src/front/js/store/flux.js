@@ -64,13 +64,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						rol: rol,
 					}),
 				};
-				console.log(opts);
 				try {
 					const resp = await fetch(
 						`${process.env.BACKEND_URL}/api/signin`,
 						opts
 					);
-					console.log(resp);
 					if (resp.status !== 201) {
 						alert("There has been some error");
 						return false;
@@ -99,13 +97,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						location: location
 					}),
 				};
-				console.log(opts);
 				try {
 					const resp = await fetch(
 						`${process.env.BACKEND_URL}/api/signup_company`,
 						opts
 					);
-					console.log(resp);
 					if (resp.status !== 201) {
 						alert("There has been some error");
 						return false;
@@ -167,7 +163,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// ---- apartado servicios
 
 			getServicesByCompany: async (companyId) => {
-				console.log(companyId);
 				const store = getStore();
 				const opts = {
 					method: "GET",
@@ -189,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},			
+			},
 
 			getAllServices: async () => {
 				const store = getStore();
@@ -212,7 +207,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},					
+			},
 
 			createService: async (serviceData) => {
 				const store = getStore();
@@ -282,13 +277,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return false;
 					}
 					const data = await resp.json();
-					alert("Service reserved successfully");
+					const dataRequest = {
+						booking_id: data.id,
+						status: "Pendiente",
+						comment: ""
+					};
+			
+					const optsRequest = {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						},
+						body: JSON.stringify(dataRequest),
+					};
+			
+					try {
+						const respRequest = await fetch(`${process.env.BACKEND_URL}/api/requests`, optsRequest);
+						if (respRequest.status !== 201) {
+							alert("There has been some error");
+							return false;
+						}
+						alert("Service reserved successfully");
+					} catch (error) {
+						console.log(error);
+						return false;
+					}
 					return true;
 				} catch (error) {
 					console.log(error);
 					return false;
 				}
 			},
+
+			
+			
 		},
 	};
 };
