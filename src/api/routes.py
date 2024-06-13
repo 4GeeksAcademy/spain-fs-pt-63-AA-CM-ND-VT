@@ -59,16 +59,26 @@ def logout():
 def login():
     data = request.get_json()
     user = Users.query.filter_by(email=data['email']).first()
-    company = Companies.query.filter_by(user=user).first()
-
-    if not company:
-        return jsonify({"msg":"no hay company"}),401
 
     if not user or not bcrypt.check_password_hash(user.password, data['password']):
         return jsonify({"msg": "Bad email or password"}), 401
-    
+
+    company = Companies.query.filter_by(user=user).first()
+
     access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token, user_id=user.id, username=user.name, rol=user.rol, companyname=company.name, company_id=company.id)
+    
+    response = {
+        'access_token': access_token,
+        'user_id': user.id,
+        'username': user.name,
+        'rol': user.rol
+    }
+
+    if company:
+        response['companyname'] = company.name
+        response['company_id'] = company.id
+
+    return jsonify(response)
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
