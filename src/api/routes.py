@@ -59,12 +59,16 @@ def logout():
 def login():
     data = request.get_json()
     user = Users.query.filter_by(email=data['email']).first()
+    company = Companies.query.filter_by(user=user).first()
+
+    if not company:
+        return jsonify({"msg":"no hay company"}),401
 
     if not user or not bcrypt.check_password_hash(user.password, data['password']):
         return jsonify({"msg": "Bad email or password"}), 401
     
     access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token, user_id=user.id, username=user.name, rol=user.rol)
+    return jsonify(access_token=access_token, user_id=user.id, username=user.name, rol=user.rol, companyname=company.name, company_id=company.id)
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -98,34 +102,43 @@ def create_request():
     db.session.commit()
     return jsonify(new_request.serialize()), 201
 
+@api.route('/master_services', methods=['GET'])
+def get_master_services():
+    master_services = MasterServices.query.all()
+    return jsonify([service.serialize() for service in master_services]), 200
 
 @api.route('/services', methods=['GET'])
 def get_services():
-    services = Services.query.all()
-    return jsonify([service.serialize() for service in services])
+    companies_id = request.args.get('companies_id')
+    if companies_id:
+        services = Services.query.filter_by(companies_id=companies_id).all()
+    else:
+        services = Services.query.all()
+    return jsonify([service.serialize() for service in services]), 200
 
+@api.route('/all_services', methods=['GET'])
+def get_all_services():
+    services = Services.query.all()
+    return jsonify([service.serialize() for service in services]), 200
 
 @api.route('/services', methods=['POST'])
-@jwt_required()
 def add_service():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = Users.query.get(current_user_id)
-    if user.rol != 'company':
-        return jsonify({'error': 'User is not a company owner'}), 400
+    companyid = data.get('companyid')
     new_service = Services(
         name=data['name'],
         description=data['description'],
         type=data['type'],
         price=data['price'],
         duration=data['duration'],
-        companies_id=user.id,  # Use the current user's ID to link the service to their company
-        available=data['available']
+        companies_id=companyid,  # Use the provided user's ID to link the service to their company
+        available=data['available'],
+        image=data['image']
     )
     db.session.add(new_service)
     db.session.commit()
-    return jsonify(new_service.serialize()), 201
 
+    return jsonify(new_service.serialize()), 201
 
 @api.route('/bookings', methods=['POST'])
 @jwt_required()

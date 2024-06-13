@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import generate_password_hash, check_password_hash
 from sqlalchemy.orm import validates
 from sqlalchemy import event
+from flask import Flask
 
 db = SQLAlchemy()
 
@@ -12,7 +13,7 @@ class Users(db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)  
     rol = db.Column(db.String(50), nullable=False)
-    image =db.Column(db.String(75),nullable=True)
+    image = db.Column(db.String(75), nullable=True)
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
@@ -26,6 +27,7 @@ class Users(db.Model):
             "name": self.name,
             "email": self.email,
             "rol": self.rol,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 # Evento para encriptar la contraseña antes de insertar o actualizar el objeto
@@ -42,7 +44,7 @@ class Companies(db.Model):
     location = db.Column(db.String(50), nullable=False)
     owner = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('Users', backref=db.backref('companies', lazy=True))
-    image =db.Column(db.String(75),nullable=True)
+    image = db.Column(db.String(75), nullable=True)
 
     def __repr__(self):
         return f'<Companies {self.name}>'
@@ -53,6 +55,7 @@ class Companies(db.Model):
             "name": self.name,
             "location": self.location,
             "owner": self.owner,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 class MasterServices(db.Model):
@@ -68,6 +71,7 @@ class MasterServices(db.Model):
             "id": self.id,
             "type": self.type,
         }
+    
 
 class Services(db.Model):
     __tablename__ = 'services'
@@ -79,7 +83,7 @@ class Services(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     companies_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=False)
     available = db.Column(db.Boolean, nullable=False)
-    image =db.Column(db.String(75),nullable=True)
+    image = db.Column(db.String(75), nullable=True)
 
     master_service = db.relationship('MasterServices', backref=db.backref('services', lazy=True))
     company = db.relationship('Companies', backref=db.backref('services', lazy=True))
@@ -96,7 +100,8 @@ class Services(db.Model):
             "price": self.price,
             "duration": self.duration,
             "companies_id": self.companies_id,
-            "available": self.available
+            "available": self.available,
+            "image": self.image,  # Incluyendo el campo image
         }
 
 class Bookings(db.Model):
