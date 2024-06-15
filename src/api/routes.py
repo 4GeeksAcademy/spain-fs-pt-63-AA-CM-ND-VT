@@ -98,6 +98,8 @@ def update_user(user_id):
         return jsonify({'error': 'User is not a client'}), 400
 
     current_user_id = get_jwt_identity()
+    print(current_user_id)
+    print(user_id)
     if current_user_id != user_id:
         return jsonify({'error': 'Unauthorized'}), 401
 

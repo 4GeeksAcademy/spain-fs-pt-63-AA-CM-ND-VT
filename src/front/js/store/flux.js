@@ -264,34 +264,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return [];
 				}
 			},
-			// getCompany: async (company_id) => {
-			// 	const store = getStore();
-			// 	try {
-			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
-			// 			headers: {
-			// 				"Content-Type": "application/json",
-			// 				"Authorization": `Bearer ${store.token}`
-			// 			}
-			// 		});
-			// 		if (response.status !== 200) {
-			// 			alert("Error fetching company");
-			// 			return false;
-			// 		}
-			// 		const data = await response.json();
-			// 		setStore({ company: data });
-			// 		return data;
-			// 	} catch (error) {
-			// 		console.log(error);
-			// 		return false;
-			// 	}
-			// }
-			
-			updateUser: async (userId, userData) => {
+			getUser: async (user_id) => {
 				const store = getStore();
-				const token = store.token;  // Asumiendo que almacenas el token en el store
+				console.log("dentro del flux " ,user_id)
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`,{
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch company');
+					}
+					const data = await resp.json();
+					console.log(data)
+					setStore({ user: data });
+					return data; 
+				} catch (error) {
+					console.error('Error fetching company:', error);
+					throw error;  
+				}
+			},
+			
+			updateUser: async (user_id, userData) => {
+				const store = getStore();
+				const token = store.token;  
 			
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${userId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						method: 'PUT',
 						headers: {
 							'Content-Type': 'application/json',
@@ -356,12 +357,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			
-			updateCompany: async (companyId, companyData) => {
+			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
 				const token = store.token; // Asumiendo que almacenas el token en el store
 			
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${companyId}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
 						headers: {
 							'Content-Type': 'application/json',

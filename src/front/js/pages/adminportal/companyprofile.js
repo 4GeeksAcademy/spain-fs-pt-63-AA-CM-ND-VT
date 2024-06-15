@@ -6,21 +6,25 @@ const CompanyProfile = () => {
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
-        email: '',
+        location: '',
         owner: '',
-        logo: ''
+        image: ''
     });
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            const company = await actions.getCompany(store.company_id);
-            if (company) {
-                setFormData({
-                    name: company.name,
-                    email: company.email,
-                    owner: company.owner,
-                    logo: company.logo
-                });
+            if (store.company_id) {
+                const company = await actions.getCompany(store.company_id);
+                console.log("company a ver?", company);
+                if (company) {
+                    setFormData({
+                        name: company[0].name,
+                        location: company[0].location,
+                        owner: company[0].owner,
+                        image: company[0].image
+                    });
+                    console.log("a ver si funciona ", formData);
+                }
             }
         };
         fetchCompanyData();
@@ -49,10 +53,10 @@ const CompanyProfile = () => {
             <h2>Perfil de la Compañía</h2>
             {!editMode ? (
                 <>
-                    <p><strong>Nombre:</strong> {store.company.name}</p>
-                    <p><strong>Email:</strong> {store.company.email}</p>
-                    <p><strong>Dueño:</strong> {store.company.owner}</p>
-                    {store.company.logo && <img src={store.company.logo} alt="Company Logo" />}
+                    <p><strong>Nombre:</strong> {formData.name}</p>
+                    <p><strong>Ubicación:</strong> {formData.location}</p>
+                    <p><strong>Dueño:</strong> {formData.owner}</p>
+                    {formData.image && <img src={formData.image} alt="Company Logo" />}
                     <button onClick={() => setEditMode(true)}>Editar Perfil</button>
                 </>
             ) : (
@@ -67,11 +71,11 @@ const CompanyProfile = () => {
                         />
                     </div>
                     <div>
-                        <label>Email:</label>
+                        <label>Ubicación:</label>
                         <input 
-                            type="email" 
-                            name="email" 
-                            value={formData.email} 
+                            type="text" 
+                            name="location" 
+                            value={formData.location} 
                             onChange={handleChange} 
                         />
                     </div>
@@ -88,8 +92,8 @@ const CompanyProfile = () => {
                         <label>Logo URL:</label>
                         <input 
                             type="text" 
-                            name="logo" 
-                            value={formData.logo} 
+                            name="image" 
+                            value={formData.image} 
                             onChange={handleChange} 
                         />
                     </div>
@@ -102,4 +106,3 @@ const CompanyProfile = () => {
 };
 
 export default CompanyProfile;
-

@@ -13,7 +13,9 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
+            if (store.user_id) {
             const user = await actions.getUser(store.user_id);
+            console.log(user);
             if (user) {
                 setFormData({
                     name: user.name,
@@ -22,6 +24,7 @@ const UserProfile = () => {
                     image: user.image
                 });
             }
+        }
         };
         fetchUserData();
     }, []);
@@ -36,7 +39,7 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedUser = await actions.updateUser(1, formData);  // Reemplaza con el ID del usuario actual
+        const updatedUser = await actions.updateUser(user_id, formData);  // Reemplaza con el ID del usuario actual
         if (updatedUser) {
             setEditMode(false);
         }
