@@ -3,7 +3,6 @@ import { Context } from '../../store/appContext';  // Asegúrate de importar el 
 
 const UserProfile = () => {
     const { store, actions } = useContext(Context);
-    console.log(actions)
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         name: '',

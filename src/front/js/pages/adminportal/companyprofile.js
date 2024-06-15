@@ -13,10 +13,8 @@ const CompanyProfile = () => {
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            console.log(store.company_id);
             const company = await actions.getCompany(store.company_id);
             if (company) {
-                console.log("dentro del if ")
                 setFormData({
                     name: company.name,
                     email: company.email,
