@@ -123,20 +123,6 @@ def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
-
-@api.route('/requests', methods=['POST'])
-@jwt_required()
-def create_request():
-    data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = Users.query.get(current_user_id)
-    if user.rol != 'client':
-        return jsonify({'error': 'User is not a client'}), 400
-    new_request = Requests(bookings_id=data['bookings_id'], status=data['status'], comment=data.get('comment'))
-    db.session.add(new_request)
-    db.session.commit()
-    return jsonify(new_request.serialize()), 201
-
 @api.route('/master_services', methods=['GET'])
 def get_master_services():
     master_services = MasterServices.query.all()
@@ -179,16 +165,49 @@ def add_service():
 @jwt_required()
 def create_booking():
     data = request.get_json()
-    current_user_id = get_jwt_identity()
-    user = Users.query.get(current_user_id)
-    if user.rol != 'client':
-        return jsonify({'error': 'User is not a client'}), 400
+    userid = data.get('user_id')
+    serviceid = data.get('services_id')
     new_booking = Bookings(
-        services_id=data['services_id'],
-        users_id=current_user_id,
+        services_id=serviceid,
+        users_id=userid,
         start_day_date=data['start_day_date'],
         start_time_date=data['start_time_date']
     )
     db.session.add(new_booking)
     db.session.commit()
-    return jsonify(new_booking.serialize()), 201
+    
+    booking_id = new_booking.id
+    
+    response_data = new_booking.serialize()
+    response_data['id'] = booking_id
+    
+    return jsonify(response_data), 201
+
+@api.route('/requests', methods=['POST'])
+@jwt_required()
+def create_request():
+    data = request.get_json()
+    new_request = Requests(
+        bookings_id=data.get('booking_id'),
+        status=data.get('status'),
+        comment=data.get('comment')
+    )
+    db.session.add(new_request)
+    db.session.commit()
+    return jsonify(new_request.serialize()), 201
+
+@api.route('/user_bookings', methods=['GET'])
+def get_user_bookings():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"msg": "User ID is required"}), 400
+    bookings = Bookings.query.filter_by(users_id=user_id).all()
+    return jsonify([booking.serialize() for booking in bookings]), 200
+
+@api.route('/user_requests', methods=['GET'])
+def get_user_requests():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"msg": "User ID is required"}), 400
+    requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
+    return jsonify([request.serialize() for request in requests]), 200

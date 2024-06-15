@@ -4,7 +4,7 @@ import ServiceCardAdmin from "../../component/serviceCardAdmin";
 import ImageInput from "../../component/imageInput";
 
 const AdminServices = () => {
-    const { store, actions } = useContext(Context);
+    const { actions } = useContext(Context); // No necesitamos el store aquí
     const [showModal, setShowModal] = useState(false);
     const [masterServices, setMasterServices] = useState([]);
     const [serviceData, setServiceData] = useState({
@@ -15,7 +15,7 @@ const AdminServices = () => {
         duration: "",
         available: false,
         image: "",
-        companyid: store.company_id
+        companyid: sessionStorage.getItem('company_id') // Obtener directamente de sessionStorage
     });
     const [refresh, setRefresh] = useState(false);
     const [services, setServices] = useState([]);
@@ -33,8 +33,9 @@ const AdminServices = () => {
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
-            if (store.company_id) {
-                const response = await actions.getServicesByCompany(store.company_id);
+            const company_id = sessionStorage.getItem('company_id');
+            if (company_id) {
+                const response = await actions.getServicesByCompany(company_id);
                 if (response) {
                     setServices(response);
                 }
@@ -42,7 +43,9 @@ const AdminServices = () => {
         };
 
         fetchServicesByCompany();
-    }, [actions, store.company_id, refresh]);
+    }, [actions, refresh]);
+
+    // No necesitamos el useEffect para actualizar companyid, ya que lo tomamos de sessionStorage directamente
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -58,10 +61,15 @@ const AdminServices = () => {
     };
 
     const handleSubmit = async () => {
-        const success = await actions.createService(serviceData);
-        if (success) {
-            setShowModal(false);
-            setRefresh(!refresh);
+        console.log("Submitting serviceData:", serviceData);
+        if (serviceData.companyid) {
+            const success = await actions.createService(serviceData);
+            if (success) {
+                setShowModal(false);
+                setRefresh(!refresh);
+            }
+        } else {
+            alert("Company ID is missing. Please try again later.");
         }
     };
 
@@ -70,7 +78,7 @@ const AdminServices = () => {
             <button className="btn btn-success rounded py-1 px-2" onClick={() => setShowModal(true)}>
                 Create
             </button>
-            <h3>{store.company_id}</h3>
+            <h3>{sessionStorage.getItem('company_id')}</h3>
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
                     <div className="modal-dialog" role="document">
@@ -144,7 +152,6 @@ const AdminServices = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

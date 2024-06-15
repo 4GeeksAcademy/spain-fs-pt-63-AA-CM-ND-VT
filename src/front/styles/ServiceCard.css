@@ -1,16 +1,20 @@
 /* ServiceCard.css */
+.card-body {
+  cursor: default;
+}
 
 .card-img-left {
-    position: relative;
-    overflow: hidden;
-    height: 100%; /* Ajusta la altura del contenedor */
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  height: 100%; /* Ajusta la altura del contenedor */
 }
 
 .img-cover {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%; /* Ajusta la altura de la imagen */
-    width: auto; /* Ajusta el ancho de la imagen */
-    object-fit: cover; /* Ajusta el modo de ajuste de la imagen */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%; /* Ajusta la altura de la imagen */
+  width: auto; /* Ajusta el ancho de la imagen */
+  object-fit: cover; /* Ajusta el modo de ajuste de la imagen */
 }

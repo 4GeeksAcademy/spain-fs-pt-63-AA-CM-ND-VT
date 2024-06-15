@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Context } from "../../store/appContext";
 import '../../../styles/clientportal.css';
 import UserBookings from './userbookings';
 import UserProfile from './userprofile';
 
 const ClientPortal = () => {
     const [activeTab, setActiveTab] = useState('reservas');
+    const { actions, store } = useContext(Context);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        actions.syncToken();
+        if (!sessionStorage.getItem("token")) {
+            navigate("/login");
+        }
+    }, [store.token]);
 
     const renderContent = () => {
         switch (activeTab) {

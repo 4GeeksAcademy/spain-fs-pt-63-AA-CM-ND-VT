@@ -109,8 +109,8 @@ class Bookings(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     services_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    start_day_date = db.Column(db.DateTime, nullable=False)
-    start_time_date = db.Column(db.DateTime, nullable=False)
+    start_day_date = db.Column(db.String(50), nullable=False)
+    start_time_date = db.Column(db.String(50), nullable=False)
 
     service = db.relationship('Services', backref=db.backref('bookings', lazy=True))
     user = db.relationship('Users', backref=db.backref('bookings', lazy=True))

@@ -20,7 +20,7 @@ export const Navbar = () => {
 		<nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
 			<div className="container">
 				<Link to="/" className="navbar-brand">
-					<span className="h4">Van&naV</span>
+					<span className="h4">Home</span>
 				</Link>
 				<Link to="/services" className="nav-link">
 					<span className="h4">Services</span>
