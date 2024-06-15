@@ -88,15 +88,40 @@ def client_portal(user_id):
         return jsonify({'error': 'User is not a client'}), 400
     return jsonify(user.serialize())
 
-
-@api.route('/companyportal/<int:user_id>', methods=['GET'])
+@api.route('/clientportal/<int:user_id>', methods=['PUT'])
 @jwt_required()
-def company_portal(user_id):
+def update_user(user_id):
+    data = request.get_json()
     user = Users.query.get_or_404(user_id)
-    if user.rol != 'company':
-        return jsonify({'error': 'User is not a company owner'}), 400
-    companies = Companies.query.filter_by(owner=user_id).all()
-    return jsonify([company.serialize() for company in companies])
+    
+    if user.rol != 'client':
+        return jsonify({'error': 'User is not a client'}), 400
+
+    current_user_id = get_jwt_identity()
+    print(current_user_id)
+    print(user_id)
+    if current_user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    user.name = data.get('name', user.name)
+    user.email = data.get('email', user.email)
+    user.rol = data.get('rol', user.rol)
+    user.image_url = data.get('image_url', user.image_url)
+
+    try:
+        db.session.commit()
+        return jsonify(user.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
+
+@api.route('/adminportal/<int:company_id>', methods=['GET'])
+@jwt_required()
+def company_portal(company_id):
+    company = Companies.query.get_or_404(company_id)
+    return jsonify([company.serialize()])
 
 @api.route('/master_services', methods=['GET'])
 def get_master_services():
