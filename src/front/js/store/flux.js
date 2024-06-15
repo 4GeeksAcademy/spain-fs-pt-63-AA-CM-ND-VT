@@ -320,6 +320,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// ---- Tema reservas user
+
+			 getUserBookings: async () => {
+				const userId = sessionStorage.getItem('user_id');
+				if (!userId) {
+					alert("User ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_bookings?user_id=${userId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
+			
+			 getUserRequests : async () => {
+				const userId = sessionStorage.getItem('user_id');
+				if (!userId) {
+					alert("User ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_requests?user_id=${userId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
 			
 			
 		},

@@ -11,10 +11,11 @@ const ClientPortal = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!store.user_id) {
+        actions.syncToken();
+        if (!sessionStorage.getItem("token")) {
             navigate("/login");
         }
-    }, []);
+    }, [store.token]);
 
     const renderContent = () => {
         switch (activeTab) {

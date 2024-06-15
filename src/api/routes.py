@@ -171,3 +171,18 @@ def create_request():
     db.session.commit()
     return jsonify(new_request.serialize()), 201
 
+@api.route('/user_bookings', methods=['GET'])
+def get_user_bookings():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"msg": "User ID is required"}), 400
+    bookings = Bookings.query.filter_by(users_id=user_id).all()
+    return jsonify([booking.serialize() for booking in bookings]), 200
+
+@api.route('/user_requests', methods=['GET'])
+def get_user_requests():
+    user_id = request.args.get('user_id')
+    if not user_id:
+        return jsonify({"msg": "User ID is required"}), 400
+    requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
+    return jsonify([request.serialize() for request in requests]), 200
