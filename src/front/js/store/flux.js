@@ -189,7 +189,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},			
+			},
 
 			getAllServices: async () => {
 				const store = getStore();
@@ -212,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},					
+			},
 
 			createService: async (serviceData) => {
 				const store = getStore();
@@ -263,9 +263,128 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
+			},
+			// getCompany: async (company_id) => {
+			// 	const store = getStore();
+			// 	try {
+			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
+			// 			headers: {
+			// 				"Content-Type": "application/json",
+			// 				"Authorization": `Bearer ${store.token}`
+			// 			}
+			// 		});
+			// 		if (response.status !== 200) {
+			// 			alert("Error fetching company");
+			// 			return false;
+			// 		}
+			// 		const data = await response.json();
+			// 		setStore({ company: data });
+			// 		return data;
+			// 	} catch (error) {
+			// 		console.log(error);
+			// 		return false;
+			// 	}
+			// }
+			
+			updateUser: async (userId, userData) => {
+				const store = getStore();
+				const token = store.token;  // Asumiendo que almacenas el token en el store
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${userId}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify(userData)
+					});
+			
+					if (!response.ok) {
+						throw new Error('Failed to update user');
+					}
+			
+					const data = await response.json();
+					return data;
+				} catch (error) {
+					console.error(error);
+					throw error;
+				}
+			},
+			deleteUser: async (user_id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+					if (response.status !== 200) {
+						alert("Error deleting user");
+						return false;
+					}
+					setStore({ user: null });
+					return true;
+				} catch (error) {
+					console.log(error);
+					return false;
+				}
+			},
+			getCompany: async (company_id) => {
+				const store = getStore();
+				console.log("dentro del flux " ,company_id)
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`,{
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch company');
+					}
+					const data = await resp.json();
+					console.log(data)
+					setStore({ company: data });
+					return data; 
+				} catch (error) {
+					console.error('Error fetching company:', error);
+					throw error;  
+				}
+			},
+			
+			
+			updateCompany: async (companyId, companyData) => {
+				const store = getStore();
+				const token = store.token; // Asumiendo que almacenas el token en el store
+			
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${companyId}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ${token}`
+						},
+						body: JSON.stringify(companyData)
+					});
+			
+					if (!response.ok) {
+						throw new Error('Failed to update company');
+					}
+			
+					const data = await response.json();
+					return data;
+				} catch (error) {
+					console.error(error);
+					throw error;
+				}
 			}
-		},
+			
+		}
 	};
+
 };
 
 export default getState;
