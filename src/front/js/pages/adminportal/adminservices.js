@@ -15,7 +15,7 @@ const AdminServices = () => {
         duration: "",
         available: false,
         image: "",
-        companyid: store.company_id
+        companyid: null
     });
     const [refresh, setRefresh] = useState(false);
     const [services, setServices] = useState([]);
@@ -44,6 +44,15 @@ const AdminServices = () => {
         fetchServicesByCompany();
     }, [actions, store.company_id, refresh]);
 
+    useEffect(() => {
+        if (store.company_id) {
+            setServiceData(prevServiceData => ({
+                ...prevServiceData,
+                companyid: store.company_id
+            }));
+        }
+    }, [store.company_id]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setServiceData({ ...serviceData, [name]: value });
@@ -58,10 +67,14 @@ const AdminServices = () => {
     };
 
     const handleSubmit = async () => {
-        const success = await actions.createService(serviceData);
-        if (success) {
-            setShowModal(false);
-            setRefresh(!refresh);
+        if (serviceData.companyid) {
+            const success = await actions.createService(serviceData);
+            if (success) {
+                setShowModal(false);
+                setRefresh(!refresh);
+            }
+        } else {
+            alert("Company ID is missing. Please try again later.");
         }
     };
 
@@ -144,7 +157,6 @@ const AdminServices = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };

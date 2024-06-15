@@ -11,10 +11,11 @@ const AdminPortal = () => {
     const [activeTab, setActiveTab] = useState('adminbookings');
 
     useEffect(() => {
-        if (!store.user_id) {
+        actions.syncToken();
+        if (!sessionStorage.getItem("token")) {
             navigate("/login");
         }
-    }, [])
+    }, [store.token]);
 
     const renderContent = () => {
         switch (activeTab) {

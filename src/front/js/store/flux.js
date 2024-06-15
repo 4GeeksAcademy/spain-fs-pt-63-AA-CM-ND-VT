@@ -6,50 +6,53 @@ const getState = ({ getStore, getActions, setStore }) => {
 			username: null,
 			user_id: null,
 			rol: null,
-			image: null,
 			companyname: null,
 			company_id: null,
 			services: [],
 			masterServices: [],
+			image: null,
 		},
 		actions: {
 
 			// ---- apartado sesiones
 
 			login: async (email, password) => {
-				const opts = {
-					method: 'POST',
-					headers: {
-						"Content-Type": "application/json"
-					},
-					body: JSON.stringify({
-						"email": email,
-						"password": password
-					})
-				}
-				try {
-					const resp = await fetch(
-						`${process.env.BACKEND_URL}/api/login`,
-						opts
-					);
-					if (resp.status !== 200) {
-						alert("There has been some error");
-						return false;
-					}
-					const data = await resp.json();
-					sessionStorage.setItem("token", data.access_token);
-					setStore({ token: data.access_token });
-					setStore({ username: data.username });
-					setStore({ user_id: data.user_id });
-					setStore({ rol: data.rol })
-					setStore({ companyname: data.companyname });
-					setStore({ company_id: data.company_id });
-					return true;
-
-				} catch (error) {
-					console.log(error);
-				}
-			},
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "email": email,
+                        "password": password
+                    })
+                };
+                try {
+                    const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, opts);
+                    if (resp.status !== 200) {
+                        alert("There has been some error");
+                        return false;
+                    }
+                    const data = await resp.json();
+                    sessionStorage.setItem("token", data.access_token);
+                    sessionStorage.setItem("username", data.username);
+                    sessionStorage.setItem("user_id", data.user_id);
+                    sessionStorage.setItem("rol", data.rol);
+                    sessionStorage.setItem("companyname", data.companyname);
+                    sessionStorage.setItem("company_id", data.company_id);
+                    setStore({
+                        token: data.access_token,
+                        username: data.username,
+                        user_id: data.user_id,
+                        rol: data.rol,
+                        companyname: data.companyname,
+                        company_id: data.company_id
+                    });
+                    return true;
+                } catch (error) {
+                    console.log(error);
+                }
+            },
 
 			signup: async (email, password, name, rol) => {
 				const opts = {
@@ -116,41 +119,48 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			syncToken: () => {
-				const token = localStorage.getItem("token");
-				const user_id = localStorage.getItem("user_id");
-				const username = localStorage.getItem("username");
-				const rol = localStorage.getItem("rol");
+                const token = sessionStorage.getItem("token");
+                const user_id = sessionStorage.getItem("user_id");
+                const username = sessionStorage.getItem("username");
+                const rol = sessionStorage.getItem("rol");
 
-				if (token) {
-					setStore({
-						...store,
-						token: token,
-						user_id: user_id,
-						username: username,
-						rol: rol
-					});
-				}
-			},
+                if (token) {
+                    setStore({
+                        ...getStore(),
+                        token: token,
+                        user_id: user_id,
+                        username: username,
+                        rol: rol
+                    });
+                }
+            },
 
 			logout: async () => {
-				const opts = {
-					method: 'POST',
-					headers: {
-						"Content-Type": "application/json",
-						"Authorization": "Bearer " + getStore().token
-					}
-				};
-				try {
-					await fetch(`${process.env.BACKEND_URL}/api/logout`, opts);
-					sessionStorage.removeItem("token");
-					setStore({
-						token: null, username: null, user_id: null, rol: null, companyname: null,
-						company_id: null
-					});
-				} catch (error) {
-					console.log(error);
-				}
-			},
+                const opts = {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + getStore().token
+                    }
+                };
+                try {
+                    await fetch(`${process.env.BACKEND_URL}/api/logout`, opts);
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("user_id");
+                    sessionStorage.removeItem("username");
+                    sessionStorage.removeItem("rol");
+                    setStore({
+                        token: null,
+                        username: null,
+                        user_id: null,
+                        rol: null,
+                        companyname: null,
+                        company_id: null
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
+            },
 
 			// ---- apartado imagenes
 
