@@ -450,7 +450,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getCompany: async (company_id) => {
 				const store = getStore();
-				console.log("dentro del flux ", company_id)
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						headers: {
@@ -462,7 +461,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Failed to fetch company');
 					}
 					const data = await resp.json();
-					console.log(data)
 					setStore({ company: data });
 					return data;
 				} catch (error) {
@@ -474,8 +472,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
-				const token = store.token; // Asumiendo que almacenas el token en el store
-
+				const token = store.token;
+			
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
@@ -485,11 +483,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(companyData)
 					});
-
+			
 					if (!response.ok) {
+						const errorData = await response.json();
+						console.error('Error:', errorData);
 						throw new Error('Failed to update company');
 					}
-
+			
 					const data = await response.json();
 					return data;
 				} catch (error) {
