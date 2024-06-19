@@ -150,7 +150,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ ...store, image: image })
 			}
 		},
+    deleteServices: async (Id) => {
+	const store = getStore();
+	const opts = {
+		method: 'DELETE',
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": "Bearer " + store.token
+		}
 	};
+	try {
+		const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${Id}`, opts);
+		if (resp.status !== 200) {
+			alert("There has been some error");
+			return false;
+		}
+		return true;
+				} catch (error) {
+					console.log(error);
+					return false;
+				}
+	}
+
+	
 };
 
+   
+}	
 export default getState;

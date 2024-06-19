@@ -9,15 +9,6 @@
     padding: 20px;
   }
   
-  .footer {
-    background-color: #f0f0f0;
-    padding: 10px;
-    position: fixed; /* El footer se fija en la parte inferior */
-    bottom: 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
   .card {
     /* Estilos de la tarjeta del footer */
     background-color: white;

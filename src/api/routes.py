@@ -84,6 +84,18 @@ def company_portal(user_id):
     companies = Companies.query.filter_by(owner=user_id).all()
     return jsonify([company.serialize() for company in companies])
 
+@api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['DELETE'])
+def delete_service(user_id, service_id):
+    user = Users.query.get_or_404(user_id)
+    print(f"user id:{user_id},user role:{user.rol}")
+    if user.rol not in["company","admin"]:
+        return jsonify({'error': 'Unauthorized access, only companies allowed'}), 403
+    service = Services.query.get_or_404(service_id)
+    if service.companies_id != user_id:
+        return jsonify({'error': 'Unauthorized access to delete this service'}), 403
+    db.session.delete(service)
+    db.session.commit()
+    return jsonify({'message': 'Service deleted successfully'}), 200
 
 @api.route('/requests', methods=['POST'])
 @jwt_required()
@@ -143,4 +155,6 @@ def create_booking():
     )
     db.session.add(new_booking)
     db.session.commit()
+
+    
     return jsonify(new_booking.serialize()), 201
