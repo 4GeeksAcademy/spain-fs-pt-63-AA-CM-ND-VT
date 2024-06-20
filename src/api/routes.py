@@ -123,6 +123,35 @@ def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
+@api.route('/adminportal/<int:company_id>', methods=['PUT'])
+@jwt_required()
+def update_company_admin(company_id):
+    current_user_id = get_jwt_identity()
+    current_user = Users.query.get(current_user_id)
+
+    # Verificar que el usuario tiene el rol correcto
+    if current_user.rol != 'company':
+        return jsonify({'error': 'User is not authorized'}), 403
+
+    # Obtener la empresa a actualizar
+    company = Companies.query.get_or_404(company_id)
+    
+    data = request.get_json()
+    
+    # Actualizar los campos de la empresa
+    company.name = data.get('name', company.name)
+    company.location = data.get('location', company.location)
+    company.owner = data.get('owner', company.owner)
+    company.image = data.get('image', company.image)
+
+    try:
+        db.session.commit()
+        return jsonify(company.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
 @api.route('/master_services', methods=['GET'])
 def get_master_services():
     master_services = MasterServices.query.all()
