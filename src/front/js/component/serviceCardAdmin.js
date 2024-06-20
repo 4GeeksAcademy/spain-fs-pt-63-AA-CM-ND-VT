@@ -32,7 +32,7 @@ const ServiceCardAdmin = ({ service }) => {
                         <p className="card-text">Image: {service.image}</p>
                     </div>
                 </div>
-                <button className="btn btn-danger rounded">Delete</button>
+                <button className="btn btn-danger rounded" onClick={() => deleteService(user_id, service_id)}>Delete</button>
             </div>
         </div>
     );
