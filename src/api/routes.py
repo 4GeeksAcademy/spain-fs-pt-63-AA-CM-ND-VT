@@ -97,11 +97,18 @@ def update_user(user_id):
     if user.rol != 'client':
         return jsonify({'error': 'User is not a client'}), 400
 
-    current_user_id = get_jwt_identity()
-    print(current_user_id)
-    print(user_id)
-    if current_user_id != user_id:
-        return jsonify({'error': 'Unauthorized'}), 401
+@api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['DELETE'])
+def delete_service(user_id, service_id):
+    user = Users.query.get_or_404(user_id)
+    print(f"user id:{user_id},user role:{user.rol}")
+    if user.rol not in["company","admin"]:
+        return jsonify({'error': 'Unauthorized access, only companies allowed'}), 403
+    service = Services.query.get_or_404(service_id)
+    if service.companies_id != user_id:
+        return jsonify({'error': 'Unauthorized access to delete this service'}), 403
+    db.session.delete(service)
+    db.session.commit()
+    return jsonify({'message': 'Service deleted successfully'}), 200
 
     user.name = data.get('name', user.name)
     user.email = data.get('email', user.email)
@@ -203,8 +210,7 @@ def create_booking():
         start_time_date=data['start_time_date']
     )
     db.session.add(new_booking)
-    db.session.commit()
-    
+    db.session.commit()    
     booking_id = new_booking.id
     
     response_data = new_booking.serialize()

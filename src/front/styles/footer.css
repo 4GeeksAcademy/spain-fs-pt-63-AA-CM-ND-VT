@@ -1,0 +1,25 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Establece el alto mínimo para cubrir toda la pantalla */
+  }
+  
+  .content {
+    flex: 1; /* El contenido principal ocupa todo el espacio disponible */
+    padding: 20px;
+  }
+  
+  .card {
+    /* Estilos de la tarjeta del footer */
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
