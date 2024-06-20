@@ -1,14 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { Context } from '../../store/appContext';
+import AdminBookingCard from '../../component/adminBookingCard';
 
 const AdminBookings = () => {
+    const { actions } = useContext(Context);
+    const [bookings, setBookings] = useState([]);
+    const [requests, setRequests] = useState([]);
+
+    useEffect(() => {
+        const fetchBookingsAndRequests = async () => {
+            const companyBookings = await actions.getCompanyBookings();
+            setBookings(companyBookings);
+            const companyRequests = await actions.getCompanyRequests();
+            setRequests(companyRequests);
+        };
+
+        fetchBookingsAndRequests();
+    }, [actions]);
+
     return (
         <div>
-            <h2>Administración de Reservas</h2>
-            <ul>
-                <li>Reserva 1: Fecha - 2024-06-01</li>
-                <li>Reserva 2: Fecha - 2024-07-15</li>
-                <li>Reserva 3: Fecha - 2024-08-20</li>
-            </ul>
+            <h2>Reservas y Peticiones</h2>
+            <div className="container">
+                <div className="row">
+                    {bookings.map(booking => {
+                        const relatedRequest = requests.find(req => req.bookings_id === booking.id);
+                        return (
+                            <div key={booking.id} className="col-12">
+                                <AdminBookingCard booking={booking} request={relatedRequest} />
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
         </div>
     );
 };

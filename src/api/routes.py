@@ -246,3 +246,19 @@ def get_user_requests():
         return jsonify({"msg": "User ID is required"}), 400
     requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
     return jsonify([request.serialize() for request in requests]), 200
+
+@api.route('/company_bookings', methods=['GET'])
+def get_company_bookings():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    bookings = Bookings.query.join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([booking.serialize() for booking in bookings]), 200
+
+@api.route('/company_requests', methods=['GET'])
+def get_company_requests():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    requests = Requests.query.join(Bookings).join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([request.serialize() for request in requests]), 200

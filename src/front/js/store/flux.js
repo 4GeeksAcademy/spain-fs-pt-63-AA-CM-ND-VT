@@ -445,8 +445,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// ---- Company functions
 
-
+			getCompanyBookings: async () => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_bookings?company_id=${companyId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},			
+			
+			getCompanyRequests: async () => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_requests?company_id=${companyId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
 
 			getCompany: async (company_id) => {
 				const store = getStore();
@@ -468,7 +519,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-
 
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
@@ -497,7 +547,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			}
-
 		},
 
 		deleteServices: async (Id) => {

@@ -2,12 +2,12 @@ import React from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 
-const UserBookingCard = ({ booking, request }) => {
-
-
+const AdminBookingCard = ({ booking, request }) => {
+  
     return (
         <div className="card mb-4">
             <div className="row no-gutters">
+                
                 <div className="col-md-12">
                     <div className="card-body">
                         <h5 className="card-title">Booking ID: {booking.id}</h5>
@@ -27,4 +27,4 @@ const UserBookingCard = ({ booking, request }) => {
     );
 };
 
-export default UserBookingCard;
+export default AdminBookingCard;
