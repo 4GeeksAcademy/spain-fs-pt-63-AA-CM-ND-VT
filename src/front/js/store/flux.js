@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user_id: null,
 			rol: null,
 			companyname: null,
+			company:null,
 			company_id: null,
 			services: [],
 			masterServices: [],
@@ -333,7 +334,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Failed to fetch company');
 					}
 					const data = await resp.json();
-					console.log(data)
 					setStore({ user: data });
 					return data;
 				} catch (error) {
@@ -471,8 +471,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return [];
 				}
-			},			
-			
+			},
+
 			getCompanyRequests: async () => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
@@ -496,6 +496,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log(error);
 					return [];
+				}
+			},
+
+			updateRequestStatus: async (requestId, status, comment) => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return null;
+				}
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ requestId, status, comment })
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/update_request`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return null;
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return null;
 				}
 			},
 

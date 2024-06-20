@@ -78,7 +78,6 @@ const AdminServices = () => {
             <button className="btn btn-success rounded py-1 px-2" onClick={() => setShowModal(true)}>
                 Create
             </button>
-            <h3>{sessionStorage.getItem('company_id')}</h3>
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
                     <div className="modal-dialog" role="document">

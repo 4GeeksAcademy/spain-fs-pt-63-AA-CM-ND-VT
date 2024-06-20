@@ -110,19 +110,6 @@ def delete_service(user_id, service_id):
     db.session.commit()
     return jsonify({'message': 'Service deleted successfully'}), 200
 
-    user.name = data.get('name', user.name)
-    user.email = data.get('email', user.email)
-    user.rol = data.get('rol', user.rol)
-    user.image_url = data.get('image_url', user.image_url)
-
-    try:
-        db.session.commit()
-        return jsonify(user.serialize()), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-
 
 @api.route('/adminportal/<int:company_id>', methods=['GET'])
 @jwt_required()
@@ -262,3 +249,20 @@ def get_company_requests():
         return jsonify({"msg": "Company ID is required"}), 400
     requests = Requests.query.join(Bookings).join(Services).filter(Services.companies_id == company_id).all()
     return jsonify([request.serialize() for request in requests]), 200
+
+@api.route('/update_request', methods=['POST'])
+def update_request():
+    data = request.get_json()
+    request_id = data.get('requestId')
+    status = data.get('status')
+    comment = data.get('comment')
+
+    request_to_update = Requests.query.get(request_id)
+    if not request_to_update:
+        return jsonify({"msg": "Request not found"}), 404
+
+    request_to_update.status = status
+    request_to_update.comment = comment
+    db.session.commit()
+    return jsonify({"msg": "Request updated successfully"}), 200
+    
