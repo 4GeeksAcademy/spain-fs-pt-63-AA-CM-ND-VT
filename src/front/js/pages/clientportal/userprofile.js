@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Context } from '../../store/appContext';  // Asegúrate de importar el contexto correctamente
+import { Context } from '../../store/appContext';
 
 const UserProfile = () => {
     const { store, actions } = useContext(Context);
@@ -10,21 +10,21 @@ const UserProfile = () => {
         rol: '',
         image: ''
     });
+    const [deleteSuccess, setDeleteSuccess] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
             if (store.user_id) {
-            const user = await actions.getUser(store.user_id);
-            console.log(user);
-            if (user) {
-                setFormData({
-                    name: user.name,
-                    email: user.email,
-                    rol: user.rol,
-                    image: user.image
-                });
+                const user = await actions.getUser(store.user_id);
+                if (user) {
+                    setFormData({
+                        name: user.name,
+                        email: user.email,
+                        rol: user.rol,
+                        image: user.image
+                    });
+                }
             }
-        }
         };
         fetchUserData();
     }, []);
@@ -39,13 +39,33 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedUser = await actions.updateUser(user_id, formData);  // Reemplaza con el ID del usuario actual
-        if (updatedUser) {
-            setEditMode(false);
+        try {
+            const updatedUser = await actions.updateUser(store.user_id, formData);
+            if (updatedUser) {
+                setEditMode(false);
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    };
+
+    const handleDelete = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
+        if (confirmed) {
+            try {
+                const success = await actions.deleteUser(store.user_id);
+                if (success) {
+                    setDeleteSuccess(true);
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
         }
     };
 
     if (!store.user) return <div>Loading...</div>;
+
+    if (deleteSuccess) return <div>User profile deleted successfully.</div>;
 
     return (
         <div>
@@ -57,6 +77,7 @@ const UserProfile = () => {
                     <p><strong>Rol:</strong> {store.user.rol}</p>
                     {store.user.image && <img src={store.user.image} alt="Profile" />}
                     <button onClick={() => setEditMode(true)}>Editar Perfil</button>
+                    <button onClick={handleDelete}>Eliminar Perfil</button>
                 </>
             ) : (
                 <form onSubmit={handleSubmit}>

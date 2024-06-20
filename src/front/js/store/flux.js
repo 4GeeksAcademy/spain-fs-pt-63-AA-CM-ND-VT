@@ -321,7 +321,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			getUser: async (user_id) => {
 				const store = getStore();
-				console.log("dentro del flux ", user_id)
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						headers: {
@@ -333,7 +332,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						throw new Error('Failed to fetch company');
 					}
 					const data = await resp.json();
-					console.log(data)
 					setStore({ user: data });
 					return data;
 				} catch (error) {
@@ -345,7 +343,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateUser: async (user_id, userData) => {
 				const store = getStore();
 				const token = store.token;
-
+			
+				console.log(`Updating user ${user_id} with data:`, userData);
+				console.log('Backend URL:', process.env.BACKEND_URL);
+				console.log('Token:', token);
+			
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						method: 'PUT',
@@ -355,42 +357,56 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(userData)
 					});
-
+			
 					if (!response.ok) {
+						const errorData = await response.json();
+						console.error('Error:', errorData);
 						throw new Error('Failed to update user');
 					}
-
+			
 					const data = await response.json();
+					console.log('User updated successfully:', data);
 					return data;
 				} catch (error) {
-					console.error(error);
+					console.error('Fetch error:', error);
 					throw error;
 				}
 			},
+			
 
 			deleteUser: async (user_id) => {
 				const store = getStore();
+				const token = store.token;
+			
+				console.log(`Deleting user ${user_id}`);
+				console.log('Backend URL:', process.env.BACKEND_URL);
+				console.log('Token:', token);
+			
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/users/${user_id}`, {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						method: 'DELETE',
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.token}`
+							"Authorization": `Bearer ${token}`
 						}
 					});
-					if (response.status !== 200) {
-						alert("Error deleting user");
+			
+					if (!response.ok) {
+						const errorData = await response.json();
+						console.error('Error:', errorData);
+						alert('Error deleting user');
 						return false;
 					}
+			
+					console.log('User deleted successfully');
 					setStore({ user: null });
-
 					return true;
 				} catch (error) {
-					console.log(error);
+					console.error('Fetch error:', error);
 					return false;
 				}
 			},
-
+			
 			// ---- Tema reservas user
 
 			getUserBookings: async () => {
@@ -496,7 +512,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error(error);
 					throw error;
 				}
-			}
+			},
+			deleteCompany: async (company_id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
+						method: 'DELETE',
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${store.token}`
+						}
+					});
+					if (response.status !== 200) {
+						alert("Error deleting company");
+						return false;
+					}
+					return true;
+				} catch (error) {
+					console.log(error);
+					return false;
+				}
+			},
+			
 
 		}
 	}

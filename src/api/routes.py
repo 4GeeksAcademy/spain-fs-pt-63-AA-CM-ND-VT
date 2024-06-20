@@ -88,6 +88,26 @@ def client_portal(user_id):
         return jsonify({'error': 'User is not a client'}), 400
     return jsonify(user.serialize())
 
+@api.route('/clientportal/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    user = Users.query.get_or_404(user_id)
+    
+    if user.rol != 'client':
+        return jsonify({'error': 'User is not a client'}), 400
+
+    current_user_id = get_jwt_identity()
+    if current_user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({'message': 'User deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 @api.route('/clientportal/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def update_user(user_id):
@@ -98,8 +118,6 @@ def update_user(user_id):
         return jsonify({'error': 'User is not a client'}), 400
 
     current_user_id = get_jwt_identity()
-    print(current_user_id)
-    print(user_id)
     if current_user_id != user_id:
         return jsonify({'error': 'Unauthorized'}), 401
 
@@ -123,22 +141,36 @@ def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
+@api.route('/adminportal/<int:company_id>', methods=['DELETE'])
+@jwt_required()
+def delete_company(company_id):
+    current_user_id = get_jwt_identity()
+    company = Companies.query.get_or_404(company_id)
+    
+    if company.owner != current_user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+    
+    try:
+        db.session.delete(company)
+        db.session.commit()
+        return jsonify({'message': 'Company deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+
 @api.route('/adminportal/<int:company_id>', methods=['PUT'])
 @jwt_required()
 def update_company_admin(company_id):
     current_user_id = get_jwt_identity()
     current_user = Users.query.get(current_user_id)
 
-    # Verificar que el usuario tiene el rol correcto
     if current_user.rol != 'company':
         return jsonify({'error': 'User is not authorized'}), 403
-
-    # Obtener la empresa a actualizar
-    company = Companies.query.get_or_404(company_id)
     
+    company = Companies.query.get_or_404(company_id)
     data = request.get_json()
     
-    # Actualizar los campos de la empresa
     company.name = data.get('name', company.name)
     company.location = data.get('location', company.location)
     company.owner = data.get('owner', company.owner)

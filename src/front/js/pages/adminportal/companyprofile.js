@@ -4,6 +4,7 @@ import { Context } from '../../store/appContext';
 const CompanyProfile = () => {
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
+    const [deleteSuccess, setDeleteSuccess] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         location: '',
@@ -15,7 +16,6 @@ const CompanyProfile = () => {
         const fetchCompanyData = async () => {
             if (store.company_id) {
                 const company = await actions.getCompany(store.company_id);
-                console.log("company a ver?", company);
                 if (company) {
                     setFormData({
                         name: company[0].name,
@@ -23,7 +23,6 @@ const CompanyProfile = () => {
                         owner: company[0].owner,
                         image: company[0].image
                     });
-                    console.log("a ver si funciona ", formData);
                 }
             }
         };
@@ -45,6 +44,22 @@ const CompanyProfile = () => {
             setEditMode(false);
         }
     };
+    const handleDelete = async () => {
+        const confirmed = window.confirm('Are you sure you want to delete this company? This action cannot be undone.');
+        if (confirmed) {
+            try {
+                const success = await actions.deleteCompany(store.company_id);
+                console.log(store.company_id, "el id de la companie")
+                if (success) {
+                    setDeleteSuccess(true);
+                }
+            } catch (error) {
+                console.error('Error deleting company:', error);
+            }
+        }
+    };
+
+    if (deleteSuccess) return <div>Company profile deleted successfully.</div>;
 
     if (!store.company) return <div>Loading...</div>;
 
@@ -58,6 +73,7 @@ const CompanyProfile = () => {
                     <p><strong>Dueño:</strong> {formData.owner}</p>
                     {formData.image && <img src={formData.image} alt="Company Logo" />}
                     <button onClick={() => setEditMode(true)}>Editar Perfil</button>
+                    <button onClick={handleDelete}>Delete Company</button>
                 </>
             ) : (
                 <form onSubmit={handleSubmit}>
