@@ -343,11 +343,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateUser: async (user_id, userData) => {
 				const store = getStore();
 				const token = store.token;
-			
+
 				console.log(`Updating user ${user_id} with data:`, userData);
 				console.log('Backend URL:', process.env.BACKEND_URL);
 				console.log('Token:', token);
-			
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						method: 'PUT',
@@ -357,13 +357,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(userData)
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
 						throw new Error('Failed to update user');
 					}
-			
+
 					const data = await response.json();
 					console.log('User updated successfully:', data);
 					return data;
@@ -372,16 +372,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			
+
 
 			deleteUser: async (user_id) => {
 				const store = getStore();
 				const token = store.token;
-			
+
 				console.log(`Deleting user ${user_id}`);
 				console.log('Backend URL:', process.env.BACKEND_URL);
 				console.log('Token:', token);
-			
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/clientportal/${user_id}`, {
 						method: 'DELETE',
@@ -390,14 +390,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": `Bearer ${token}`
 						}
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
 						alert('Error deleting user');
 						return false;
 					}
-			
+
 					console.log('User deleted successfully');
 					setStore({ user: null });
 					return true;
@@ -406,7 +406,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
-			
+
 			// ---- Tema reservas user
 
 			getUserBookings: async () => {
@@ -489,7 +489,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
 				const token = store.token;
-			
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
@@ -499,13 +499,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(companyData)
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
 						throw new Error('Failed to update company');
 					}
-			
+
 					const data = await response.json();
 					return data;
 				} catch (error) {
@@ -513,27 +513,54 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			deleteCompany: async (company_id) => {
+			deleteCompanyWithDependencies: async (company_id) => {
 				const store = getStore();
+				const token = store.token;
+				const backendUrl = process.env.BACKEND_URL;
+
+				const headers = {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${token}`
+				};
+
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
+					// Step 1: Delete requests
+					let response = await fetch(`${backendUrl}/api/companies/${company_id}/requests`, {
 						method: 'DELETE',
-						headers: {
-							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.token}`
-						}
+						headers
 					});
-					if (response.status !== 200) {
-						alert("Error deleting company");
-						return false;
-					}
+					if (!response.ok) throw new Error('Failed to delete requests');
+
+					// Step 2: Delete bookings
+					response = await fetch(`${backendUrl}/api/companies/${company_id}/bookings`, {
+						method: 'DELETE',
+						headers
+					});
+					if (!response.ok) throw new Error('Failed to delete bookings');
+
+					// Step 3: Delete services
+					response = await fetch(`${backendUrl}/api/companies/${company_id}/services`, {
+						method: 'DELETE',
+						headers
+					});
+					if (!response.ok) throw new Error('Failed to delete services');
+
+					// Step 4: Delete company
+					response = await fetch(`${backendUrl}/api/companies/${company_id}`, {
+						method: 'DELETE',
+						headers
+					});
+					if (!response.ok) throw new Error('Failed to delete company');
+
+					setStore({ user: null }); // Or any other appropriate action
 					return true;
 				} catch (error) {
-					console.log(error);
+					console.error('Error deleting company with dependencies:', error);
 					return false;
 				}
 			},
-			
+
+
 
 		}
 	}

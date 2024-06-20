@@ -141,22 +141,22 @@ def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
-@api.route('/adminportal/<int:company_id>', methods=['DELETE'])
-@jwt_required()
-def delete_company(company_id):
-    current_user_id = get_jwt_identity()
-    company = Companies.query.get_or_404(company_id)
+# @api.route('/adminportal/<int:company_id>', methods=['DELETE'])
+# @jwt_required()
+# def delete_company(company_id):
+#     current_user_id = get_jwt_identity()
+#     company = Companies.query.get_or_404(company_id)
     
-    if company.owner != current_user_id:
-        return jsonify({'error': 'Unauthorized'}), 401
+#     if company.owner != current_user_id:
+#         return jsonify({'error': 'Unauthorized'}), 401
     
-    try:
-        db.session.delete(company)
-        db.session.commit()
-        return jsonify({'message': 'Company deleted successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+#     try:
+#         db.session.delete(company)
+#         db.session.commit()
+#         return jsonify({'message': 'Company deleted successfully'}), 200
+#     except Exception as e:
+#         db.session.rollback()
+#         return jsonify({'error': str(e)}), 500
 
 
 @api.route('/adminportal/<int:company_id>', methods=['PUT'])
@@ -272,3 +272,61 @@ def get_user_requests():
         return jsonify({"msg": "User ID is required"}), 400
     requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
     return jsonify([request.serialize() for request in requests]), 200
+
+
+@api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
+@jwt_required()
+def delete_requests(company_id):
+    company = Companies.query.get_or_404(company_id)
+    services = Services.query.filter_by(companies_id=company_id).all()
+    for service in services:
+        bookings = Bookings.query.filter_by(services_id=service.id).all()
+        for booking in bookings:
+            Requests.query.filter_by(bookings_id=booking.id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Requests deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>/bookings', methods=['DELETE'])
+@jwt_required()
+def delete_bookings(company_id):
+    company = Companies.query.get_or_404(company_id)
+    services = Services.query.filter_by(companies_id=company_id).all()
+    for service in services:
+        Bookings.query.filter_by(services_id=service.id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Bookings deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>/services', methods=['DELETE'])
+@jwt_required()
+def delete_services(company_id):
+    company = Companies.query.get_or_404(company_id)
+    Services.query.filter_by(companies_id=company_id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Services deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>', methods=['DELETE'])
+@jwt_required()
+def delete_company(company_id):
+    company = Companies.query.get_or_404(company_id)
+    db.session.delete(company)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Company deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500

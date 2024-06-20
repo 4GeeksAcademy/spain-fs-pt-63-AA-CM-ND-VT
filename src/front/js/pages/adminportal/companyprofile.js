@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { Context } from '../../store/appContext';
 
 const CompanyProfile = () => {
+    const navigate = useNavigate(); // Inicializa useNavigate
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -44,14 +46,15 @@ const CompanyProfile = () => {
             setEditMode(false);
         }
     };
+
     const handleDelete = async () => {
         const confirmed = window.confirm('Are you sure you want to delete this company? This action cannot be undone.');
         if (confirmed) {
             try {
-                const success = await actions.deleteCompany(store.company_id);
-                console.log(store.company_id, "el id de la companie")
+                const success = await actions.deleteCompanyWithDependencies(store.company_id);
                 if (success) {
                     setDeleteSuccess(true);
+                    navigate('/login'); // Navega al usuario a /login después de eliminar
                 }
             } catch (error) {
                 console.error('Error deleting company:', error);
@@ -59,7 +62,7 @@ const CompanyProfile = () => {
         }
     };
 
-    if (deleteSuccess) return <div>Company profile deleted successfully.</div>;
+    if (deleteSuccess) return <div>Company profile deleted successfully. Redirecting...</div>;
 
     if (!store.company) return <div>Loading...</div>;
 
