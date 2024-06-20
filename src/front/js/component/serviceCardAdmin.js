@@ -32,6 +32,7 @@ const ServiceCardAdmin = ({ service }) => {
                         <p className="card-text">Image: {service.image}</p>
                     </div>
                 </div>
+                <button className="btn btn-danger rounded">Delete</button>
             </div>
         </div>
     );

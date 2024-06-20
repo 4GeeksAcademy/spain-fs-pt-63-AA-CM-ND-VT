@@ -473,7 +473,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
 				const token = store.token;
-			
+
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
@@ -483,13 +483,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(companyData)
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
 						throw new Error('Failed to update company');
 					}
-			
+
 					const data = await response.json();
 					return data;
 				} catch (error) {
@@ -499,35 +499,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			}
 
 		},
-    deleteServices: async (Id) => {
-	const store = getStore();
-	const opts = {
-		method: 'DELETE',
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": "Bearer " + store.token
-		}
-	};
-	try {
-		const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${Id}`, opts);
-		if (resp.status !== 200) {
-			alert("There has been some error");
-			return false;
-		}
-		return true;
-				} catch (error) {
-					console.log(error);
+
+		deleteServices: async (Id) => {
+			const store = getStore();
+			const opts = {
+				method: 'DELETE',
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + store.token
+				}
+			};
+			try {
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${Id}`, opts);
+				if (resp.status !== 200) {
+					alert("There has been some error");
 					return false;
 				}
-	}
-
-	
-
-
+				return true;
+			} catch (error) {
+				console.log(error);
+				return false;
+			}
 		}
-	}
-};
+	};
+}
 
-   
-}	
 export default getState;
