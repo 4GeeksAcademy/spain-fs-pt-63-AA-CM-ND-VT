@@ -4,6 +4,7 @@ import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import { Context } from '../store/appContext';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ServiceCard = ({ service }) => {
     const { store, actions } = useContext(Context);
@@ -65,7 +66,7 @@ const ServiceCard = ({ service }) => {
                 </div>
                 <div className="col-md-2">
                     <div className="mt-3">
-                        <button className="btn btn-info rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                        <Link to="/companyview/:company_id"><button className="btn btn-info rounded py-1 px-2 m-2">Company</button></Link>
                         <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
                     </div>
                 </div>

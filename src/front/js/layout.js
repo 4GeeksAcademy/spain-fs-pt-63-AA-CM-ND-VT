@@ -19,10 +19,10 @@ import AdminServices from "./pages/adminportal/adminservices";
 import CompanyProfile from "./pages/adminportal/companyprofile";
 
 import Services from "./pages/services/services";
-import CompanyProfileForUser from "./pages/services/companyprofile";
 
 import Login from "./pages/login";
 import Signin from "./pages/signin";
+import CompanyView from "./pages/services/companyview.js";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -44,7 +44,7 @@ const Layout = () => {
                         <Route element={<AdminServices />} path="/adminservices/:user_id" />
                         <Route element={<CompanyProfile />} path="/companyprofile/:user_id" />
                         <Route element={<Services />} path="/services" />
-                        <Route element={<CompanyProfileForUser />} path="/services/companyprofile/:user_id" />
+                        <Route element={<CompanyView />} path="/companyview/:company_id" />
                         <Route element={<Signin />} path="/signup" />
                         <Route element={<Login />} path="/login" />
                         <Route element={<h1>Not found!</h1>} path="*" />

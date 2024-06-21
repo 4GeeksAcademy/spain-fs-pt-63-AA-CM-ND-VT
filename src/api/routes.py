@@ -330,3 +330,23 @@ def delete_company(company_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+    
+@api.route('/company/<int:company_id>', methods=['GET'])
+def get_company_public(company_id):
+    try:
+        # Obtener la compañía por ID
+        company = Companies.query.get(company_id)
+        if not company:
+            return jsonify({"msg": "Company not found"}), 404
+
+        # Obtener los servicios de la compañía
+        services = Services.query.filter_by(companies_id=company_id).all()
+
+        # Serializar la información de la compañía y sus servicios
+        company_data = company.serialize()
+        company_data["services"] = [service.serialize() for service in services]
+
+        return jsonify(company_data), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500
+

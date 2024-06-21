@@ -17,7 +17,7 @@ export const Navbar = () => {
 	};
 
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+		<nav className="navbar navbar-expand-lg navbar-light shadow-sm">
 			<div className="container">
 				<Link to="/" className="navbar-brand">
 					<span className="h4">Home</span>
@@ -40,7 +40,7 @@ export const Navbar = () => {
 						</div>
 					) : (
 						<div className="navbar-nav">
-							<Link to="/login" className="btn btn-outline-primary mx-2">Login</Link>
+							<p><Link to="/login" className="btn btn-outline-primary mx-2">Login</Link></p>
 							<Link to="/signup" className="btn btn-outline-secondary mx-2">Signup</Link>
 						</div>
 					)}

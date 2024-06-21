@@ -559,6 +559,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
+			getCompanyPublic: async (company_id) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/company/${company_id}`, {
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch company');
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.error('Error fetching company:', error);
+					throw error;
+				}
+			},
+			getCompanyServicesPublic: async (company_id) => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/company/${company_id}`, {
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch services');
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.error('Error fetching services:', error);
+					throw error;
+				}
+			},
+			
 
 
 
