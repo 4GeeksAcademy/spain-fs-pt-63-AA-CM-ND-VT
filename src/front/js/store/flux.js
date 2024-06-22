@@ -646,7 +646,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company/${company_id}`, {
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
 						}
 					});
 					if (!resp.ok) {
@@ -664,7 +665,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/company/${company_id}`, {
 						headers: {
-							"Content-Type": "application/json"
+							"Content-Type": "application/json",
+							'Authorization': `Bearer ${token}`
 						}
 					});
 					if (!resp.ok) {
