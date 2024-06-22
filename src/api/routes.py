@@ -317,6 +317,38 @@ def get_user_requests():
     requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
     return jsonify([request.serialize() for request in requests]), 200
 
+@api.route('/company_bookings', methods=['GET'])
+def get_company_bookings():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    bookings = Bookings.query.join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([booking.serialize() for booking in bookings]), 200
+
+@api.route('/company_requests', methods=['GET'])
+def get_company_requests():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    requests = Requests.query.join(Bookings).join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([request.serialize() for request in requests]), 200
+
+@api.route('/update_request', methods=['POST'])
+def update_request():
+    data = request.get_json()
+    request_id = data.get('requestId')
+    status = data.get('status')
+    comment = data.get('comment')
+
+    request_to_update = Requests.query.get(request_id)
+    if not request_to_update:
+        return jsonify({"msg": "Request not found"}), 404
+
+    request_to_update.status = status
+    request_to_update.comment = comment
+    db.session.commit()
+    return jsonify({"msg": "Request updated successfully"}), 200
+    
 
 @api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
 @jwt_required()
