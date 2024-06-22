@@ -67,60 +67,67 @@ const CompanyProfile = () => {
     if (!store.company) return <div>Loading...</div>;
 
     return (
-        <div>
-            <h2>Perfil de la Compañía</h2>
-            {!editMode ? (
-                <>
-                    <p><strong>Nombre:</strong> {formData.name}</p>
-                    <p><strong>Ubicación:</strong> {formData.location}</p>
-                    <p><strong>Dueño:</strong> {formData.owner}</p>
-                    {formData.image && <img src={formData.image} alt="Company Logo" />}
-                    <button onClick={() => setEditMode(true)}>Editar Perfil</button>
-                    <button onClick={handleDelete}>Delete Company</button>
-                </>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Nombre:</label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            value={formData.name} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Ubicación:</label>
-                        <input 
-                            type="text" 
-                            name="location" 
-                            value={formData.location} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Dueño:</label>
-                        <input 
-                            type="text" 
-                            name="owner" 
-                            value={formData.owner} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Logo URL:</label>
-                        <input 
-                            type="text" 
-                            name="image" 
-                            value={formData.image} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <button type="submit">Guardar</button>
-                    <button type="button" onClick={() => setEditMode(false)}>Cancelar</button>
-                </form>
-            )}
+        <div className="card mt-4">
+            <div className="card-body">
+                <h2>Perfil de la Compañía</h2>
+                {!editMode ? (
+                    <>
+                        <p><strong>Nombre:</strong> {formData.name}</p>
+                        <p><strong>Ubicación:</strong> {formData.location}</p>
+                        <p><strong>Dueño:</strong> {formData.owner}</p>
+                        {formData.image && <img src={formData.image} alt="Company Logo" className="img-fluid" />}
+                        <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Editar Perfil</button>
+                        <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Company</button>
+                    </>
+                ) : (
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label className="form-label">Nombre:</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Ubicación:</label>
+                            <input
+                                type="text"
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Dueño:</label>
+                            <input
+                                type="text"
+                                name="owner"
+                                value={formData.owner}
+                                onChange={handleChange}
+                                className="form-control"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Logo URL:</label>
+                            <input
+                                type="text"
+                                name="image"
+                                value={formData.image}
+                                onChange={handleChange}
+                                className="form-control"
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-outline-primary me-2">Guardar</button>
+                        <button type="button" className="btn btn-outline-secondary" onClick={() => setEditMode(false)}>Cancelar</button>
+                    </form>
+                )}
+            </div>
         </div>
+
     );
 };
 

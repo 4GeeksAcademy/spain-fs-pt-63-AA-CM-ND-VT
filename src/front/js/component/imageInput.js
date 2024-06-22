@@ -35,7 +35,7 @@ const ImageInput = ({ onUpload }) => {
 
     return (
         <div>
-            <button type="button" className="btn btn-primary" onClick={() => widgetRef.current.open()}>
+            <button type="button" className="btn btn-outline-primary" onClick={() => widgetRef.current.open()}>
                 Upload Image
             </button>
             {myImage && <AdvancedImage cldImg={myImage} />} 

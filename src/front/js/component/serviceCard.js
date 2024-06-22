@@ -70,9 +70,9 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                 <div className="col-md-2">
                     <div className="mt-3">
                         {!hideCompanyButton && (
-                            <button className="btn btn-info rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
                         )}
-                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
 
                     </div>
                 </div>
@@ -84,9 +84,9 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Reserve {service.name}</h5>
-                                <button type="button" className="close" aria-label="Close" onClick={() => setShow(false)}>
+                                {/* <button type="button" className="close btn btn-outline-primary" aria-label="Close" onClick={() => setShow(false)}>
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </button> */}
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
@@ -105,8 +105,8 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={() => setShow(false)}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={handleReserve}>Reserve</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={() => setShow(false)}>Close</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={handleReserve}>Reserve</button>
                             </div>
                         </div>
                     </div>

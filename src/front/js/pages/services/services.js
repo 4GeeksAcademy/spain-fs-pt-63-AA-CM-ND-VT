@@ -26,7 +26,7 @@ const Services = () => {
 
     return (
         <div>
-            <h3>All Services</h3>
+            <h1 className="text-center mt-4">All Services</h1>
             <div className="mt-4">
                 <div className="container">
                     <div className="row">

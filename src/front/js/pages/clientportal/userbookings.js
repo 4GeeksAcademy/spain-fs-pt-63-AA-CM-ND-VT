@@ -21,7 +21,7 @@ const UserBookings = () => {
 
     return (
         <div>
-            <h2>Reservas y Peticiones</h2>
+            <h2>Bookings and Requests</h2>
             <div className="container">
                 <div className="row">
                     {bookings.map(booking => {

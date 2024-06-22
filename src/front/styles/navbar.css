@@ -43,3 +43,7 @@ nav {
 .shadow-sm{
     box-shadow: 0 .125rem .25rem #580f9c !important;
 }
+
+navbar-toggler-icon{
+    color: yellowgreen;
+}

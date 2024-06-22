@@ -75,7 +75,7 @@ const AdminServices = () => {
 
     return (
         <div className="flex">
-            <button className="btn btn-success rounded py-1 px-2" onClick={() => setShowModal(true)}>
+            <button className="btn btn-outline-primary rounded py-1 px-2" onClick={() => setShowModal(true)}>
                 Create
             </button>
             {showModal && (
@@ -84,7 +84,7 @@ const AdminServices = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Create New Service</h5>
-                                <button type="button" className="close" onClick={() => setShowModal(false)} aria-label="Close">
+                                <button type="button" className="close btn btn-outline-primary" onClick={() => setShowModal(false)} aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -131,8 +131,8 @@ const AdminServices = () => {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={() => setShowModal(false)}>Close</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={() => handleSubmit()}>Save changes</button>
                             </div>
                         </div>
                     </div>
