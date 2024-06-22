@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user_id: null,
 			rol: null,
 			companyname: null,
+			company:null,
 			company_id: null,
 			services: [],
 			masterServices: [],
@@ -461,8 +462,86 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			// ---- Company functions
 
+			getCompanyBookings: async () => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_bookings?company_id=${companyId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
 
+			getCompanyRequests: async () => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return [];
+				}
+				const opts = {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json"
+					}
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_requests?company_id=${companyId}`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return [];
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return [];
+				}
+			},
+
+			updateRequestStatus: async (requestId, status, comment) => {
+				const companyId = sessionStorage.getItem('company_id');
+				if (!companyId) {
+					alert("Company ID is missing. Please log in again.");
+					return null;
+				}
+				const opts = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ requestId, status, comment })
+				};
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/update_request`, opts);
+					if (resp.status !== 200) {
+						alert("There has been some error");
+						return null;
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.log(error);
+					return null;
+				}
+			},
 
 			getCompany: async (company_id) => {
 				const store = getStore();
@@ -484,7 +563,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-
 
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
@@ -599,8 +677,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
+		},
+
+		deleteServices: async (user_id,service_id) => {
+			const store = getStore();
+			const opts = {
+				method: 'DELETE',
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": "Bearer " + store.token
+				}
+			};
+			try {
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/companyservices/${user_id},${service_id}`, opts);
+				if (resp.status !== 200) {
+					alert("There has been some error");
+					return false;
+				}
+				return true;
+			} catch (error) {
+				console.log(error);
+				return false;
+			}
 		}
-	}
-};
+	};
+}
 
 export default getState;
