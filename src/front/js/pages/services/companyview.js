@@ -1,58 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import ServiceCard from '../../component/serviceCard';
 
 const CompanyView = () => {
     const { company_id } = useParams();
-    const [company, setCompany] = useState(null);
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchCompanyData = async () => {
+        let mounted = true;
+
+        const fetchCompanyServices = async () => {
             try {
                 const response = await fetch(`${process.env.BACKEND_URL}/api/company/${company_id}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch company data');
+                    throw new Error('Failed to fetch services');
                 }
                 const data = await response.json();
-                setCompany(data);
-                setServices(data.services);
-                setLoading(false);
-                console.log(data)
+                if (mounted) {
+                    setServices(data.services);
+                    setLoading(false);
+                }
             } catch (error) {
-                console.error('Error fetching company data:', error);
-                setLoading(false);
+                if (mounted) {
+                    console.error('Error fetching services:', error);
+                    setLoading(false);
+                }
             }
         };
 
-        fetchCompanyData();
-    }, []);
+        fetchCompanyServices();
+
+        return () => {
+            mounted = false;
+        };
+    }, [company_id]);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    if (!company) {
-        return <div>Company not found</div>;
-    }
-
     return (
         <div>
-            <h2>{company.name}</h2>
-            <p><strong>Location:</strong> {company.location}</p>
-            <p><strong>Owner:</strong> {company.owner}</p>
-            {company.image && <img src={company.image} alt={`${company.name} logo`} />}
             <h3>Services</h3>
             <div className="service-cards">
                 {services.map(service => (
                     <div key={service.id} className="service-card">
-                        <h4>{service.name}</h4>
-                        <p>{service.description}</p>
-                        <p><strong>Type:</strong> {service.type}</p>
-                        <p><strong>Price:</strong> ${service.price}</p>
-                        <p><strong>Duration:</strong> {service.duration} minutes</p>
-                        {service.available ? <p>Available</p> : <p>Not Available</p>}
-                        {service.image && <img src={service.image} alt={`${service.name}`} />}
+                        <ServiceCard service={service} hideCompanyButton={true} />
                     </div>
                 ))}
             </div>

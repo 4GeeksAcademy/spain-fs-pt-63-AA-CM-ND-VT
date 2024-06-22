@@ -10,7 +10,7 @@ export const Footer = () => (
     </a>
 
     <ul className="nav col-md-4 justify-content-end">
-      <li className="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Recerva Tu Cita</a></li>
+      <li className="nav-item"><a href="#" className="nav-link px-2 text-body-secondary">Recerva Tu Cita</a></li>
      
     </ul>
   </footer>

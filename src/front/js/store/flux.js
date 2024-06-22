@@ -7,8 +7,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			user_id: null,
 			rol: null,
 			companyname: null,
-			company:null,
+			company: null,
 			company_id: null,
+			company_id_service: null,
 			services: [],
 			masterServices: [],
 			image: null,
@@ -172,6 +173,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			// ---- apartado servicios
+
+			setCompanyIdService: (company_id) => {
+				setStore({ company_id_service: company_id });
+			},
 
 			getServicesByCompany: async (companyId) => {
 				const store = getStore();
@@ -655,6 +660,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
+
 			getCompanyServicesPublic: async (company_id) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/company/${company_id}`, {
@@ -673,13 +679,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			
-
-
 
 		},
 
-		deleteServices: async (user_id,service_id) => {
+		deleteServices: async (user_id, service_id) => {
 			const store = getStore();
 			const opts = {
 				method: 'DELETE',

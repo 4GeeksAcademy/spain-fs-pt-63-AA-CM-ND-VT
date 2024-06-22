@@ -4,10 +4,10 @@ import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import { Context } from '../store/appContext';
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
+
     const { store, actions } = useContext(Context);
     const [show, setShow] = useState(false);
     const [date, setDate] = useState("");
@@ -39,9 +39,11 @@ const ServiceCard = ({ service }) => {
     };
 
     const handleCompany = async () => {
-        const success = await actions.updateCompanyPageId(service.id);
-        if (success) {
-            navigate(`/services/companyprofile/${store.companypage_id}`);
+        await actions.setCompanyIdService(companyId);
+        if (store.company_id_service) {
+            navigate(`/companyview/${store.company_id_service}`);
+        } else {
+            alert("Company ID is not available for this service");
         }
     };
 
@@ -67,8 +69,11 @@ const ServiceCard = ({ service }) => {
                 </div>
                 <div className="col-md-2">
                     <div className="mt-3">
-                        <Link to={`/companyview/${store._id}`}><span className="nav-item nav-link">Hello, {store.username}</span></Link>
-                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+                        {!hideCompanyButton && (
+                            <button className="btn btn-info rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                        )}
+                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+
                     </div>
                 </div>
             </div>
