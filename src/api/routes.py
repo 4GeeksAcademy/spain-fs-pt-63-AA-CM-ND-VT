@@ -186,24 +186,6 @@ def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
-# @api.route('/adminportal/<int:company_id>', methods=['DELETE'])
-# @jwt_required()
-# def delete_company(company_id):
-#     current_user_id = get_jwt_identity()
-#     company = Companies.query.get_or_404(company_id)
-    
-#     if company.owner != current_user_id:
-#         return jsonify({'error': 'Unauthorized'}), 401
-    
-#     try:
-#         db.session.delete(company)
-#         db.session.commit()
-#         return jsonify({'message': 'Company deleted successfully'}), 200
-#     except Exception as e:
-#         db.session.rollback()
-#         return jsonify({'error': str(e)}), 500
-
-
 @api.route('/adminportal/<int:company_id>', methods=['PUT'])
 @jwt_required()
 def update_company_admin(company_id):
