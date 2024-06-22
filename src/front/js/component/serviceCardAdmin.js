@@ -1,24 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../store/appContext";
+import React from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 
-const ServiceCardAdmin = ({ service }) => {
-    const { store, actions } = useContext(Context);
-
+const ServiceCardAdmin = ({ service, onEdit }) => {
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
         }
     });
 
-    // Crear la imagen de Cloudinary
     const myImage = service.image ? cld.image(service.image) : null;
-
-    const handleDelete = async () => {
-        await actions.deleteServices(store.user_id, service.service_id);
-    };
 
     return (
         <div className="card mb-4">
@@ -39,7 +31,7 @@ const ServiceCardAdmin = ({ service }) => {
                         <p className="card-text">Image: {service.image}</p>
                     </div>
                 </div>
-                <button className="btn btn-danger rounded" onClick={handleDelete}>Delete</button>
+                <button className="btn btn-primary rounded" onClick={() => onEdit(service)}>Edit</button>
             </div>
         </div>
     );

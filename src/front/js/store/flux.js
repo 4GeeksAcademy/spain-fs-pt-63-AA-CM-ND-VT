@@ -703,7 +703,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error);
 					return false;
 				}
-			}
+			},
+
+			updateService: async (service_id, serviceData) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(serviceData)
+					});
+			
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(errorData.message || 'Failed to update service');
+					}
+			
+					const data = await response.json();
+					return data;
+				} catch (error) {
+					console.error('Fetch error:', error);
+					throw error;
+				}
+			},
+			
+			deleteService: async (service_id) => {
+				try {
+					const response = await fetch(`/api/services/${service_id}`, {
+						method: "DELETE",
+					});
+					if (!response.ok) {
+						throw new Error("Failed to delete service");
+					}
+					return true;
+				} catch (error) {
+					console.error("Error deleting service:", error);
+					return false;
+				}
+			},
 		}
 	};
 }
