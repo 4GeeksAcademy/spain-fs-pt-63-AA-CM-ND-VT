@@ -379,11 +379,26 @@ def update_service(service_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@api.route('/api/services/<int:service_id>', methods=['DELETE'])
+@api.route('/services/<int:service_id>', methods=['DELETE'])
 def delete_service(service_id):
-    service = Services.query.get(service_id)
-    if service:
+    service = Services.query.get_or_404(service_id)
+    
+    try:
+        # Primero eliminamos los requests asociados
+        requests = Requests.query.join(Bookings).filter(Bookings.services_id == service_id).all()
+        for request in requests:
+            db.session.delete(request)
+        
+        # Luego eliminamos los bookings asociados
+        bookings = Bookings.query.filter_by(services_id=service_id).all()
+        for booking in bookings:
+            db.session.delete(booking)
+        
+        # Finalmente eliminamos el servicio
         db.session.delete(service)
         db.session.commit()
-        return jsonify({"message": "Service deleted"}), 200
-    return jsonify({"message": "Service not found"}), 404
+        
+        return jsonify({'message': 'Service and associated bookings and requests deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

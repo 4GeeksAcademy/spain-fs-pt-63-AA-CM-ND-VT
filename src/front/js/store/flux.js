@@ -683,28 +683,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			deleteServices: async (user_id, service_id) => {
-				const store = getStore();
-				const opts = {
-					method: 'DELETE',
-					headers: {
-						"Content-Type": "application/json",
-						"Authorization": "Bearer " + store.token
-					}
-				};
-				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}/api/companyservices/${user_id},${service_id}`, opts);
-					if (resp.status !== 200) {
-						alert("There has been some error");
-						return false;
-					}
-					return true;
-				} catch (error) {
-					console.log(error);
-					return false;
-				}
-			},
-
 			updateService: async (service_id, serviceData) => {
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
@@ -714,12 +692,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(serviceData)
 					});
-			
+
 					if (!response.ok) {
 						const errorData = await response.json();
 						throw new Error(errorData.message || 'Failed to update service');
 					}
-			
+
 					const data = await response.json();
 					return data;
 				} catch (error) {
@@ -727,18 +705,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			
-			deleteService: async (service_id) => {
+
+			deleteService: async (serviceId) => {
 				try {
-					const response = await fetch(`/api/services/${service_id}`, {
-						method: "DELETE",
+					const response = await fetch(process.env.BACKEND_URL + `/api/services/${serviceId}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+						}
 					});
-					if (!response.ok) {
-						throw new Error("Failed to delete service");
+			
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						const errorData = await response.json();
+						throw new Error(errorData.error || 'Failed to delete service');
 					}
-					return true;
 				} catch (error) {
-					console.error("Error deleting service:", error);
+					console.error('There was an error deleting the service:', error);
 					return false;
 				}
 			},

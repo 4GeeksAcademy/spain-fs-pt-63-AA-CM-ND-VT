@@ -3,7 +3,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 
-const ServiceCardAdmin = ({ service, onEdit }) => {
+const ServiceCardAdmin = ({ service, onEdit, onDelete }) => {
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
@@ -17,7 +17,7 @@ const ServiceCardAdmin = ({ service, onEdit }) => {
             <div className="row no-gutters">
                 <div className="col-md-4">
                     <div className="card-img-left">
-                        {myImage ? <AdvancedImage cldImg={myImage} className="img-cover" /> : <p>No image available</p>}
+                        {myImage ? <AdvancedImage cldImg={myImage} className="img-fluid" /> : <img src="https://dummyimage.com/300x200/cccccc/000000.jpg&text=No+image+available" alt="Default" />}
                     </div>
                 </div>
                 <div className="col-md-8">
@@ -28,10 +28,10 @@ const ServiceCardAdmin = ({ service, onEdit }) => {
                         <p className="card-text">Price: ${service.price}</p>
                         <p className="card-text">Duration: {service.duration} minutes</p>
                         <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
-                        <p className="card-text">Image: {service.image}</p>
+                        <button className="btn btn-primary mr-2" onClick={() => onEdit(service)}>Edit</button>
+                        <button className="btn btn-danger" onClick={() => onDelete(service.id)}>Delete</button>
                     </div>
                 </div>
-                <button className="btn btn-primary rounded" onClick={() => onEdit(service)}>Edit</button>
             </div>
         </div>
     );

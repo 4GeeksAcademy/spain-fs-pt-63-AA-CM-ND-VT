@@ -62,7 +62,13 @@ const AdminServices = () => {
                     setShowModal(false);
                     setRefresh(!refresh);
                 }
-            } 
+            } else {
+                const success = await actions.createService(serviceData);
+                if (success) {
+                    setShowModal(false);
+                    setRefresh(!refresh);
+                }
+            }
         } else {
             alert("Company ID is missing. Please try again later.");
         }
@@ -88,6 +94,16 @@ const AdminServices = () => {
             companyid: sessionStorage.getItem('company_id')
         });
         setShowModal(false);
+    };
+
+    const handleDelete = async (serviceId) => {
+        const confirmed = window.confirm('Are you sure you want to delete this service? This action cannot be undone.');
+        if (confirmed) {
+            const success = await actions.deleteService(serviceId);
+            if (success) {
+                setRefresh(!refresh);
+            }
+        }
     };
 
     return (
@@ -158,7 +174,7 @@ const AdminServices = () => {
                     <div className="row">
                         {services.map(service => (
                             <div key={service.id} className="col-12">
-                                <ServiceCardAdmin service={service} onEdit={handleEdit} />
+                                <ServiceCardAdmin service={service} onEdit={handleEdit} onDelete={handleDelete} />
                             </div>
                         ))}
                     </div>
