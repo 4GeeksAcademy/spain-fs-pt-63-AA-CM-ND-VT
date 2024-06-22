@@ -97,6 +97,19 @@ def update_user(user_id):
     if user.rol != 'client':
         return jsonify({'error': 'User is not a client'}), 400
 
+    user.name = data.get('name', user.name)
+    user.email = data.get('email', user.email)
+    user.rol = data.get('rol', user.rol)
+    user.image_url = data.get('image_url', user.image_url)
+
+    try:
+        db.session.commit()
+        return jsonify(user.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+    
+
 @api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['DELETE'])
 def delete_service(user_id, service_id):
     user = Users.query.get_or_404(user_id)
@@ -110,17 +123,37 @@ def delete_service(user_id, service_id):
     db.session.commit()
     return jsonify({'message': 'Service deleted successfully'}), 200
 
-    user.name = data.get('name', user.name)
-    user.email = data.get('email', user.email)
-    user.rol = data.get('rol', user.rol)
-    user.image_url = data.get('image_url', user.image_url)
+@api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['PUT'])
+def update_service(user_id, service_id):
+    
+    user = Users.query.get_or_404(user_id)
+    
+    if user.rol not in ['company', 'admin']:
+        return jsonify({'error': 'Unauthorized access, only companies or admins allowed'}), 403
+    
+    service = Services.query.get_or_404(service_id)
+    if user.rol == 'company' and service.companies_id != user_id:
+        return jsonify({'error': 'Unauthorized access to update this service'}), 403
 
-    try:
-        db.session.commit()
-        return jsonify(user.serialize()), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+    data = request.get_json()
+    
+    if 'name' in data:
+        service.name = data['name']
+    if 'description' in data:
+        service.description = data['description']
+    if 'type' in data:
+        service.type = data['type']
+    if 'price' in data:
+        service.price = data['price']
+    if 'duration' in data:
+        service.duration = data['duration']
+    if 'available' in data:
+        service.available = data['available']
+    if 'image' in data:
+        service.image = data['image']
+    
+    db.session.commit()
+    return jsonify({'message': 'Service updated successfully'}), 200
 
 
 

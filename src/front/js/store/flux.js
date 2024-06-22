@@ -500,7 +500,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 		},
 
-		deleteServices: async (Id) => {
+		deleteServices: async (user_id,service_id) => {
 			const store = getStore();
 			const opts = {
 				method: 'DELETE',
@@ -510,7 +510,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			};
 			try {
-				const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${Id}`, opts);
+				const resp = await fetch(`${process.env.BACKEND_URL}/api/companyservices/${user_id},${service_id}`, opts);
 				if (resp.status !== 200) {
 					alert("There has been some error");
 					return false;
