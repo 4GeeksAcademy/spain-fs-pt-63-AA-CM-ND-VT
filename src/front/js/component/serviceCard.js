@@ -55,20 +55,20 @@ const ServiceCard = ({ service }) => {
                 </div>
                 <div className="col-md-6">
                     <div className="card-body">
-                        <h5 className="card-title">{service.name}</h5>
-                        <p className="card-text">{service.id}</p>
-                        <p className="card-text">{service.description}</p>
-                        <p className="card-text">Type: {service.type}</p>
-                        <p className="card-text">Price: ${service.price}</p>
-                        <p className="card-text">Duration: {service.duration} minutes</p>
-                        <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
-                        <p className="card-text">Image: {service.image}</p>
+                        <h5 className="card-title"><h3>{service.name}</h3></h5>
+                        {/* <p className="card-text">{service.id}</p> */}
+                        <p className="card-text"><h5>Description:</h5> {service.description}</p>
+                        <p className="card-text"><h5>Type:</h5> {service.type}</p>
+                        <p className="card-text"><h5>Price: $</h5>{service.price}</p>
+                        <p className="card-text"><h5>Duration:</h5> {service.duration} minutes</p>
+                        <p className="card-text"><h5>Available:</h5> {service.available ? "Yes" : "No"}</p>
+                        {/* <p className="card-text">Image: {service.image}</p> */}
                     </div>
                 </div>
                 <div className="col-md-2">
                     <div className="mt-3">
                         <Link to={`/companyview/${store._id}`}><span className="nav-item nav-link">Hello, {store.username}</span></Link>
-                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
                     </div>
                 </div>
             </div>

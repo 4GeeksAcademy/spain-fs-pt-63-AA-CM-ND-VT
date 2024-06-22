@@ -35,7 +35,7 @@ const Signin = () => {
       <h1>Signup</h1>
       {step === 1 && (
         <div className="row justify-content-around mt-4">
-          <div className="card col-md-4 p-3" onClick={() => handleRoleSelection("client")}>
+          <div className="card col-md-4 p-3 mb-3" onClick={() => handleRoleSelection("client")}>
             <div className="card-body">
               <h5 className="card-title">Client</h5>
               <p className="card-text">
@@ -54,7 +54,7 @@ const Signin = () => {
         </div>
       )}
       {step === 2 && (
-        <div className="card mx-auto mt-4 p-4" style={{ maxWidth: '500px' }}>
+        <div className="card clientSingnup mx-auto mt-4 p-4" style={{ maxWidth: '500px'}}>
           <div className="card-body">
             <h5 className="card-title mb-4">Complete the form</h5>
             <div className="form-group mb-3">
@@ -116,10 +116,10 @@ const Signin = () => {
                 </div>
               </>
             )}
-            <button className="btn btn-secondary mr-2" onClick={() => setStep(1)}>
+            <button className="btn btn-outline-primary mr-2" onClick={() => setStep(1)}>
               Back
             </button>
-            <button className="btn btn-primary" onClick={handleSignup}>
+            <button className="btn btn-outline-primary ms-2" onClick={handleSignup}>
               Signup
             </button>
           </div>
