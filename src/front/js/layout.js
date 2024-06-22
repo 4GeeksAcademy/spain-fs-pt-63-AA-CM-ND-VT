@@ -20,9 +20,11 @@ import CompanyProfile from "./pages/adminportal/companyprofile";
 
 import Services from "./pages/services/services";
 
+
 import Login from "./pages/login";
 import Signin from "./pages/signin";
 import CompanyView from "./pages/services/companyview.js";
+
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
