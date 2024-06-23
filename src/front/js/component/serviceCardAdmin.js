@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
+import {Context} from "../store/appContext"
 
 const ServiceCardAdmin = ({ service }) => {
+    const {actions,store} = useContext(Context)
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
@@ -32,7 +34,7 @@ const ServiceCardAdmin = ({ service }) => {
                         <p className="card-text">Image: {service.image}</p>
                     </div>
                 </div>
-                <button className="btn btn-danger rounded" onClick={() => deleteService(user_id, service_id)}>Delete</button>
+                <button className="btn btn-danger rounded" onClick={() => actions.deleteServices(store.user_id, service.id)}>Delete</button>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, Users
+from api.models import db, Users,MasterServices
 
 """
 In this file, you can add as many commands as you want using the @app.cli.command decorator
@@ -32,3 +32,14 @@ def setup_commands(app):
     @app.cli.command("insert-test-data")
     def insert_test_data():
         pass
+
+    @app.cli.command("insert-default-services") # name of our command
+    def insert_default_services():
+        corte_caballero = MasterServices ()
+        corte_caballero.type = "corte caballero"
+        db.session.add(corte_caballero)
+        corte_dama = MasterServices ()
+        corte_dama.type = "corte dama"
+        db.session.add(corte_dama)
+        db.session.commit()
+        
