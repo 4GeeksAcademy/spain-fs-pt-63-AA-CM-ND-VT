@@ -4,12 +4,8 @@ import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import {Context} from "../store/appContext"
 
-<<<<<<< HEAD
 const ServiceCardAdmin = ({ service }) => {
     const {actions,store} = useContext(Context)
-=======
-const ServiceCardAdmin = ({ service, onEdit, onDelete }) => {
->>>>>>> start
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
