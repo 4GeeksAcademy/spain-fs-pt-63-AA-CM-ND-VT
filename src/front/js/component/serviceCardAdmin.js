@@ -4,15 +4,18 @@ import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import {Context} from "../store/appContext"
 
+<<<<<<< HEAD
 const ServiceCardAdmin = ({ service }) => {
     const {actions,store} = useContext(Context)
+=======
+const ServiceCardAdmin = ({ service, onEdit, onDelete }) => {
+>>>>>>> start
     const cld = new Cloudinary({
         cloud: {
             cloudName: 'dszc6zmjd'
         }
     });
 
-    // Crear la imagen de Cloudinary
     const myImage = service.image ? cld.image(service.image) : null;
 
     return (
@@ -20,7 +23,7 @@ const ServiceCardAdmin = ({ service }) => {
             <div className="row no-gutters">
                 <div className="col-md-4">
                     <div className="card-img-left">
-                        {myImage ? <AdvancedImage cldImg={myImage} className="img-cover" /> : <p>No image available</p>}
+                        {myImage ? <AdvancedImage cldImg={myImage} className="img-fluid" /> : <img src="https://dummyimage.com/300x200/cccccc/000000.jpg&text=No+image+available" alt="Default" />}
                     </div>
                 </div>
                 <div className="col-md-8">
@@ -31,7 +34,8 @@ const ServiceCardAdmin = ({ service }) => {
                         <p className="card-text">Price: ${service.price}</p>
                         <p className="card-text">Duration: {service.duration} minutes</p>
                         <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
-                        <p className="card-text">Image: {service.image}</p>
+                        <button className="btn btn-primary mr-2" onClick={() => onEdit(service)}>Edit</button>
+                        <button className="btn btn-danger" onClick={() => onDelete(service.id)}>Delete</button>
                     </div>
                 </div>
                 <button className="btn btn-danger rounded" onClick={() => actions.deleteServices(store.user_id, service.id)}>Delete</button>

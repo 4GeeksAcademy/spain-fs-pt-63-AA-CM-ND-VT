@@ -1,34 +1,62 @@
 /* Navbar.css */
 .navbar {
     padding: 1rem;
+    
 }
 
+nav {
+    background-color: rgb(255, 255, 255);
+}
 .nav-link {
     margin-right: 1rem;
-    color: #5a5a5a !important;
+    color: #580f9c !important;
     font-size: 1.2rem;
 }
 
 .navbar-nav .nav-link {
-    color: #5a5a5a !important;
+    color: #580f9c !important;
 }
 
 .btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
+    border-color: #580f9c;
+    color: #580f9c;
 }
 
 .btn-outline-primary:hover {
-    background-color: #007bff;
+    background-color: #580f9c;
     color: white;
+    border-color: #580f9c;
 }
 
 .btn-outline-secondary {
-    border-color: #6c757d;
-    color: #6c757d;
+    border-color: #580f9c;
+    color: #580f9c;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #6c757d;
+    background-color: #580f9c;
     color: white;
+    border-color: #580f9c;
+
+}
+
+.shadow-sm{
+    box-shadow: 0 .125rem .25rem #580f9c !important;
+}
+
+navbar-toggler-icon{
+    border-color: yellowgreen;
+}
+
+.custom-icon{
+    color: yellowgreen;
+    
+}
+a{
+    text-decoration: none;
+}
+
+.navbar-light .navbar-toggler {
+    color: rgba(0, 0, 0, .55);
+    border-color: #580f9c;
 }

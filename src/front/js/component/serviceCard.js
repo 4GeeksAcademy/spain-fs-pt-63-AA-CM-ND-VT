@@ -1,16 +1,29 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import { Context } from '../store/appContext';
 import { useNavigate } from "react-router-dom";
 
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
     const { store, actions } = useContext(Context);
     const [show, setShow] = useState(false);
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [serviceTypeName, setServiceTypeName] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchMasterServices = async () => {
+            const masterServices = await actions.getMasterServices();
+            const serviceType = masterServices.find(ms => ms.id === service.type);
+            if (serviceType) {
+                setServiceTypeName(serviceType.type);
+            }
+        };
+
+        fetchMasterServices();
+    }, [service.type, actions]);
 
     const cld = new Cloudinary({
         cloud: {
@@ -37,9 +50,11 @@ const ServiceCard = ({ service }) => {
     };
 
     const handleCompany = async () => {
-        const success = await actions.updateCompanyPageId(service.id);
-        if (success) {
-            navigate(`/services/companyprofile/${store.companypage_id}`);
+        await actions.setCompanyIdService(companyId);
+        if (store.company_id_service) {
+            navigate(`/companyview/${store.company_id_service}`);
+        } else {
+            alert("Company ID is not available for this service");
         }
     };
 
@@ -53,20 +68,26 @@ const ServiceCard = ({ service }) => {
                 </div>
                 <div className="col-md-6">
                     <div className="card-body">
-                        <h5 className="card-title">{service.name}</h5>
-                        <p className="card-text">{service.id}</p>
-                        <p className="card-text">{service.description}</p>
-                        <p className="card-text">Type: {service.type}</p>
-                        <p className="card-text">Price: ${service.price}</p>
-                        <p className="card-text">Duration: {service.duration} minutes</p>
-                        <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
-                        <p className="card-text">Image: {service.image}</p>
+
+                        <h5 className="card-title text-center"><h3>{service.name}</h3></h5>
+                        {/* <p className="card-text">{service.id}</p> */}
+                        <p className="card-text"><h5>Description:</h5> {service.description}</p>
+                        <p className="card-text"><h5>Type:</h5> {serviceTypeName}</p>
+                        <p className="card-text"><h5>Price: $</h5>{service.price}</p>
+                        <p className="card-text"><h5>Duration:</h5> {service.duration} minutes</p>
+                        <p className="card-text"><h5>Available:</h5> {service.available ? "Yes" : "No"}</p>
+                        <p className="card-text"><h5>Location:</h5> {service.location}</p>
+                        {/* <p className="card-text">Image: {service.image}</p> */}
                     </div>
                 </div>
                 <div className="col-md-2">
                     <div className="mt-3">
-                        <button className="btn btn-info rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
-                        <button className="btn btn-success rounded py-1 px-2 m-2" onClick={() => {store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+                        {!hideCompanyButton && (
+                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                        )}
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+
+
                     </div>
                 </div>
             </div>
@@ -77,14 +98,14 @@ const ServiceCard = ({ service }) => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Reserve {service.name}</h5>
-                                <button type="button" className="close" aria-label="Close" onClick={() => setShow(false)}>
+                                {/* <button type="button" className="close btn btn-outline-primary" aria-label="Close" onClick={() => setShow(false)}>
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </button> */}
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
                                     <p><strong>Description:</strong> {service.description}</p>
-                                    <p><strong>Type:</strong> {service.type}</p>
+                                    <p><strong>Type:</strong> {serviceTypeName}</p>
                                     <p><strong>Price:</strong> ${service.price}</p>
                                     <p><strong>Duration:</strong> {service.duration} minutes</p>
                                 </div>
@@ -98,8 +119,8 @@ const ServiceCard = ({ service }) => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={() => setShow(false)}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={handleReserve}>Reserve</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={() => setShow(false)}>Close</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={handleReserve}>Reserve</button>
                             </div>
                         </div>
                     </div>

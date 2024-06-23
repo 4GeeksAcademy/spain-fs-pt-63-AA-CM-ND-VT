@@ -7,25 +7,32 @@ const Services = () => {
     const [services, setServices] = useState([]);
 
     useEffect(() => {
+        let mounted = true;
+
         const fetchAllServices = async () => {
             const response = await actions.getAllServices();
-            if (response) {
+            if (mounted && response) {
+                console.log("Fetched services: ", response);
                 setServices(response);
             }
         };
 
         fetchAllServices();
+
+        return () => {
+            mounted = false;
+        };
     }, [actions]);
 
     return (
         <div>
-            <h3>All Services</h3>
-            <div className="mt-4">
+            <h1 className="text-center mt-5">All Services</h1>
+            <div className="mt-5">
                 <div className="container">
                     <div className="row">
                         {services.map(service => (
                             <div key={service.id} className="col-12">
-                                <ServiceCard service={service} />
+                                <ServiceCard service={service} companyId={service.companies_id} hideCompanyButton={false} />
                             </div>
                         ))}
                     </div>

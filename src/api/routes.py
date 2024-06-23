@@ -88,6 +88,26 @@ def client_portal(user_id):
         return jsonify({'error': 'User is not a client'}), 400
     return jsonify(user.serialize())
 
+@api.route('/clientportal/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_user(user_id):
+    user = Users.query.get_or_404(user_id)
+    
+    if user.rol != 'client':
+        return jsonify({'error': 'User is not a client'}), 400
+
+    current_user_id = get_jwt_identity()
+    if current_user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({'message': 'User deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 @api.route('/clientportal/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def update_user(user_id):
@@ -97,6 +117,9 @@ def update_user(user_id):
     if user.rol != 'client':
         return jsonify({'error': 'User is not a client'}), 400
 
+    current_user_id = get_jwt_identity()
+    if current_user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
     user.name = data.get('name', user.name)
     user.email = data.get('email', user.email)
     user.rol = data.get('rol', user.rol)
@@ -108,54 +131,6 @@ def update_user(user_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
-    
-
-@api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['DELETE'])
-def delete_service(user_id, service_id):
-    user = Users.query.get_or_404(user_id)
-    print(f"user id:{user_id},user role:{user.rol}")
-    if user.rol not in["company","admin"]:
-        return jsonify({'error': 'Unauthorized access, only companies allowed'}), 403
-    service = Services.query.get_or_404(service_id)
-    if service.companies_id != user_id:
-        return jsonify({'error': 'Unauthorized access to delete this service'}), 403
-    db.session.delete(service)
-    db.session.commit()
-    return jsonify({'message': 'Service deleted successfully'}), 200
-
-@api.route('/companyservices/<int:user_id>/service/<int:service_id>', methods=['PUT'])
-def update_service(user_id, service_id):
-    
-    user = Users.query.get_or_404(user_id)
-    
-    if user.rol not in ['company', 'admin']:
-        return jsonify({'error': 'Unauthorized access, only companies or admins allowed'}), 403
-    
-    service = Services.query.get_or_404(service_id)
-    if user.rol == 'company' and service.companies_id != user_id:
-        return jsonify({'error': 'Unauthorized access to update this service'}), 403
-
-    data = request.get_json()
-    
-    if 'name' in data:
-        service.name = data['name']
-    if 'description' in data:
-        service.description = data['description']
-    if 'type' in data:
-        service.type = data['type']
-    if 'price' in data:
-        service.price = data['price']
-    if 'duration' in data:
-        service.duration = data['duration']
-    if 'available' in data:
-        service.available = data['available']
-    if 'image' in data:
-        service.image = data['image']
-    
-    db.session.commit()
-    return jsonify({'message': 'Service updated successfully'}), 200
-
-
 
 @api.route('/adminportal/<int:company_id>', methods=['GET'])
 @jwt_required()
@@ -169,16 +144,12 @@ def update_company_admin(company_id):
     current_user_id = get_jwt_identity()
     current_user = Users.query.get(current_user_id)
 
-    # Verificar que el usuario tiene el rol correcto
     if current_user.rol != 'company':
         return jsonify({'error': 'User is not authorized'}), 403
-
-    # Obtener la empresa a actualizar
-    company = Companies.query.get_or_404(company_id)
     
+    company = Companies.query.get_or_404(company_id)
     data = request.get_json()
     
-    # Actualizar los campos de la empresa
     company.name = data.get('name', company.name)
     company.location = data.get('location', company.location)
     company.owner = data.get('owner', company.owner)
@@ -279,3 +250,155 @@ def get_user_requests():
         return jsonify({"msg": "User ID is required"}), 400
     requests = Requests.query.join(Bookings).filter(Bookings.users_id == user_id).all()
     return jsonify([request.serialize() for request in requests]), 200
+
+@api.route('/company_bookings', methods=['GET'])
+def get_company_bookings():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    bookings = Bookings.query.join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([booking.serialize() for booking in bookings]), 200
+
+@api.route('/company_requests', methods=['GET'])
+def get_company_requests():
+    company_id = request.args.get('company_id')
+    if not company_id:
+        return jsonify({"msg": "Company ID is required"}), 400
+    requests = Requests.query.join(Bookings).join(Services).filter(Services.companies_id == company_id).all()
+    return jsonify([request.serialize() for request in requests]), 200
+
+@api.route('/update_request', methods=['POST'])
+def update_request():
+    data = request.get_json()
+    request_id = data.get('requestId')
+    status = data.get('status')
+    comment = data.get('comment')
+
+    request_to_update = Requests.query.get(request_id)
+    if not request_to_update:
+        return jsonify({"msg": "Request not found"}), 404
+
+    request_to_update.status = status
+    request_to_update.comment = comment
+    db.session.commit()
+    return jsonify({"msg": "Request updated successfully"}), 200
+    
+
+@api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
+@jwt_required()
+def delete_requests(company_id):
+    company = Companies.query.get_or_404(company_id)
+    services = Services.query.filter_by(companies_id=company_id).all()
+    for service in services:
+        bookings = Bookings.query.filter_by(services_id=service.id).all()
+        for booking in bookings:
+            Requests.query.filter_by(bookings_id=booking.id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Requests deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>/bookings', methods=['DELETE'])
+@jwt_required()
+def delete_bookings(company_id):
+    company = Companies.query.get_or_404(company_id)
+    services = Services.query.filter_by(companies_id=company_id).all()
+    for service in services:
+        Bookings.query.filter_by(services_id=service.id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Bookings deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>/services', methods=['DELETE'])
+@jwt_required()
+def delete_services(company_id):
+    company = Companies.query.get_or_404(company_id)
+    Services.query.filter_by(companies_id=company_id).delete()
+    try:
+        db.session.commit()
+        return jsonify({"message": "Services deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
+@api.route('/companies/<int:company_id>', methods=['DELETE'])
+@jwt_required()
+def delete_company(company_id):
+    company = Companies.query.get_or_404(company_id)
+    db.session.delete(company)
+    try:
+        db.session.commit()
+        return jsonify({"message": "Company deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+    
+@api.route('/company/<int:company_id>', methods=['GET'])
+def get_company_public(company_id):
+    try:
+        # Obtener la compañía por ID
+        company = Companies.query.get(company_id)
+        if not company:
+            return jsonify({"msg": "Company not found"}), 404
+
+        # Obtener los servicios de la compañía
+        services = Services.query.filter_by(companies_id=company_id).all()
+
+        # Serializar la información de la compañía y sus servicios
+        company_data = company.serialize()
+        company_data["services"] = [service.serialize() for service in services]
+
+        return jsonify(company_data), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500
+
+@api.route('/services/<int:service_id>', methods=['PUT'])
+def update_service(service_id):
+    data = request.get_json()
+    service = Services.query.get_or_404(service_id)
+
+    service.name = data.get('name', service.name)
+    service.description = data.get('description', service.description)
+    service.type = data.get('type', service.type)
+    service.price = data.get('price', service.price)
+    service.duration = data.get('duration', service.duration)
+    service.available = data.get('available', service.available)
+
+    try:
+        db.session.commit()
+        return jsonify(service.serialize()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@api.route('/services/<int:service_id>', methods=['DELETE'])
+def delete_service(service_id):
+    service = Services.query.get_or_404(service_id)
+    
+    try:
+        # Primero eliminamos los requests asociados
+        requests = Requests.query.join(Bookings).filter(Bookings.services_id == service_id).all()
+        for request in requests:
+            db.session.delete(request)
+        
+        # Luego eliminamos los bookings asociados
+        bookings = Bookings.query.filter_by(services_id=service_id).all()
+        for booking in bookings:
+            db.session.delete(booking)
+        
+        # Finalmente eliminamos el servicio
+        db.session.delete(service)
+        db.session.commit()
+        
+        return jsonify({'message': 'Service and associated bookings and requests deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
