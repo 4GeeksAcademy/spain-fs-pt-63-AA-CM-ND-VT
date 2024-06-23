@@ -276,6 +276,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+
 			reserveService: async (reservationData) => {
 				const store = getStore();
 				const opts = {
@@ -643,6 +644,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			getCompanyPublic: async (company_id) => {
+				const token = getStore().token;
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company/${company_id}`, {
 						headers: {
@@ -662,6 +664,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			getCompanyServicesPublic: async (company_id) => {
+				const token = getStore().token;
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/company/${company_id}`, {
 						headers: {
@@ -680,28 +683,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-		},
+			updateService: async (service_id, serviceData) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(serviceData)
+					});
 
-		deleteServices: async (user_id, service_id) => {
-			const store = getStore();
-			const opts = {
-				method: 'DELETE',
-				headers: {
-					"Content-Type": "application/json",
-					"Authorization": "Bearer " + store.token
+					if (!response.ok) {
+						const errorData = await response.json();
+						throw new Error(errorData.message || 'Failed to update service');
+					}
+
+					const data = await response.json();
+					return data;
+				} catch (error) {
+					console.error('Fetch error:', error);
+					throw error;
 				}
-			};
-			try {
-				const resp = await fetch(`${process.env.BACKEND_URL}/api/companyservices/${user_id},${service_id}`, opts);
-				if (resp.status !== 200) {
-					alert("There has been some error");
+			},
+
+			deleteService: async (serviceId) => {
+				try {
+					const response = await fetch(process.env.BACKEND_URL + `/api/services/${serviceId}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					});
+			
+					if (response.ok) {
+						const data = await response.json();
+						return data;
+					} else {
+						const errorData = await response.json();
+						throw new Error(errorData.error || 'Failed to delete service');
+					}
+				} catch (error) {
+					console.error('There was an error deleting the service:', error);
 					return false;
 				}
-				return true;
-			} catch (error) {
-				console.log(error);
-				return false;
-			}
+			},
 		}
 	};
 }

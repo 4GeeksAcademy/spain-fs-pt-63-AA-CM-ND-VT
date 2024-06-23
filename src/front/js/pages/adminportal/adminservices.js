@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ServiceCardAdmin from "../../component/serviceCardAdmin";
-import ImageInput from "../../component/imageInput";
 
 const AdminServices = () => {
-    const { actions } = useContext(Context); // No necesitamos el store aquí
+    const { actions } = useContext(Context);
     const [showModal, setShowModal] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editServiceId, setEditServiceId] = useState(null);
     const [masterServices, setMasterServices] = useState([]);
     const [serviceData, setServiceData] = useState({
         name: "",
@@ -14,8 +15,7 @@ const AdminServices = () => {
         price: "",
         duration: "",
         available: false,
-        image: "",
-        companyid: sessionStorage.getItem('company_id') // Obtener directamente de sessionStorage
+        companyid: sessionStorage.getItem('company_id')
     });
     const [refresh, setRefresh] = useState(false);
     const [services, setServices] = useState([]);
@@ -45,8 +45,6 @@ const AdminServices = () => {
         fetchServicesByCompany();
     }, [actions, refresh]);
 
-    // No necesitamos el useEffect para actualizar companyid, ya que lo tomamos de sessionStorage directamente
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setServiceData({ ...serviceData, [name]: value });
@@ -56,20 +54,55 @@ const AdminServices = () => {
         setServiceData({ ...serviceData, available: e.target.checked });
     };
 
-    const handleImageUpload = (imgId) => {
-        setServiceData({ ...serviceData, image: imgId });
-    };
-
     const handleSubmit = async () => {
-        console.log("Submitting serviceData:", serviceData);
-        if (serviceData.companyid) {
-            const success = await actions.createService(serviceData);
-            if (success) {
-                setShowModal(false);
-                setRefresh(!refresh);
+        if (serviceData) {
+            if (isEditing) {
+                const success = await actions.updateService(editServiceId, serviceData);
+                if (success) {
+                    setShowModal(false);
+                    setRefresh(!refresh);
+                }
+            } else {
+                const success = await actions.createService(serviceData);
+                if (success) {
+                    setShowModal(false);
+                    setRefresh(!refresh);
+                }
             }
         } else {
             alert("Company ID is missing. Please try again later.");
+        }
+    };
+
+    const handleEdit = (service) => {
+        setIsEditing(true);
+        setEditServiceId(service.id);
+        setServiceData(service);
+        setShowModal(true);
+    };
+
+    const handleModalClose = () => {
+        setIsEditing(false);
+        setEditServiceId(null);
+        setServiceData({
+            name: "",
+            description: "",
+            type: "",
+            price: "",
+            duration: "",
+            available: false,
+            companyid: sessionStorage.getItem('company_id')
+        });
+        setShowModal(false);
+    };
+
+    const handleDelete = async (serviceId) => {
+        const confirmed = window.confirm('Are you sure you want to delete this service? This action cannot be undone.');
+        if (confirmed) {
+            const success = await actions.deleteService(serviceId);
+            if (success) {
+                setRefresh(!refresh);
+            }
         }
     };
 
@@ -83,8 +116,9 @@ const AdminServices = () => {
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">Create New Service</h5>
-                                <button type="button" className="close btn btn-outline-primary" onClick={() => setShowModal(false)} aria-label="Close">
+                                <h5 className="modal-title">{isEditing ? "Edit Service" : "Create New Service"}</h5>
+                                <button type="button" className="close" onClick={handleModalClose} aria-label="Close">
+
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -124,15 +158,12 @@ const AdminServices = () => {
                                             <label className="form-check-label" htmlFor="available">Available</label>
                                         </div>
                                     </div>
-                                    <div className="form-group">
-                                        <label htmlFor="image">Image</label>
-                                        <ImageInput onUpload={handleImageUpload} />
-                                    </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-primary" onClick={() => setShowModal(false)}>Close</button>
-                                <button type="button" className="btn btn-outline-primary" onClick={() => handleSubmit()}>Save changes</button>
+                                <button type="button" className="btn btn-secondary" onClick={handleModalClose}>Close</button>
+                                <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
+
                             </div>
                         </div>
                     </div>
@@ -145,7 +176,7 @@ const AdminServices = () => {
                     <div className="row">
                         {services.map(service => (
                             <div key={service.id} className="col-12">
-                                <ServiceCardAdmin service={service} />
+                                <ServiceCardAdmin service={service} onEdit={handleEdit} onDelete={handleDelete} />
                             </div>
                         ))}
                     </div>
