@@ -33,17 +33,17 @@ const AdminBookings = () => {
         <div className="container">
             <div className="row my-4">
                 <div className="col-md-4 col-sm-6">
-                    <label htmlFor="filterStatus" className="form-label">Filtrar por estado:</label>
+                    <label htmlFor="filterStatus" className="form-label">Filter by status:</label>
                     <select
                         id="filterStatus"
                         className="form-select"
                         value={filterStatus}
                         onChange={handleFilterChange}
                     >
-                        <option value="Todas">Todas</option>
-                        <option value="Aceptada">Aceptada</option>
-                        <option value="Rechazada">Rechazada</option>
-                        <option value="Pendiente">Pendiente</option>
+                        <option value="Todas">All</option>
+                        <option value="Aceptada">Accepted</option>
+                        <option value="Rechazada">Declined</option>
+                        <option value="Pendiente">Pending</option>
                     </select>
                 </div>
             </div>

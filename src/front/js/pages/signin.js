@@ -34,7 +34,7 @@ const Signin = () => {
     <div className="container text-center mt-5">
       <h1>Signup</h1>
       {step === 1 && (
-        <div className="row justify-content-around mt-4">
+        <div className="row justify-content-around mt-5">
           <div className="card col-md-4 p-3 mb-3" onClick={() => handleRoleSelection("client")}>
             <div className="card-body">
               <h5 className="card-title">Client</h5>
@@ -56,7 +56,7 @@ const Signin = () => {
       {step === 2 && (
         <div className="card clientSingnup mx-auto mt-4 p-4" style={{ maxWidth: '500px'}}>
           <div className="card-body">
-            <h5 className="card-title mb-4">Complete the form</h5>
+            <h5 className="card-title mb-4">Please, complete the form</h5>
             <div className="form-group mb-3">
               <label htmlFor="name">Name</label>
               <input
