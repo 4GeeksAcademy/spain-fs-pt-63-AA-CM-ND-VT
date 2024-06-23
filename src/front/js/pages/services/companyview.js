@@ -42,8 +42,9 @@ const CompanyView = () => {
 
     return (
         <div>
-            <h3>Services</h3>
-            <div className="service-cards">
+            <h1 className='mt-5 text-center'> nombre de la compañia Services</h1>
+            <h3 className='text-center mt-2'>Take a look to my Services!</h3>
+            <div className="service-cards mt-5 container">
                 {services.map(service => (
                     <div key={service.id} className="service-card">
                         <ServiceCard service={service} hideCompanyButton={true} />

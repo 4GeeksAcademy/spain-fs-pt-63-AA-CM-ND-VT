@@ -47,13 +47,13 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 <h5 className="card-title">Reserva #{booking.id}</h5>
             </div>
             <div className="card-body text-black">
-                <p className="card-text"><strong>Usuario ID:</strong> {booking.users_id}</p>
-                <p className="card-text"><strong>Información de la reserva:</strong> La reserva inicia el {booking.start_day_date} a las {booking.start_time_date}</p>
+                <p className="card-text"><strong>User ID:</strong> {booking.users_id}</p>
+                <p className="card-text"><strong>Information of the request:</strong> The request starts on {booking.start_day_date} at {booking.start_time_date}</p>
                 {request && (
                     <>
-                        <h6 className="card-subtitle mb-2">Petición</h6>
-                        <p className="card-text"><strong>Estado:</strong> {request.status}</p>
-                        <p className="card-text"><strong>Comentario:</strong> {request.comment}</p>
+                        <h6 className="card-subtitle mb-2">Request</h6>
+                        <p className="card-text"><strong>Status:</strong> {request.status}</p>
+                        <p className="card-text"><strong>Comments:</strong> {request.comment}</p>
                     </>
                 )}
             </div>
@@ -72,13 +72,13 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                         className="btn btn-outline-success"
                         onClick={handleAccept}
                     >
-                        Aceptar
+                        Accept
                     </button>
                     <button
                         className="btn btn-outline-danger"
                         onClick={handleReject}
                     >
-                        Rechazar
+                        Decline
                     </button>
                 </div>
             </div>

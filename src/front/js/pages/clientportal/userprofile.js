@@ -69,58 +69,67 @@ const UserProfile = () => {
 
     return (
         <div>
-            <h2>Mi Perfil</h2>
-            {!editMode ? (
-                <>
-                    <p><strong>Nombre:</strong> {store.user.name}</p>
-                    <p><strong>Email:</strong> {store.user.email}</p>
-                    <p><strong>Rol:</strong> {store.user.rol}</p>
-                    {store.user.image && <img src={store.user.image} alt="Profile" />}
-                    <button onClick={() => setEditMode(true)}>Editar Perfil</button>
-                    <button onClick={handleDelete}>Eliminar Perfil</button>
-                </>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Nombre:</label>
-                        <input 
-                            type="text" 
-                            name="name" 
-                            value={formData.name} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Email:</label>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            value={formData.email} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Rol:</label>
-                        <input 
-                            type="text" 
-                            name="rol" 
-                            value={formData.rol} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Imagen URL:</label>
-                        <input 
-                            type="text" 
-                            name="image" 
-                            value={formData.image} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <button type="submit">Guardar</button>
-                    <button type="button" onClick={() => setEditMode(false)}>Cancelar</button>
-                </form>
-            )}
+            <div className="card mt-4">
+                <div className="card-body">
+                    <h2 className='text-center'>My Profile</h2>
+                    {!editMode ? (
+                        <>
+                            <p><strong>Name:</strong> {store.user.name}</p>
+                            <p><strong>Email:</strong> {store.user.email}</p>
+                            <p><strong>Rol:</strong> {store.user.rol}</p>
+                            {store.user.image && <img src={store.user.image} alt="Profile" className="img-fluid" />}
+                            <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Edit Profile</button>
+                            <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Profile</button>
+                        </>
+                    ) : (
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3">
+                                <label className="form-label">Name:</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Email:</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Rol:</label>
+                                <input
+                                    type="text"
+                                    name="rol"
+                                    value={formData.rol}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Image URL:</label>
+                                <input
+                                    type="text"
+                                    name="image"
+                                    value={formData.image}
+                                    onChange={handleChange}
+                                    className="form-control"
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-outline-primary me-2">Save</button>
+                            <button type="button" className="btn btn-outline-secondary" onClick={() => setEditMode(false)}>Cancel</button>
+                        </form>
+                    )}
+                </div>
+            </div>
+
         </div>
     );
 };

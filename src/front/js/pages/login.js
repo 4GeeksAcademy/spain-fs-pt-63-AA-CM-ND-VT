@@ -24,9 +24,9 @@ const Login = () => {
   return (
     <div className="container mt-4">
       <div className="row justify-content-center mt-5">
+        <h1 className="text-center mb-5">Login</h1>
         <div className="col-md-8 col-lg-10 loginDiv">
           <div className="text-center">
-            <h1>Login</h1>
             {store.token && store.token !== "" && store.token !== undefined ? (
               <p>You are logged in with this token: {store.token}</p>
             ) : (
