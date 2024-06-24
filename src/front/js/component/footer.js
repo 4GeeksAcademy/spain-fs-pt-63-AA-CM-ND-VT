@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import "../../styles/footer.css"
 
 export const Footer = () => (
-	<footer className="footer mt-auto py-3 text-center">
-		<p>
-			Made with <i className="fa fa-heart text-danger" /> by{" "}
-			<a href="http://www.4geeksacademy.com">4Geeks Academy</a>
-		</p>
-	</footer>
+	<div>
+  <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    
+      <p className="nav-item"><a href="#" className="nav-link px-2 text-body-secondary">ScrolltoTop</a></p>
+     
+    <p className="text-body-secondary me-3">&copy; 2024 Company, Inc</p>
+  </footer>
+</div>
 );

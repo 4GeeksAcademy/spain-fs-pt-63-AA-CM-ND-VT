@@ -1,0 +1,18 @@
+.card {
+    cursor: pointer;
+    border: 3px solid;
+    border-color: yellowgreen;
+    color: #580f9c;
+}
+div{
+    color:#580f9c;
+}
+
+button {
+    border: 1px solid #580f9c;
+    border-radius: 8px;
+  }
+
+input{
+    color:#580f9c;
+}

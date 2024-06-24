@@ -1,0 +1,51 @@
+/* AdminBookings.css */
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-body, .card-header {
+    background-color: #f8f9fa;
+}
+
+.card-footer {
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+}
+
+.input-group {
+    width: 100%;
+}
+
+.btn {
+    width: 48%;
+}
+
+.bg-success {
+    background-color: #44ff70 !important;
+    color: #000 !important;
+}
+
+.bg-danger {
+    background-color: #ff4756 !important;
+    color: #000 !important;
+}
+
+.bg-warning {
+    background-color: #ffe17d !important;
+    color: #000 !important;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+    color: #000 !important;
+}
+
+.text-black {
+    color: #000 !important;
+}

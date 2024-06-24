@@ -1,0 +1,23 @@
+.loginDiv {
+    border: 3px solid yellowgreen;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    color: #580f9c;
+  }
+  
+  .btn-primary {
+    border-color: #580f9c;
+    color: #580f9c;
+  }
+  
+  .btn-primary:hover {
+    border-color: #580f9c;
+    color: white;
+  }
+  
+  button {
+    border: 1px solid #580f9c;
+    border-radius: 8px;
+  }
+  
