@@ -41,5 +41,12 @@ def setup_commands(app):
         corte_dama = MasterServices ()
         corte_dama.type = "corte dama"
         db.session.add(corte_dama)
+        secado_dama = MasterServices ()
+        secado_dama.type = "secado dama"
+        db.session.add(secado_dama)
+        lavado_cabello = MasterServices ()
+        lavado_cabello.type = "lavado de cabello"
+        db.session.add(lavado_cabello)
         db.session.commit()
+
         
