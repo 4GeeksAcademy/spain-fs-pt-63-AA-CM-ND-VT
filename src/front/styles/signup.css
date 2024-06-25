@@ -1,18 +1,19 @@
 .card {
     cursor: pointer;
     border: 3px solid;
-    border-color: yellowgreen;
-    color: #580f9c;
+    border-color: #f5e556;
+    color: #000000;
 }
 div{
-    color:#580f9c;
+    color:#000000;
 }
 
 button {
-    border: 1px solid #580f9c;
+    border: 1px solid #f5e556;
     border-radius: 8px;
   }
 
 input{
-    color:#580f9c;
+    color:#000000;
 }
+

@@ -67,17 +67,15 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <div className="card-body">
+                    <div className="card-body rounded m-2">
 
-                        <h5 className="card-title text-center"><h3>{service.name}</h3></h5>
-                        {/* <p className="card-text">{service.id}</p> */}
+                        <h3 className="card-title text-center">{service.name}</h3>
                         <p className="card-text"><h5>Description:</h5> {service.description}</p>
                         <p className="card-text"><h5>Type:</h5> {serviceTypeName}</p>
                         <p className="card-text"><h5>Price: $</h5>{service.price}</p>
                         <p className="card-text"><h5>Duration:</h5> {service.duration} minutes</p>
                         <p className="card-text"><h5>Available:</h5> {service.available ? "Yes" : "No"}</p>
                         <p className="card-text"><h5>Location:</h5> {service.location}</p>
-                        {/* <p className="card-text">Image: {service.image}</p> */}
                     </div>
                 </div>
                 <div className="col-md-2">
@@ -98,9 +96,6 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">Reserve {service.name}</h5>
-                                {/* <button type="button" className="close btn btn-outline-primary" aria-label="Close" onClick={() => setShow(false)}>
-                                    <span aria-hidden="true">&times;</span>
-                                </button> */}
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
