@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ServiceCardAdmin from "../../component/serviceCardAdmin";
+import ImageInput from "../../component/imageInput"; // Asegúrate de tener este componente
 
 const AdminServices = () => {
     const { actions } = useContext(Context);
@@ -15,7 +16,8 @@ const AdminServices = () => {
         price: "",
         duration: "",
         available: false,
-        companyid: sessionStorage.getItem('company_id')
+        image: "",
+        companyid: sessionStorage.getItem('company_id') || ""
     });
     const [refresh, setRefresh] = useState(false);
     const [services, setServices] = useState([]);
@@ -29,7 +31,7 @@ const AdminServices = () => {
         };
 
         fetchMasterServices();
-    }, [actions]);
+    }, [actions, refresh]);
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
@@ -54,8 +56,12 @@ const AdminServices = () => {
         setServiceData({ ...serviceData, available: e.target.checked });
     };
 
+    const handleImageUpload = (imgId) => {
+        setServiceData({ ...serviceData, image: imgId });
+    };
+
     const handleSubmit = async () => {
-        if (serviceData) {
+        if (serviceData.companyid) {
             if (isEditing) {
                 const success = await actions.updateService(editServiceId, serviceData);
                 if (success) {
@@ -77,7 +83,10 @@ const AdminServices = () => {
     const handleEdit = (service) => {
         setIsEditing(true);
         setEditServiceId(service.id);
-        setServiceData(service);
+        setServiceData({
+            ...service,
+            companyid: sessionStorage.getItem('company_id')
+        });
         setShowModal(true);
     };
 
@@ -91,7 +100,8 @@ const AdminServices = () => {
             price: "",
             duration: "",
             available: false,
-            companyid: sessionStorage.getItem('company_id')
+            image: "",
+            companyid: sessionStorage.getItem('company_id') || ""
         });
         setShowModal(false);
     };
@@ -118,7 +128,6 @@ const AdminServices = () => {
                             <div className="modal-header">
                                 <h5 className="modal-title">{isEditing ? "Edit Service" : "Create New Service"}</h5>
                                 <button type="button" className="close" onClick={handleModalClose} aria-label="Close">
-
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -158,12 +167,15 @@ const AdminServices = () => {
                                             <label className="form-check-label" htmlFor="available">Available</label>
                                         </div>
                                     </div>
+                                    <div className="form-group">
+                                        <label htmlFor="image">Image</label>
+                                        <ImageInput onUpload={handleImageUpload} />
+                                    </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={handleModalClose}>Close</button>
                                 <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
-
                             </div>
                         </div>
                     </div>
