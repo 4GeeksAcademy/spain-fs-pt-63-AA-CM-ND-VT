@@ -371,6 +371,7 @@ def update_service(service_id):
     service.price = data.get('price', service.price)
     service.duration = data.get('duration', service.duration)
     service.available = data.get('available', service.available)
+    service.image = data.get('image',service.image)
 
     try:
         db.session.commit()

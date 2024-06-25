@@ -714,7 +714,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json',
 						}
 					});
-			
 					if (response.ok) {
 						const data = await response.json();
 						return data;
