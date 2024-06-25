@@ -45,7 +45,7 @@ export const Navbar = () => {
 					) : (
 						<div className="navbar-nav">
 							<Link to="/login" className="btn btn-outline-primary ">Login</Link>
-							<Link to="/signup" className="btn btn-outline-secondary mx-2">Signup</Link>
+							<Link to="/signup" className="btn btn-outline-primary mx-2">Signup</Link>
 						</div>
 					)}
 				</div>
