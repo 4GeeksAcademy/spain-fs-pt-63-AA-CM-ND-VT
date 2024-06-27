@@ -1,16 +1,25 @@
-.main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Establece el alto mínimo para cubrir toda la pantalla */
-  }
-  
-  .content {
-    flex: 1; /* El contenido principal ocupa todo el espacio disponible */
-    padding: 20px;
-  }
-  
-  
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 2px solid #f5e556 !important;
+    text-align: center; /* Para centrar el texto */
+}
 
-.border-top {
-    border-top: 2px solid #580f9c42 !important;
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #f5e556 !important;
+}
+
+.text-body-secondary {
+    color: #6c757d !important;
+}
+
+.small-link {
+    font-size: 1rem; /* Tamaño de letra más pequeño */
+    margin-right: 10px; /* Espacio entre enlaces */
 }

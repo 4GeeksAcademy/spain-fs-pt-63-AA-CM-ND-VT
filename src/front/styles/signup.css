@@ -1,18 +1,55 @@
-.card {
+.cardsign {
     cursor: pointer;
     border: 3px solid;
-    border-color: yellowgreen;
-    color: #580f9c;
+    border-color: #f5e556;
+    color: #000000;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin-bottom: 20px;
+    height: 25rem; /* Ajusta la altura según sea necesario */
+    width: 25rem; /* Ajusta el ancho según sea necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Añade un poco de redondeo a las esquinas */
 }
-div{
-    color:#580f9c;
+
+.cardsign:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cardsign-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.cardsign-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+.clientSignup {
+    border-color: #f5e556;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
 }
 
 button {
-    border: 1px solid #580f9c;
+    border: 1px solid #f5e556;
     border-radius: 8px;
-  }
+    padding: 0.5rem 1.5rem;
+}
 
-input{
-    color:#580f9c;
+input {
+    color: #000000;
+}
+
+div {
+    color: #000000;
 }

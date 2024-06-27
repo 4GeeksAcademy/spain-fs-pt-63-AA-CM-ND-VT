@@ -4,6 +4,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
+import { About } from "./pages/about";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -29,24 +30,27 @@ const Layout = () => {
     if (!process.env.BACKEND_URL || process.env.BACKEND_URL === "") return <BackendURL />;
 
     return (
-        <div>
+        <div className="d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
-                    <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<ClientPortal />} path="/clientportal/:user_id" />
-                        <Route element={<UserBookings />} path="/userbookings/:user_id" />
-                        <Route element={<UserProfile />} path="/userprofile/:user_id" />
-                        <Route element={<AdminPortal />} path="/adminportal/:user_id" />
-                        <Route element={<AdminBookings />} path="/adminbookings/:user_id" />
-                        <Route element={<AdminServices />} path="/adminservices/:user_id" />
-                        <Route element={<Services />} path="/services" />
-                        <Route element={<CompanyView />} path="/companyview/:company_id" />
-                        <Route element={<Signin />} path="/signup" />
-                        <Route element={<Login />} path="/login" />
-                        <Route element={<h1>Not found!</h1>} path="*" />
-                    </Routes>
+                    <div className="flex-grow-1">
+                        <Routes>
+                            <Route element={<Home />} path="/" />
+                            <Route element={<About />} path="/about" />
+                            <Route element={<ClientPortal />} path="/clientportal/:user_id" />
+                            <Route element={<UserBookings />} path="/userbookings/:user_id" />
+                            <Route element={<UserProfile />} path="/userprofile/:user_id" />
+                            <Route element={<AdminPortal />} path="/adminportal/:user_id" />
+                            <Route element={<AdminBookings />} path="/adminbookings/:user_id" />
+                            <Route element={<AdminServices />} path="/adminservices/:user_id" />
+                            <Route element={<Services />} path="/services" />
+                            <Route element={<CompanyView />} path="/companyview/:company_id" />
+                            <Route element={<Signin />} path="/signup" />
+                            <Route element={<Login />} path="/login" />
+                            <Route element={<h1>Not found!</h1>} path="*" />
+                        </Routes>
+                    </div>
                     <Footer />
                 </ScrollToTop>
             </BrowserRouter>

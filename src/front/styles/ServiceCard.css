@@ -1,9 +1,10 @@
 /* ServiceCard.css */
 .card-body {
   cursor: default;
+  background-color: #ffffff;
 }
 .card-title{
-  border-bottom: 2px solid yellowgreen;
+  border-bottom: 2px solid #f5e556;
 }
 
 .card-img-left {
@@ -23,10 +24,5 @@
 }
 
 .modal-content{
-  border: 2px solid yellowgreen;
-}
-.btn-outline-primary:hover {
-  background-color: #580f9c;
-  color: white;
-  border-color: #580f9c;
+  border: 2px solid #f5e556;
 }

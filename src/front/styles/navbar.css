@@ -1,62 +1,55 @@
-/* Navbar.css */
 .navbar {
     padding: 1rem;
-    
 }
 
 nav {
     background-color: rgb(255, 255, 255);
 }
+
 .nav-link {
-    margin-right: 1rem;
-    color: #580f9c !important;
+    color: #000000 !important;
     font-size: 1.2rem;
 }
 
-.navbar-nav .nav-link {
-    color: #580f9c !important;
+.nav-link span:hover {
+    color: #f5e556;
 }
 
 .btn-outline-primary {
-    border-color: #580f9c;
-    color: #580f9c;
+    border-color: #f5e556;
+    color: #000000;
+    background-color: white;
+    margin: 0.5rem 0; /* Ajuste del margen */
 }
 
 .btn-outline-primary:hover {
-    background-color: #580f9c;
-    color: white;
-    border-color: #580f9c;
+    background-color: #f5e556;
+    color: rgba(0, 0, 0, 0.773);
+    border-color: #000000;
 }
 
-.btn-outline-secondary {
-    border-color: #580f9c;
-    color: #580f9c;
+.btn-outline-primary:active {
+    text-shadow: 1px 1px 2px #8a8a8a;
+    background-color: #f5e556;
 }
 
-.btn-outline-secondary:hover {
-    background-color: #580f9c;
-    color: white;
-    border-color: #580f9c;
-
+.shadow-sm {
+    box-shadow: 0 .125rem .25rem #f5e556 !important;
 }
 
-.shadow-sm{
-    box-shadow: 0 .125rem .25rem #580f9c !important;
+.navbar-toggler {
+    border: none; /* Quitar el borde del botón de toggler */
 }
 
-navbar-toggler-icon{
-    border-color: yellowgreen;
+
+.custom-icon {
+    color: #000000;
 }
 
-.custom-icon{
-    color: yellowgreen;
-    
-}
-a{
+a {
     text-decoration: none;
 }
 
 .navbar-light .navbar-toggler {
     color: rgba(0, 0, 0, .55);
-    border-color: #580f9c;
 }

@@ -2,52 +2,81 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import "../../styles/navbar.css";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen/index";
 
 export const Navbar = () => {
-	const { store, actions } = useContext(Context);
-	const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
 
-	useEffect(() => {
-		actions.syncToken();
-	}, []);
+    const cld = new Cloudinary({
+        cloud: {
+            cloudName: 'dszc6zmjd'
+        }
+    });
 
-	const handleLogout = async () => {
-		await actions.logout();
-		navigate("/login");
-	};
+    useEffect(() => {
+        actions.syncToken();
+    }, []);
 
-	return (
-		<nav className="navbar navbar-expand-lg navbar-light shadow-sm">
-			<div className="container">
-				<Link to="/" className="navbar-brand">
-					<span className="h4">Home</span>
-				</Link>
-				<Link to="/services" className="nav-link">
-					<span className="h4">Services</span>
-				</Link>
-				<button className="navbar-toggler btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-fill custom-icon" viewBox="0 0 16 16">
-  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
-</svg>
-				</button>
-				<div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-					{store.token ? (
-						<div className="navbar-nav">
-							{store.rol === "client" ? (
-								<Link to={`/clientportal/${store.user_id}`}><span className="nav-item nav-link custom-link">Hello, {store.username}</span></Link>
-							) : (
-								<Link to={`/adminportal/${store.user_id}`}><p className="nav-item nav-link custom-link">Hello, {store.username}</p></Link>
-							)}
-							<button onClick={handleLogout} className="btn btn-outline-primary mx-3">Log out</button>
-						</div>
-					) : (
-						<div className="navbar-nav">
-							<Link to="/login" className="btn btn-outline-primary ">Login</Link>
-							<Link to="/signup" className="btn btn-outline-secondary mx-2">Signup</Link>
-						</div>
-					)}
-				</div>
-			</div>
-		</nav>
-	);
+    const handleLogout = async () => {
+        await actions.logout();
+        navigate("/login");
+    };
+
+    const handleProfile = () => {
+        if (store.rol === "client") {
+            navigate(`/clientportal/${store.user_id}`);
+        } else {
+            navigate(`/adminportal/${store.user_id}`);
+        }
+    };
+
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light shadow-sm">
+            <div className="container">
+                <Link to="/" className="navbar-brand">
+                    <span className="text-black">Home</span>
+                </Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav me-auto">
+                        <li className="nav-item">
+                            <Link to="/about" className="nav-link">
+                                <span className="text-muted">About Us</span>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/services" className="nav-link">
+                                <span className="text-muted">Services</span>
+                            </Link>
+                        </li>
+                    </ul>
+                    <div className="navbar-nav ms-auto">
+                        {store.token ? (
+                            <div className="d-flex align-items-center">
+                                <button
+                                    className="btn btn-outline-primary nav-item custom-link text-truncate mx-1"
+                                    style={{ maxWidth: "150px", width: "auto" }}
+                                    onClick={handleProfile}
+                                >
+                                    Profile
+                                </button>
+                                <button onClick={handleLogout} className="btn btn-outline-primary mx-1" style={{ whiteSpace: "nowrap" }}>
+                                    Log out
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="d-flex flex-column flex-lg-row">
+                                <Link to="/login" className="btn btn-outline-primary mx-2 my-1 my-lg-0">Login</Link>
+                                <Link to="/signup" className="btn btn-outline-primary mx-2 my-1 my-lg-0">Signup</Link>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ServiceCard from '../../component/serviceCard';
 
+
 const CompanyView = () => {
     const { company_id } = useParams();
     const [services, setServices] = useState([]);
@@ -40,8 +41,9 @@ const CompanyView = () => {
         return <div>Loading...</div>;
     }
 
-    return (
+    return ( 
         <div>
+            <img src="/eladri.jpg" alt="Descripción de la imagen" height={(100)} />
             <h1 className='mt-5 text-center'> nombre de la compañia Services</h1>
             <h3 className='text-center mt-2'>Take a look to my Services!</h3>
             <div className="service-cards mt-5 container">
