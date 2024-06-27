@@ -554,8 +554,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						headers: {
-							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.token}`
+							"Content-Type": "application/json"
 						}
 					});
 					if (!resp.ok) {
@@ -566,20 +565,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return data;
 				} catch (error) {
 					console.error('Error fetching company:', error);
-					throw error;
+					return null; 
 				}
 			},
 
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
-				const token = store.token;
 
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
 						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${token}`
+							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify(companyData)
 					});
@@ -597,6 +594,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
+			
 			deleteCompanyWithDependencies: async (company_id) => {
 				const store = getStore();
 				const token = store.token;
@@ -643,6 +641,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
+			
 			getCompanyPublic: async (company_id) => {
 				const token = getStore().token;
 				try {
