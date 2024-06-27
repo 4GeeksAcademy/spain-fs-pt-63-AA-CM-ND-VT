@@ -3,17 +3,53 @@
     border: 3px solid;
     border-color: #f5e556;
     color: #000000;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    margin-bottom: 20px;
+    height: 25rem; /* Ajusta la altura según sea necesario */
+    width: 25rem; /* Ajusta el ancho según sea necesario */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Añade un poco de redondeo a las esquinas */
 }
-div{
-    color:#000000;
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+.clientSignup {
+    border-color: #f5e556;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
 }
 
 button {
     border: 1px solid #f5e556;
     border-radius: 8px;
-  }
-
-input{
-    color:#000000;
+    padding: 0.5rem 1.5rem;
 }
 
+input {
+    color: #000000;
+}
+
+div {
+    color: #000000;
+}

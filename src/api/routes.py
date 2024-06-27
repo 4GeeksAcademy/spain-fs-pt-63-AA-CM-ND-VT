@@ -10,6 +10,15 @@ from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
+@api.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://opulent-zebra-x7xr5xpprwfvqvw-3000.app.github.dev'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
+    return response
+
+# Allow CORS requests to this API
+CORS(api)
 # Allow CORS requests to this API
 CORS(api)
 bcrypt=Bcrypt()
