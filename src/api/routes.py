@@ -280,6 +280,19 @@ def update_request():
     db.session.commit()
     return jsonify({"msg": "Request updated successfully"}), 200
     
+@api.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user2(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 @api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
 def delete_requests(company_id):
