@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import { Context } from '../../store/appContext';
 
 const CompanyProfile = () => {
-    const navigate = useNavigate(); // Inicializa useNavigate
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -16,8 +16,9 @@ const CompanyProfile = () => {
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            if (store.company_id) {
-                const company = await actions.getCompany(store.company_id);
+            const comp_id = sessionStorage.getItem('company_id');
+            if (comp_id) {
+                const company = await actions.getCompany(comp_id);
                 if (company) {
                     setFormData({
                         name: company[0].name,
@@ -41,9 +42,13 @@ const CompanyProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedCompany = await actions.updateCompany(store.company_id, formData);
-        if (updatedCompany) {
-            setEditMode(false);
+        try {
+            const updatedCompany = await actions.updateCompany(sessionStorage.getItem('company_id'), formData);
+            if (updatedCompany) {
+                setEditMode(false);
+            }
+        } catch (error) {
+            console.error('Error updating company:', error);
         }
     };
 
@@ -51,10 +56,11 @@ const CompanyProfile = () => {
         const confirmed = window.confirm('Are you sure you want to delete this company? This action cannot be undone.');
         if (confirmed) {
             try {
-                const success = await actions.deleteCompanyWithDependencies(store.company_id);
+                const success = await actions.deleteCompanyWithDependencies(sessionStorage.getItem('company_id'));
                 if (success) {
                     setDeleteSuccess(true);
-                    navigate('/login'); // Navega al usuario a /login después de eliminar
+                    await actions.logout();
+                    navigate('/login');
                 }
             } catch (error) {
                 console.error('Error deleting company:', error);
@@ -64,7 +70,7 @@ const CompanyProfile = () => {
 
     if (deleteSuccess) return <div>Company profile deleted successfully. Redirecting...</div>;
 
-    if (!store.company) return <div>Loading...</div>;
+    if (!sessionStorage.getItem('company_id')) return <div>Loading...</div>;
 
     return (
         <div className="card mt-4">
@@ -127,7 +133,6 @@ const CompanyProfile = () => {
                 )}
             </div>
         </div>
-
     );
 };
 

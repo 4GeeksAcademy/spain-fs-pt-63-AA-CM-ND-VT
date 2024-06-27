@@ -34,27 +34,24 @@ export const Navbar = () => {
 	};
 
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+		<nav className="navbar navbar-expand-lg navbar-light shadow-sm">
 			<div className="container">
 				<Link to="/" className="navbar-brand">
-
 					<AdvancedImage
 						cldImg={cld.image("logo_le99zk")}
 						className="img-fluid rounded-circle"
 						style={{ height: "50px", width: "50px" }}
 						alt="Logo"
 					/>
-
+				</Link>
+				<Link to="/about" className="nav-link">
+					<span className="h4 text-black">About Us</span>
 				</Link>
 				<Link to="/services" className="nav-link">
-					<span className="h4">Services</span>
+					<span className="h4 text-black">Services</span>
 				</Link>
 
-				<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
-						<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
-					</svg>
-				</button>
+
 				<div className="collapse navbar-collapse justify-content-end" id="navbarNav">
 					{store.token ? (
 						<div className="navbar-nav">

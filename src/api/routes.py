@@ -133,27 +133,24 @@ def update_user(user_id):
         return jsonify({'error': str(e)}), 500
 
 @api.route('/adminportal/<int:company_id>', methods=['GET'])
-@jwt_required()
 def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
 @api.route('/adminportal/<int:company_id>', methods=['PUT'])
-@jwt_required()
 def update_company_admin(company_id):
-    current_user_id = get_jwt_identity()
-    current_user = Users.query.get(current_user_id)
-
-    if current_user.rol != 'company':
-        return jsonify({'error': 'User is not authorized'}), 403
-    
     company = Companies.query.get_or_404(company_id)
     data = request.get_json()
-    
-    company.name = data.get('name', company.name)
-    company.location = data.get('location', company.location)
-    company.owner = data.get('owner', company.owner)
-    company.image = data.get('image', company.image)
+
+    # Actualizar los campos de la compañía solo si existen en los datos recibidos
+    if 'name' in data:
+        company.name = data['name']
+    if 'location' in data:
+        company.location = data['location']
+    if 'owner' in data:
+        company.owner = data['owner']
+    if 'image' in data:
+        company.image = data['image']
 
     try:
         db.session.commit()
@@ -285,14 +282,15 @@ def update_request():
     
 
 @api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
-@jwt_required()
 def delete_requests(company_id):
     company = Companies.query.get_or_404(company_id)
-    services = Services.query.filter_by(companies_id=company_id).all()
+    services = Services.query.filter_by(company=company).all()
+
     for service in services:
-        bookings = Bookings.query.filter_by(services_id=service.id).all()
+        bookings = Bookings.query.filter_by(service=service).all()
         for booking in bookings:
-            Requests.query.filter_by(bookings_id=booking.id).delete()
+            Requests.query.filter_by(booking=booking).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Requests deleted successfully"}), 200
@@ -302,12 +300,13 @@ def delete_requests(company_id):
 
 
 @api.route('/companies/<int:company_id>/bookings', methods=['DELETE'])
-@jwt_required()
 def delete_bookings(company_id):
     company = Companies.query.get_or_404(company_id)
-    services = Services.query.filter_by(companies_id=company_id).all()
+    services = Services.query.filter_by(company=company).all()
+
     for service in services:
-        Bookings.query.filter_by(services_id=service.id).delete()
+        Bookings.query.filter_by(service=service).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Bookings deleted successfully"}), 200
@@ -317,10 +316,10 @@ def delete_bookings(company_id):
 
 
 @api.route('/companies/<int:company_id>/services', methods=['DELETE'])
-@jwt_required()
 def delete_services(company_id):
     company = Companies.query.get_or_404(company_id)
-    Services.query.filter_by(companies_id=company_id).delete()
+    Services.query.filter_by(company=company).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Services deleted successfully"}), 200
@@ -330,10 +329,10 @@ def delete_services(company_id):
 
 
 @api.route('/companies/<int:company_id>', methods=['DELETE'])
-@jwt_required()
 def delete_company(company_id):
     company = Companies.query.get_or_404(company_id)
     db.session.delete(company)
+
     try:
         db.session.commit()
         return jsonify({"message": "Company deleted successfully"}), 200

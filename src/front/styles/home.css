@@ -1,12 +1,30 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.btn-yellow {
+    background-color: #f5e556;
+    border: none;
+    color: #000;
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.btn-yellow:hover {
+    background-color: #e5d545;
+    color: #000;
+}
 
-.perso {
-    width: 400px;
-    height: 400px;
+.feature {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+}
+
+.feature.bg-yellow {
+    background-color: #f5e556;
+}
+
+.bi {
+    font-size: 1.5rem;
+}
+
+header {
+    background-color: #f5e556;
 }
