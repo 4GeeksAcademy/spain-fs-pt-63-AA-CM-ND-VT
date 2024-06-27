@@ -16,8 +16,9 @@ const CompanyProfile = () => {
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            if (store.company_id) {
-                const company = await actions.getCompany(store.company_id);
+            const comp_id =sessionStorage.getItem('company_id');
+            if (comp_id) {
+                const company = await actions.getCompany(comp_id);
                 if (company) {
                     setFormData({
                         name: company[0].name,
@@ -41,7 +42,7 @@ const CompanyProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedCompany = await actions.updateCompany(store.company_id, formData);
+        const updatedCompany = await actions.updateCompany(sessionStorage.getItem('company_id'), formData);
         if (updatedCompany) {
             setEditMode(false);
         }
@@ -51,7 +52,7 @@ const CompanyProfile = () => {
         const confirmed = window.confirm('Are you sure you want to delete this company? This action cannot be undone.');
         if (confirmed) {
             try {
-                const success = await actions.deleteCompanyWithDependencies(store.company_id);
+                const success = await actions.deleteCompanyWithDependencies(sessionStorage.getItem('company_id'));
                 if (success) {
                     setDeleteSuccess(true);
                     navigate('/login'); // Navega al usuario a /login después de eliminar
@@ -64,7 +65,7 @@ const CompanyProfile = () => {
 
     if (deleteSuccess) return <div>Company profile deleted successfully. Redirecting...</div>;
 
-    if (!store.company) return <div>Loading...</div>;
+    if (!sessionStorage.getItem('company_id')) return <div>Loading...</div>;
 
     return (
         <div className="card mt-4">
