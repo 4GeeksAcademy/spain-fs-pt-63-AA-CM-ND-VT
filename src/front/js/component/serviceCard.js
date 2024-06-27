@@ -68,14 +68,13 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                 </div>
                 <div className="col-md-6">
                     <div className="card-body rounded m-2">
-
                         <h3 className="card-title text-center">{service.name}</h3>
-                        <p className="card-text"><h5>Description:</h5> {service.description}</p>
-                        <p className="card-text"><h5>Type:</h5> {serviceTypeName}</p>
-                        <p className="card-text"><h5>Price: $</h5>{service.price}</p>
-                        <p className="card-text"><h5>Duration:</h5> {service.duration} minutes</p>
-                        <p className="card-text"><h5>Available:</h5> {service.available ? "Yes" : "No"}</p>
-                        <p className="card-text"><h5>Location:</h5> {service.location}</p>
+                        <p className="card-text">Description:{service.description}</p>
+                        <p className="card-text">Type: {serviceTypeName}</p>
+                        <p className="card-text">Price: ${service.price}</p>
+                        <p className="card-text">Duration: {service.duration} minutes</p>
+                        <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
+                        <p className="card-text">Location: {service.location}</p>
                     </div>
                 </div>
                 <div className="col-md-2">

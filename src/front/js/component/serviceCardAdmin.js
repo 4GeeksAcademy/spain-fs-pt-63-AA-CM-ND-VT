@@ -17,7 +17,11 @@ const ServiceCardAdmin = ({ service, onEdit, onDelete }) => {
             <div className="row no-gutters">
                 <div className="col-md-4">
                     <div className="card-img-left">
-                        {myImage ? <AdvancedImage cldImg={myImage} className="img-fluid" /> : <img src="https://dummyimage.com/300x200/cccccc/000000.jpg&text=No+image+available" alt="Default" />}
+                        {myImage ? (
+                            <AdvancedImage cldImg={myImage} className="img-cover" />
+                        ) : (
+                            <img src="https://dummyimage.com/300x200/cccccc/000000.jpg&text=No+image+available" alt="Default" className="img-cover" />
+                        )}
                     </div>
                 </div>
                 <div className="col-md-8">

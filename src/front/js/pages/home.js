@@ -15,7 +15,7 @@ export const Home = () => {
     });
 
     return (
-        <div className="text-center mt-5">
+        <div className="text-center mt-2">
             <header className="bg-light py-5">
                 <div className="container px-5">
                     <div className="row gx-5 align-items-center justify-content-center">

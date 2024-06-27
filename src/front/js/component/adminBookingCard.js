@@ -8,7 +8,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
 
     const handleAccept = async () => {
         if (request) {
-            const result = await actions.updateRequestStatus(request.id, 'Aceptada', comment);
+            const result = await actions.updateRequestStatus(request.id, 'Accepted', comment);
             if (result) {
                 alert('Request accepted successfully.');
                 refreshData();
@@ -18,7 +18,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
 
     const handleReject = async () => {
         if (request) {
-            const result = await actions.updateRequestStatus(request.id, 'Rechazada', comment);
+            const result = await actions.updateRequestStatus(request.id, 'Rejected', comment);
             if (result) {
                 alert('Request rejected successfully.');
                 refreshData();
@@ -28,11 +28,11 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
 
     const getStatusClass = (status) => {
         switch (status) {
-            case 'Aceptada':
+            case 'Accepted':
                 return 'bg-success';
-            case 'Rechazada':
+            case 'Rejected':
                 return 'bg-danger';
-            case 'Pendiente':
+            case 'Pending':
                 return 'bg-warning';
             default:
                 return 'bg-light';
@@ -44,7 +44,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
     return (
         <div className={`card shadow-sm mb-4 ${statusClass}`}>
             <div className="card-header">
-                <h5 className="card-title">Reserva #{booking.id}</h5>
+                <h5>Booking #{booking.id}</h5>
             </div>
             <div className="card-body text-black">
                 <p className="card-text"><strong>User ID:</strong> {booking.users_id}</p>
@@ -62,7 +62,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Agregar un comentario"
+                        placeholder="Add a comment"
                         value={comment}
                         onChange={e => setComment(e.target.value)}
                     />
