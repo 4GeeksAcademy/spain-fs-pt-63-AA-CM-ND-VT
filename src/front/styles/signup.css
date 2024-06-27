@@ -1,4 +1,4 @@
-.card {
+.cardsign {
     cursor: pointer;
     border: 3px solid;
     border-color: #f5e556;
@@ -15,17 +15,17 @@
     border-radius: 10px; /* Añade un poco de redondeo a las esquinas */
 }
 
-.card:hover {
+.cardsign:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card-title {
+.cardsign-title {
     font-size: 1.5rem;
     margin-bottom: 1rem;
 }
 
-.card-text {
+.cardsign-text {
     font-size: 1rem;
     color: #555;
 }

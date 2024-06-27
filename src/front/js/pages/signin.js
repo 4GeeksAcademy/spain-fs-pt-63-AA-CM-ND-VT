@@ -44,21 +44,21 @@ const Signin = () => {
       {step === 1 && (
         <div className="row justify-content-around mt-5">
           <div className="col-md-4 mb-3 d-flex justify-content-center">
-            <div className="card p-3" onClick={() => handleRoleSelection("client")}>
-              <div className="card-body">
-                <h5 className="card-title">Client</h5>
+            <div className="cardsign p-3" onClick={() => handleRoleSelection("client")}>
+              <div className="cardsign-body">
+                <h5 className="cardsign-title">Client</h5>
                 <AdvancedImage cldImg={cld.image('')} className="img-cover" />
-                <p className="card-text">
+                <p className="cardsign-text">
                   Sign up as a client to access our services tailored for individual needs. Enjoy personalized recommendations and exclusive offers.
                 </p>
               </div>
             </div>
           </div>
           <div className="col-md-4 mb-3 d-flex justify-content-center">
-            <div className="card p-3" onClick={() => handleRoleSelection("company")}>
-              <div className="card-body">
-                <h5 className="card-title">Company</h5>
-                <p className="card-text">
+            <div className="cardsign p-3" onClick={() => handleRoleSelection("company")}>
+              <div className="cardsign-body">
+                <h5 className="cardsign-title">Company</h5>
+                <p className="cardsign-text">
                   Sign up as a company to access our business solutions and services. Manage your account, track orders, and leverage advanced analytics.
                 </p>
               </div>
@@ -67,9 +67,9 @@ const Signin = () => {
         </div>
       )}
       {step === 2 && (
-        <div className="card clientSignup mx-auto mt-4 p-4" style={{ maxWidth: '500px' }}>
-          <div className="card-body">
-            <h5 className="card-title mb-4">Please, complete the form</h5>
+        <div className="cardsign clientSignup mx-auto mt-4 p-4" style={{ maxWidth: '500px' }}>
+          <div className="cardsign-body">
+            <h5 className="cardsign-title mb-4">Please, complete the form</h5>
             <div className="form-group mb-3">
               <label htmlFor="name">Name</label>
               <input
