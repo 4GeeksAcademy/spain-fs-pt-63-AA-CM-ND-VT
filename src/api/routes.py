@@ -10,6 +10,15 @@ from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
+@api.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://opulent-zebra-x7xr5xpprwfvqvw-3000.app.github.dev'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
+    return response
+
+# Allow CORS requests to this API
+CORS(api)
 # Allow CORS requests to this API
 CORS(api)
 bcrypt=Bcrypt()
@@ -280,6 +289,19 @@ def update_request():
     db.session.commit()
     return jsonify({"msg": "Request updated successfully"}), 200
     
+@api.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user2(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 @api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
 def delete_requests(company_id):

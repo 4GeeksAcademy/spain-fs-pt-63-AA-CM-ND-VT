@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/signup.css"
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen/index";
 
 const Signin = () => {
   const { actions } = useContext(Context);
@@ -11,7 +13,13 @@ const Signin = () => {
   const [rol, setRol] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [location, setLocation] = useState("");
-  const [step, setStep] = useState(1); // step 1 for role selection, step 2 for signup form
+  const [step, setStep] = useState(1); 
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: 'dszc6zmjd'
+    }
+  });
 
   const navigate = useNavigate();
 
@@ -35,26 +43,31 @@ const Signin = () => {
       <h1>Signup</h1>
       {step === 1 && (
         <div className="row justify-content-around mt-5">
-          <div className="card col-md-4 p-3 mb-3" onClick={() => handleRoleSelection("client")}>
-            <div className="card-body">
-              <h5 className="card-title">Client</h5>
-              <p className="card-text">
-                Sign up as a client to access our services tailored for individual needs.
-              </p>
+          <div className="col-md-4 mb-3 d-flex justify-content-center">
+            <div className="card p-3" onClick={() => handleRoleSelection("client")}>
+              <div className="card-body">
+                <h5 className="card-title">Client</h5>
+                <AdvancedImage cldImg={cld.image('')} className="img-cover" />
+                <p className="card-text">
+                  Sign up as a client to access our services tailored for individual needs. Enjoy personalized recommendations and exclusive offers.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="card col-md-4 p-3" onClick={() => handleRoleSelection("company")}>
-            <div className="card-body">
-              <h5 className="card-title">Company</h5>
-              <p className="card-text">
-                Sign up as a company to access our business solutions and services.
-              </p>
+          <div className="col-md-4 mb-3 d-flex justify-content-center">
+            <div className="card p-3" onClick={() => handleRoleSelection("company")}>
+              <div className="card-body">
+                <h5 className="card-title">Company</h5>
+                <p className="card-text">
+                  Sign up as a company to access our business solutions and services. Manage your account, track orders, and leverage advanced analytics.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       )}
       {step === 2 && (
-        <div className="card clientSingnup mx-auto mt-4 p-4" style={{ maxWidth: '500px'}}>
+        <div className="card clientSignup mx-auto mt-4 p-4" style={{ maxWidth: '500px' }}>
           <div className="card-body">
             <h5 className="card-title mb-4">Please, complete the form</h5>
             <div className="form-group mb-3">
