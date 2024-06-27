@@ -1,0 +1,6 @@
+/* about.css */
+.small-img {
+    width: 400px; /* Adjust this value to make the image smaller or larger */
+    height: 400px; /* Ensure the image remains a circle */
+    object-fit: cover; /* This ensures the image fits well within the circle */
+}
