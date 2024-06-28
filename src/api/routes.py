@@ -12,7 +12,7 @@ api = Blueprint('api', __name__)
 
 @api.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://improved-trout-q7vq64r6g7xv3447v-3000.app.github.dev'
+    response.headers['Access-Control-Allow-Origin'] = 'https://opulent-zebra-x7xr5xpprwfvqvw-3000.app.github.dev'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
     return response
@@ -380,6 +380,14 @@ def get_company_public(company_id):
         return jsonify(company_data), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
+
+@api.route('/services/<int:service_id>', methods=['GET'])
+def get_service(service_id):
+    service = Services.query.get(service_id)
+    if not service:
+        return jsonify({"msg": "Service not found"}), 404
+
+    return jsonify(service.serialize()), 200
 
 @api.route('/services/<int:service_id>', methods=['PUT'])
 def update_service(service_id):

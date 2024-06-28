@@ -1,21 +1,46 @@
-import React from "react";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage } from "@cloudinary/react";
+import React, { useEffect, useState, useContext } from "react";
+import { Context } from "../store/appContext";
 
 const UserBookingCard = ({ booking, request }) => {
+    const { actions } = useContext(Context);
+    const [service, setService] = useState(null);
+
+    useEffect(() => {
+        const fetchService = async () => {
+            const serviceData = await actions.getService(booking.services_id);
+            if (serviceData) {
+                setService(serviceData);
+            }
+        };
+
+        fetchService();
+    }, [actions, booking.services_id]);
+
     return (
         <div className="card mb-4">
-            <div className="card-body">
-                <h5 className="card-title">Booking ID: {booking.id}</h5>
-                <p className="card-text">Service ID: {booking.services_id}</p>
-                <p className="card-text"> Date: {booking.start_day_date}</p>
-                <p className="card-text"> Time: {booking.start_time_date}</p>
-                {request && (
-                    <>
-                        <p className="card-text">Status: {request.status}</p>
-                        <p className="card-text">Comment: {request.comment ? request.comment : "No comment"}</p>
-                    </>
-                )}
+            <div className="row no-gutters">
+                <div className="col-md-12">
+                    <div className="card-body">
+                        <h5 className="card-title">Booking ID: {booking.id}</h5>
+                        <p className="card-text">Start Date: {booking.start_day_date}</p>
+                        <p className="card-text">Start Time: {booking.start_time_date}</p>
+                        {request && (
+                            <>
+                                <p className="card-text">Request Status: {request.status}</p>
+                                <p className="card-text">Request Comment: {request.comment}</p>
+                            </>
+                        )}
+                        {service && (
+                            <>
+                                <h5 className="card-title mt-4">Service Details</h5>
+                                <p className="card-text">Name: {service.name}</p>
+                                <p className="card-text">Description: {service.description}</p>
+                                <p className="card-text">Price: {service.price}€</p>
+                                <p className="card-text">Duration: {service.duration} minutes</p>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

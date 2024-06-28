@@ -184,6 +184,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					sessionStorage.removeItem("user_id");
 					sessionStorage.removeItem("username");
 					sessionStorage.removeItem("rol");
+					sessionStorage.removeItem("companyname");
+					sessionStorage.removeItem("company_id");
 					setStore({
 						token: null,
 						username: null,
@@ -209,6 +211,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setCompanyIdService: (company_id) => {
 				setStore({ company_id_service: company_id });
+			},
+
+			getService: async (service_id) => {
+				const store = getStore();
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch service');
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.error('Error fetching service:', error);
+					return null;
+				}
 			},
 
 			getServicesByCompany: async (companyId) => {
@@ -364,7 +385,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await resp.json();
 					const dataRequest = {
 						booking_id: data.id,
-						status: "Pendiente",
+						status: "Pending",
 						comment: ""
 					};
 

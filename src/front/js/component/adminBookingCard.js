@@ -65,7 +65,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 {request && (
                     <>
                         <p className="card-text"><strong>Status:</strong> {request.status}</p>
-                        <p className="card-text"><strong>Comments:</strong> {request.comment}</p>
+                        <p className="card-text"><strong>Comments:</strong> {request.comment ? request.comment : "No comments"}</p>
                     </>
                 )}
             </div>
