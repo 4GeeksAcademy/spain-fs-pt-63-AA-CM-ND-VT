@@ -183,8 +183,8 @@ const AdminServices = () => {
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleModalClose}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
+                                <button type="button" className="btn btn-outline-danger" onClick={handleModalClose}>Close</button>
+                                <button type="button" className="btn btn-outline-primary" onClick={() => handleSubmit()}>Save changes</button>
                             </div>
                         </div>
                     </div>

@@ -42,9 +42,9 @@ const AdminBookings = () => {
                             onChange={handleFilterChange}
                         >
                             <option value="Todas">All</option>
-                            <option value="Aceptada">Accepted</option>
-                            <option value="Rechazada">Declined</option>
-                            <option value="Pendiente">Pending</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Pending">Pending</option>
                         </select>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ api = Blueprint('api', __name__)
 
 @api.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://improved-trout-q7vq64r6g7xv3447v-3000.app.github.dev'
+    response.headers['Access-Control-Allow-Origin'] = 'https://opulent-zebra-x7xr5xpprwfvqvw-3000.app.github.dev'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
     return response
@@ -35,7 +35,7 @@ def signin():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
@@ -51,7 +51,7 @@ def signup_company():
         new_company = Companies(name=data['company_name'], location=data['location'], owner=new_user.id)
         db.session.add(new_company)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
@@ -88,6 +88,14 @@ def login():
         response['company_id'] = company.id
 
     return jsonify(response)
+
+@api.route('/clientportal/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    return jsonify(user.serialize()), 200
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -131,8 +139,6 @@ def update_user(user_id):
         return jsonify({'error': 'Unauthorized'}), 401
     user.name = data.get('name', user.name)
     user.email = data.get('email', user.email)
-    user.rol = data.get('rol', user.rol)
-    user.image_url = data.get('image_url', user.image_url)
 
     try:
         db.session.commit()
@@ -380,6 +386,14 @@ def get_company_public(company_id):
         return jsonify(company_data), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
+
+@api.route('/services/<int:service_id>', methods=['GET'])
+def get_service(service_id):
+    service = Services.query.get(service_id)
+    if not service:
+        return jsonify({"msg": "Service not found"}), 404
+
+    return jsonify(service.serialize()), 200
 
 @api.route('/services/<int:service_id>', methods=['PUT'])
 def update_service(service_id):

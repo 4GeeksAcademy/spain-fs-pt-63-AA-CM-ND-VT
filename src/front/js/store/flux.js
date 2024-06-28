@@ -83,7 +83,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						`${process.env.BACKEND_URL}/api/signin`,
 						opts
 					);
-					if (resp.status !== 201) {
+					if (resp.status !== 200) {
 						Swal.fire({
 							title: "Oops...",
 							text: "There has been some error, please try again!",
@@ -135,23 +135,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 							icon: "warning",
 							iconColor: "#f5e556",
 							confirmButtonColor: "#f5e556"
-							
-						  });
+						});
 						return false;
 					}
 					Swal.fire({
-						title: "Nice,",
-						text: "You signed up succesfully!",
+						title: "Nice!",
+						text: "You signed up successfully!",
 						icon: "success",
 						iconColor: "#f5e556",
 						confirmButtonColor: "#f5e556"
-					  });
+					});
 					return true;
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						title: "Error!",
+						text: "An error occurred, please try again later.",
+						icon: "error",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					});
 					return false;
 				}
 			},
+			
 
 			syncToken: () => {
 				const token = sessionStorage.getItem("token");
@@ -184,6 +191,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					sessionStorage.removeItem("user_id");
 					sessionStorage.removeItem("username");
 					sessionStorage.removeItem("rol");
+					sessionStorage.removeItem("companyname");
+					sessionStorage.removeItem("company_id");
 					setStore({
 						token: null,
 						username: null,
@@ -209,6 +218,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			setCompanyIdService: (company_id) => {
 				setStore({ company_id_service: company_id });
+			},
+
+			getService: async (service_id) => {
+				const store = getStore();
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch service');
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.error('Error fetching service:', error);
+					return null;
+				}
 			},
 
 			getServicesByCompany: async (companyId) => {
@@ -364,7 +392,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await resp.json();
 					const dataRequest = {
 						booking_id: data.id,
-						status: "Pendiente",
+						status: "Pending",
 						comment: ""
 					};
 

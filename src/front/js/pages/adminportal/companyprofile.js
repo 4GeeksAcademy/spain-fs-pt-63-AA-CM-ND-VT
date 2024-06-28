@@ -13,6 +13,7 @@ const CompanyProfile = () => {
         owner: '',
         image: ''
     });
+    const [ownerName, setOwnerName] = useState(''); // Estado para el nombre del propietario
 
     useEffect(() => {
         const fetchCompanyData = async () => {
@@ -26,6 +27,10 @@ const CompanyProfile = () => {
                         owner: company[0].owner,
                         image: company[0].image
                     });
+                    const ownerData = await actions.getUser(company[0].owner);
+                    if (ownerData) {
+                        setOwnerName(ownerData.name);
+                    }
                 }
             }
         };
@@ -80,7 +85,7 @@ const CompanyProfile = () => {
                     <>
                         <p><strong>Name:</strong> {formData.name}</p>
                         <p><strong>Location:</strong> {formData.location}</p>
-                        <p><strong>Owner:</strong> {formData.owner}</p>
+                        <p><strong>Owner:</strong> {ownerName ? ownerName : 'Loading...'}</p>
                         {formData.image && <img src={formData.image} alt="Company Logo" className="img-fluid" />}
                         <button className="btn btn-outline-primary me-2 btnwid" onClick={() => setEditMode(true)}>Edit Profile</button>
                         <button className="btn btn-outline-danger btnwid" onClick={handleDelete}>Delete Company</button>
