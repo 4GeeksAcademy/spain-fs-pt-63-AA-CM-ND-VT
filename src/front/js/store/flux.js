@@ -135,23 +135,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 							icon: "warning",
 							iconColor: "#f5e556",
 							confirmButtonColor: "#f5e556"
-							
-						  });
+						});
 						return false;
 					}
 					Swal.fire({
-						title: "Nice,",
-						text: "You signed up succesfully!",
+						title: "Nice!",
+						text: "You signed up successfully!",
 						icon: "success",
 						iconColor: "#f5e556",
 						confirmButtonColor: "#f5e556"
-					  });
+					});
 					return true;
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						title: "Error!",
+						text: "An error occurred, please try again later.",
+						icon: "error",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					});
 					return false;
 				}
 			},
+			
 
 			syncToken: () => {
 				const token = sessionStorage.getItem("token");

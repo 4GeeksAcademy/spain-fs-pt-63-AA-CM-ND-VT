@@ -35,7 +35,7 @@ def signin():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
@@ -51,7 +51,7 @@ def signup_company():
         new_company = Companies(name=data['company_name'], location=data['location'], owner=new_user.id)
         db.session.add(new_company)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
