@@ -15,17 +15,17 @@ export const Home = () => {
     });
 
     return (
-        <div className="text-center mt-5">
+        <div className="text-center mt-2">
             <header className="bg-light py-5">
                 <div className="container px-5">
                     <div className="row gx-5 align-items-center justify-content-center">
-                        <div className="col-lg-8 col-xl-7 col-xxl-6">
-                            <div className="my-5 text-center text-xl-start">
+                        <div className="col-lg-8 col-xl-7 col-xxl-6 mb-4 mb-lg-0">
+                            <div className="my-5 text-center">
                                 <h1 className="display-5 fw-bolder text-dark mb-2">Welcome to Our Hairdressing Platform</h1>
                                 <p className="lead fw-normal text-dark-50 mb-4">Register as a client or company to easily and quickly hire and offer hairdressing services.</p>
-                                <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <Link to="/signup" className="btn btn-yellow btn-lg px-4 me-sm-3">Register</Link>
-                                    <Link to="/services" className="btn btn-outline-dark btn-lg px-4">View Services</Link>
+                                <div className="d-grid gap-3 d-md-flex justify-content-md-center">
+                                    <Link to="/register" className="btn btn-yellow btnwidhome py-2">Register</Link>
+                                    <Link to="/services" className="btn btn-outline-dark btnwidhome py-2">View Services</Link>
                                 </div>
                             </div>
                         </div>

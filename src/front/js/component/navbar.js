@@ -35,7 +35,7 @@ export const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light shadow-sm">
             <div className="container">
-                <Link to="/" className="navbar-brand">
+                <Link to="/" className="nav-link px-2 text-body-secondary ">
                     <span className="text-black">Home</span>
                 </Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,12 +44,12 @@ export const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav me-auto">
                         <li className="nav-item">
-                            <Link to="/about" className="nav-link">
+                            <Link to="/about" className="nav-link px-2 text-body-secondary">
                                 <span className="text-muted">About Us</span>
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/services" className="nav-link">
+                            <Link to="/services" className="nav-link px-2 text-body-secondary">
                                 <span className="text-muted">Services</span>
                             </Link>
                         </li>
@@ -58,20 +58,20 @@ export const Navbar = () => {
                         {store.token ? (
                             <div className="d-flex align-items-center">
                                 <button
-                                    className="btn btn-outline-primary nav-item custom-link text-truncate mx-1"
-                                    style={{ maxWidth: "150px", width: "auto" }}
+                                    className="btn btn-outline-primary nav-item custom-link text-truncate mx-1 btnwid"
+
                                     onClick={handleProfile}
                                 >
                                     Profile
                                 </button>
-                                <button onClick={handleLogout} className="btn btn-outline-primary mx-1" style={{ whiteSpace: "nowrap" }}>
+                                <button onClick={handleLogout} className="btn btn-outline-primary mx-1 btnwid" >
                                     Log out
                                 </button>
                             </div>
                         ) : (
                             <div className="d-flex flex-column flex-lg-row">
-                                <Link to="/login" className="btn btn-outline-primary mx-2 my-1 my-lg-0">Login</Link>
-                                <Link to="/signup" className="btn btn-outline-primary mx-2 my-1 my-lg-0">Signup</Link>
+                                <Link to="/login" className="btn btn-outline-primary mx-2 my-1 my-lg-0 btnwid">Login</Link>
+                                <Link to="/signup" className="btn btn-outline-primary mx-2 my-1 my-lg-0 btnwid">Signup</Link>
                             </div>
                         )}
                     </div>

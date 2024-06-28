@@ -40,7 +40,7 @@ const Signin = () => {
 
   return (
     <div className="container text-center mt-5">
-      <h1>Signup</h1>
+      <h1 className="mb-2">Signup</h1>
       {step === 1 && (
         <div className="row justify-content-around mt-5">
           <div className="col-md-4 mb-3 d-flex justify-content-center">
@@ -129,10 +129,10 @@ const Signin = () => {
                 </div>
               </>
             )}
-            <button className="btn btn-outline-primary mr-2" onClick={() => setStep(1)}>
+            <button className="btn btn-outline-primary mr-2 btnwid" onClick={() => setStep(1)}>
               Back
             </button>
-            <button className="btn btn-outline-primary ms-2" onClick={handleSignup}>
+            <button className="btn btn-outline-primary ms-2 btnwid" onClick={handleSignup}>
               Signup
             </button>
           </div>

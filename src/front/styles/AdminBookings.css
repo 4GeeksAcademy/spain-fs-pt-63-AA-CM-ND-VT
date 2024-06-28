@@ -5,11 +5,8 @@
     transition: transform 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-}
-
-.card-body, .card-header {
+.card-body,
+.card-header {
     background-color: #f8f9fa;
 }
 
@@ -20,10 +17,6 @@
 
 .input-group {
     width: 100%;
-}
-
-.btn {
-    width: 48%;
 }
 
 .bg-success {

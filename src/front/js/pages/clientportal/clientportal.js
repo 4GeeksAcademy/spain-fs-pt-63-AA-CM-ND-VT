@@ -38,7 +38,7 @@ const ClientPortal = () => {
                             href="#reservas"
                             onClick={() => setActiveTab('reservas')}
                         >
-                            Bookings and Requests:
+                            Bookings
                         </a>
                     </li>
                     <li className="nav-item">
@@ -47,7 +47,7 @@ const ClientPortal = () => {
                             href="#perfil"
                             onClick={() => setActiveTab('perfil')}
                         >
-                            My Profile
+                            Profile
                         </a>
                     </li>
                 </ul>

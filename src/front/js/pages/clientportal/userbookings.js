@@ -18,21 +18,18 @@ const UserBookings = () => {
         fetchBookingsAndRequests();
     }, [actions]);
     
-
     return (
-        <div>
-            <h2>Bookings and Requests</h2>
-            <div className="container">
-                <div className="row">
-                    {bookings.map(booking => {
-                        const relatedRequest = requests.find(req => req.bookings_id === booking.id);
-                        return (
-                            <div key={booking.id} className="col-12">
-                                <UserBookingCard booking={booking} request={relatedRequest} />
-                            </div>
-                        );
-                    })}
-                </div>
+        <div className="container">
+            <h2 className="my-4">Bookings and Requests</h2>
+            <div className="row">
+                {bookings.map(booking => {
+                    const relatedRequest = requests.find(req => req.bookings_id === booking.id);
+                    return (
+                        <div key={booking.id} className="col-sm-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+                            <UserBookingCard booking={booking} request={relatedRequest} />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
