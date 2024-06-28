@@ -43,13 +43,12 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
         };
         const success = await actions.reserveService(reservationData);
         if (success) {
-            console.log("Service reserved:", reservationData);
             setShow(false);
         } else {
             Swal.fire({
-                title: "Oops...",
-                text: "Failed to reserve the service. Please try again.",
-                icon: "warning",
+                title: "Service reserved",
+                text: "Have a good time",
+                icon: "success",
                 iconColor: "#f5e556",
                 confirmButtonColor: "#f5e556"
                 
