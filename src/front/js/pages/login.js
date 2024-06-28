@@ -40,6 +40,7 @@ const Login = () => {
                 />
                 <input
                   type="password"
+                  pattern=""
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

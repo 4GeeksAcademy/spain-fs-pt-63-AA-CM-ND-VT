@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2'
+
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -32,7 +34,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+							
+						  });
 						return false;
 					}
 					const data = await resp.json();
@@ -75,14 +84,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						opts
 					);
 					if (resp.status !== 201) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+
+						  });
 						return false;
 					}
 					const data = await resp.json();
 					alert(data.msg);
 					return true;
 				} catch (error) {
-					console.log(error);
 					return false;
 				}
 			},
@@ -107,8 +122,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 						`${process.env.BACKEND_URL}/api/signup_company`,
 						opts
 					);
-					if (resp.status !== 201) {
-						alert("There has been some error");
+					if (resp.status !== 200) {
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+							
+						  });
 						return false;
 					}
 					const data = await resp.json();
@@ -190,7 +212,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/services?companies_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+							
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -214,7 +243,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/all_services`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -241,11 +276,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 						opts
 					);
 					if (resp.status !== 201) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 					const data = await resp.json();
-					alert("Service created successfully");
+					Swal.fire({
+						title: "Confirmed",
+						text: "Service created successfully.",
+						icon: "success"
+					  });
 					return true;
 				} catch (error) {
 					console.log(error);
@@ -265,7 +310,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/master_services`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -290,7 +341,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/bookings`, opts);
 					if (resp.status !== 201) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 					const data = await resp.json();
@@ -312,7 +369,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					try {
 						const respRequest = await fetch(`${process.env.BACKEND_URL}/api/requests`, optsRequest);
 						if (respRequest.status !== 201) {
-							alert("There has been some error");
+							Swal.fire({
+								title: "Oops...",
+								text: "There has been some error, please try again!",
+								icon: "warning",
+								iconColor: "#f5e556",
+								confirmButtonColor: "#f5e556"
+							  });
 							return false;
 						}
 						alert("Service reserved successfully");
@@ -372,7 +435,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					const data = await response.json();
-					console.log('User updated successfully:', data);
 					return data;
 				} catch (error) {
 					console.error('Fetch error:', error);
@@ -401,11 +463,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
-						alert('Error deleting user');
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 
-					console.log('User deleted successfully');
 					setStore({ user: null });
 					return true;
 				} catch (error) {
@@ -431,7 +498,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_bookings?user_id=${userId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						
 						return [];
 					}
 					const data = await resp.json();
@@ -457,7 +524,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_requests?user_id=${userId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -485,7 +558,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_bookings?company_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -511,7 +590,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_requests?company_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -538,7 +623,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/update_request`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return null;
 					}
 					const data = await resp.json();
