@@ -78,7 +78,7 @@ const UserProfile = () => {
                             <p><strong>Name:</strong> {store.user.name}</p>
                             <p><strong>Email:</strong> {store.user.email}</p>
                             {store.user.image && <img src={store.user.image} alt="Profile" className="img-fluid" />}
-                            <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Edit Profile</button>
+                            {/* <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Edit Profile</button> */}
                             <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Profile</button>
                         </>
                     ) : (

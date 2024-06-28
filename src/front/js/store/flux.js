@@ -83,7 +83,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						`${process.env.BACKEND_URL}/api/signin`,
 						opts
 					);
-					if (resp.status !== 201) {
+					if (resp.status !== 200) {
 						Swal.fire({
 							title: "Oops...",
 							text: "There has been some error, please try again!",
