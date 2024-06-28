@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Context } from '../store/appContext';
+import Swal from 'sweetalert2'
 
 const AdminBookingCard = ({ booking, request, refreshData }) => {
     const { actions } = useContext(Context);
@@ -10,7 +11,13 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
         if (request) {
             const result = await actions.updateRequestStatus(request.id, 'Accepted', comment);
             if (result) {
-                alert('Request accepted successfully.');
+                Swal.fire({
+                    title: "Confirmed.",
+                    text: "Request accepted successfully.",
+                    icon: "success",
+                    iconColor: "#f5e556",
+                    confirmButtonColor: "#f5e556"
+                  });
                 refreshData();
             }
         }
@@ -20,7 +27,13 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
         if (request) {
             const result = await actions.updateRequestStatus(request.id, 'Rejected', comment);
             if (result) {
-                alert('Request rejected successfully.');
+                Swal.fire({
+                    title: "Confirmed.",
+                    text: "Request rejected successfully.",
+                    icon: "success",
+                    iconColor: "#f5e556",
+                    confirmButtonColor: "#f5e556"
+                  });
                 refreshData();
             }
         }

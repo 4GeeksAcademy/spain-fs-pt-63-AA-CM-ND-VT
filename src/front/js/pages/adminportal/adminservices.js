@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ServiceCardAdmin from "../../component/serviceCardAdmin";
-import ImageInput from "../../component/imageInput"; // Asegúrate de tener este componente
+import ImageInput from "../../component/imageInput";
+import Swal from 'sweetalert2'
+
 
 const AdminServices = () => {
     const { actions } = useContext(Context);
@@ -76,7 +78,14 @@ const AdminServices = () => {
                 }
             }
         } else {
-            alert("Company ID is missing. Please try again later.");
+            Swal.fire({
+                title: "Oops...",
+                text: "Company ID is missing. Please try again later.",
+                icon: "warning",
+                iconColor: "#f5e556",
+                confirmButtonColor: "#f5e556"
+                
+              });
         }
     };
 

@@ -4,6 +4,7 @@ import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
 import { Context } from '../store/appContext';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
     const { store, actions } = useContext(Context);
@@ -45,7 +46,14 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
             console.log("Service reserved:", reservationData);
             setShow(false);
         } else {
-            alert("Failed to reserve the service. Please try again.");
+            Swal.fire({
+                title: "Oops...",
+                text: "Failed to reserve the service. Please try again.",
+                icon: "warning",
+                iconColor: "#f5e556",
+                confirmButtonColor: "#f5e556"
+                
+              });
         }
     };
 
@@ -54,7 +62,15 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
         if (store.company_id_service) {
             navigate(`/companyview/${store.company_id_service}`);
         } else {
-            alert("Company ID is not available for this service");
+            Swal.fire({
+                title: "Oops...",
+                text: "Company ID is not available for this service",
+                icon: "warning",
+                iconColor: "#f5e556",
+                confirmButtonColor: "#f5e556"
+                
+              });
+            
         }
     };
 
