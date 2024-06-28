@@ -17,22 +17,23 @@ const UserBookingCard = ({ booking, request }) => {
     }, [actions, booking.services_id]);
 
     return (
-        <div className="card mb-4">
-            <div className="row no-gutters">
-                <div className="col-md-12">
-                    <div className="card-body">
+        <div className="card h-100">
+            <div className="card-body d-flex flex-column">
+                <div className="row">
+                    <div className="col-6">
                         <h5 className="card-title">Booking ID: {booking.id}</h5>
-                        <p className="card-text">Start Date: {booking.start_day_date}</p>
-                        <p className="card-text">Start Time: {booking.start_time_date}</p>
+                        <p className="card-text">Date: {booking.start_day_date} {booking.start_time_date}h</p>
                         {request && (
                             <>
                                 <p className="card-text">Request Status: {request.status}</p>
-                                <p className="card-text">Request Comment: {request.comment}</p>
+                                <p className="card-text">Request Comment: {request.comment ? request.comment : "No comments"}</p>
                             </>
                         )}
+                    </div>
+                    <div className="col-6">
                         {service && (
                             <>
-                                <h5 className="card-title mt-4">Service Details</h5>
+                                <h5 className="card-title">Service Details</h5>
                                 <p className="card-text">Name: {service.name}</p>
                                 <p className="card-text">Description: {service.description}</p>
                                 <p className="card-text">Price: {service.price}€</p>

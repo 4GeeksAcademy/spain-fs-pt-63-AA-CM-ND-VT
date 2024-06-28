@@ -131,8 +131,6 @@ def update_user(user_id):
         return jsonify({'error': 'Unauthorized'}), 401
     user.name = data.get('name', user.name)
     user.email = data.get('email', user.email)
-    user.rol = data.get('rol', user.rol)
-    user.image_url = data.get('image_url', user.image_url)
 
     try:
         db.session.commit()
