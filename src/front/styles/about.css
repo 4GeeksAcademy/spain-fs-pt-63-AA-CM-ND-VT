@@ -1,10 +1,18 @@
 /* about.css */
 .small-img {
-    width: 350px; /* Adjust this value to make the image smaller or larger */
-    height: 350px; /* Ensure the image remains a circle */
-    object-fit: cover; /* This ensures the image fits well within the circle */
+    width: 100%; /* Hacer que la imagen ocupe el ancho completo del contenedor */
+    max-width: 350px; /* Establecer un ancho máximo para las imágenes */
+    height: auto; /* Ajustar la altura automáticamente */
+    object-fit: cover; /* Asegurar que la imagen se ajuste bien dentro del contenedor */
+    border-radius: 50%; /* Hacer que la imagen sea circular */
 }
 
-body {
-    overflow-x: hidden;
+.text-center h5 {
+    margin-top: 15px; /* Añadir margen superior para separar el nombre de la imagen */
+}
+
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar los elementos dentro del contenedor */
 }

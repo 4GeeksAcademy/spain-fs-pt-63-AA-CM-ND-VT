@@ -40,7 +40,7 @@ const AdminPortal = () => {
                             href="#adminbookings"
                             onClick={() => setActiveTab('adminbookings')}
                         >
-                           Requests & Bookings  
+                           Bookings 
                         </a>
                     </li>
                     <li className="nav-item">

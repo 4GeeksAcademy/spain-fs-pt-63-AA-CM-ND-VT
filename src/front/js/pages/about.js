@@ -27,20 +27,17 @@ export const About = () => {
                 <div className="container px-3">
                     <h2 className="fw-bolder text-dark mb-4">Meet Our Team</h2>
                     <div className="row gx-5">
-                        <div className="col-md-4 mb-5 text-center">
-                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid rounded-circle small-img mb-3" alt="Adrián Alarcón" />
+                        <div className="col-12 col-md-4 mb-5 text-center">
+                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Adrián Alarcón" />
                             <h5 className="fw-bolder">Adrián Alarcón</h5>
-                            <p className="text-muted mb-0">Role and brief info about Member 1.</p>
                         </div>
-                        <div className="col-md-4 mb-5 text-center">
-                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid rounded-circle small-img mb-3" alt="Nacho Diez Lacruz" />
+                        <div className="col-12 col-md-4 mb-5 text-center">
+                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Nacho Diez Lacruz" />
                             <h5 className="fw-bolder">Nacho Diez Lacruz</h5>
-                            <p className="text-muted mb-0">Role and brief info about Member 2.</p>
                         </div>
-                        <div className="col-md-4 mb-5 text-center">
-                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid rounded-circle small-img mb-3" alt="Vanessa Taylor" />
+                        <div className="col-12 col-md-4 mb-5 text-center">
+                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Vanessa Taylor" />
                             <h5 className="fw-bolder">Vanessa Taylor</h5>
-                            <p className="text-muted mb-0">Role and brief info about Member 3.</p>
                         </div>
                     </div>
                 </div>

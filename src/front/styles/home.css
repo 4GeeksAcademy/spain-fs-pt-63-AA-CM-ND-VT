@@ -1,12 +1,32 @@
+.btn-custom {
+    padding: 10px 20px; /* Reduce la altura y aumenta el ancho */
+    font-size: 1rem; /* Ajusta el tamaño de la fuente para mejor apariencia */
+    border-radius: 5px; /* Ajusta el radio de borde */
+    min-width: 300px; /* Asegura una anchura mínima */
+}
+
 .btn-yellow {
     background-color: #f5e556;
     border: none;
     color: #000;
+    transition: background-color 0.3s ease;
 }
 
 .btn-yellow:hover {
     background-color: #e5d545;
     color: #000;
+}
+
+.btn-outline-dark {
+    border: 2px solid #000;
+    color: #000;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+    background-color: #000;
+    color: #fff;
 }
 
 .feature {
@@ -27,4 +47,8 @@
 
 header {
     background-color: #f5e556;
+}
+
+.btnwidhome {
+    min-width: 250px;
 }

@@ -5,3 +5,7 @@
     overflow: hidden;
     max-width: 100%;
 }
+
+.btnwid {
+    min-width: 150px;
+  }
