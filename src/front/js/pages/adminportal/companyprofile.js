@@ -75,20 +75,20 @@ const CompanyProfile = () => {
     return (
         <div className="card mt-4">
             <div className="card-body">
-                <h2>Perfil de la Compañía</h2>
+                <h2>Company Profile</h2>
                 {!editMode ? (
                     <>
-                        <p><strong>Nombre:</strong> {formData.name}</p>
-                        <p><strong>Ubicación:</strong> {formData.location}</p>
-                        <p><strong>Dueño:</strong> {formData.owner}</p>
+                        <p><strong>Name:</strong> {formData.name}</p>
+                        <p><strong>Location:</strong> {formData.location}</p>
+                        <p><strong>Owner:</strong> {formData.owner}</p>
                         {formData.image && <img src={formData.image} alt="Company Logo" className="img-fluid" />}
-                        <button className="btn btn-outline-primary me-2 btnwid" onClick={() => setEditMode(true)}>Editar Perfil</button>
+                        <button className="btn btn-outline-primary me-2 btnwid" onClick={() => setEditMode(true)}>Edit Profile</button>
                         <button className="btn btn-outline-danger btnwid" onClick={handleDelete}>Delete Company</button>
                     </>
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <label className="form-label">Nombre:</label>
+                            <label className="form-label">Name:</label>
                             <input
                                 type="text"
                                 name="name"
@@ -98,7 +98,7 @@ const CompanyProfile = () => {
                             />
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Ubicación:</label>
+                            <label className="form-label">Location:</label>
                             <input
                                 type="text"
                                 name="location"
@@ -107,28 +107,8 @@ const CompanyProfile = () => {
                                 className="form-control"
                             />
                         </div>
-                        <div className="mb-3">
-                            <label className="form-label">Dueño:</label>
-                            <input
-                                type="text"
-                                name="owner"
-                                value={formData.owner}
-                                onChange={handleChange}
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Logo URL:</label>
-                            <input
-                                type="text"
-                                name="image"
-                                value={formData.image}
-                                onChange={handleChange}
-                                className="form-control"
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-outline-primary me-2">Guardar</button>
-                        <button type="button" className="btn btn-outline-secondary" onClick={() => setEditMode(false)}>Cancelar</button>
+                        <button type="submit" className="btn btn-outline-primary me-2">Save</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => setEditMode(false)}>Cancel</button>
                     </form>
                 )}
             </div>

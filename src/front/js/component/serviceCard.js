@@ -77,11 +77,11 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                     </div>
                 </div>
                 <div className="col-md-2 col-12">
-                    <div className="mt-3">
+                    <div className="d-flex justify-content-center flex-wrap mt-3">
                         {!hideCompanyButton && (
-                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2 w-100" onClick={handleCompany}>Company</button>
+                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2 btnwid" onClick={handleCompany}>Company</button>
                         )}
-                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2 w-100" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2 btnwid" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                                 <div className="form-group">
                                     <p><strong>Description: </strong> {service.description}</p>
                                     <p><strong>Type:</strong> {serviceTypeName}</p>
-                                    <p><strong>Price:</strong> ${service.price}</p>
+                                    <p><strong>Price:</strong> {service.price}€</p>
                                     <p><strong>Duration:</strong> {service.duration} minutes</p>
                                 </div>
                                 <div className="form-group">

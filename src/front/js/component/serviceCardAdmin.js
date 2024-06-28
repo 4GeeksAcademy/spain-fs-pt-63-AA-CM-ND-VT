@@ -1,4 +1,4 @@
-import React, {useContext,useEffect,useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Cloudinary } from "@cloudinary/url-gen";
 import { AdvancedImage } from "@cloudinary/react";
 import "../../styles/ServiceCard.css";
@@ -39,16 +39,20 @@ const ServiceCardAdmin = ({ service, onEdit, onDelete }) => {
                         )}
                     </div>
                 </div>
-                <div className="col-md-8">
-                    <div className="card-body">
+                <div className="col-md-6 col-12">
+                    <div className="card-body rounded m-2">
                         <h5 className="card-title">{service.name}</h5>
                         <p className="card-text">Description: {service.description}</p>
                         <p className="card-text">Type: {serviceTypeName}</p>
                         <p className="card-text">Price: {service.price}€</p>
                         <p className="card-text">Duration: {service.duration} minutes</p>
                         <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
-                        <button className="btn btn-outline-primary btnwid me-2" onClick={() => onEdit(service)}>Edit</button>
-                        <button className="btn btn-outline-danger btnwid" onClick={() => onDelete(service.id)}>Delete</button>
+                    </div>
+                </div>
+                <div className="col-md-2 col-12">
+                    <div className="d-flex justify-content-center flex-wrap mt-3">
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2 btnwid" onClick={() => onEdit(service)}>Edit</button>
+                        <button className="btn btn-outline-danger rounded py-1 px-2 m-2 btnwid" onClick={() => onDelete(service.id)}>Delete</button>
                     </div>
                 </div>
             </div>
