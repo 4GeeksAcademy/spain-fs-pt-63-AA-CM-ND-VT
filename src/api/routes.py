@@ -90,6 +90,14 @@ def login():
     return jsonify(response)
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    return jsonify(user.serialize()), 200
+
+@api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
 def client_portal(user_id):
     user = Users.query.get_or_404(user_id)

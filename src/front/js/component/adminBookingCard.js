@@ -1,11 +1,23 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Context } from '../store/appContext';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 const AdminBookingCard = ({ booking, request, refreshData }) => {
     const { actions } = useContext(Context);
     const [comment, setComment] = useState('');
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const userData = await actions.getUser(booking.users_id);
+            if (userData) {
+                setUser(userData);
+            }
+        };
+
+        fetchUser();
+    }, [booking.users_id]);
 
     const handleAccept = async () => {
         if (request) {
@@ -17,7 +29,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                     icon: "success",
                     iconColor: "#f5e556",
                     confirmButtonColor: "#f5e556"
-                  });
+                });
                 refreshData();
             }
         }
@@ -33,7 +45,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                     icon: "success",
                     iconColor: "#f5e556",
                     confirmButtonColor: "#f5e556"
-                  });
+                });
                 refreshData();
             }
         }
@@ -60,7 +72,7 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 <h5>Booking #{booking.id}</h5>
             </div>
             <div className="card-body text-black">
-                <p className="card-text"><strong>User ID:</strong> {booking.users_id}</p>
+                <p className="card-text"><strong>User:</strong> {user ? user.name : 'Loading...'}</p>
                 <p className="card-text"><strong>Information of the request:</strong> The request starts on {booking.start_day_date} at {booking.start_time_date}</p>
                 {request && (
                     <>
