@@ -95,7 +95,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return false;
 					}
 					const data = await resp.json();
-					alert(data.msg);
+					Swal.fire({
+						title: "Hello!",
+						text: "Welcome, have a good experience!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return true;
 				} catch (error) {
 					return false;
@@ -133,8 +139,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						  });
 						return false;
 					}
-					const data = await resp.json();
-					alert(data.msg);
+					Swal.fire({
+						title: "Nice,",
+						text: "You signed up succesfully!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return true;
 				} catch (error) {
 					console.log(error);
@@ -378,7 +389,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 							  });
 							return false;
 						}
-						alert("Service reserved successfully");
+						Swal.fire({
+							title: "Service reserved successfully.",
+							text: "We hope you enjoy it!",
+							icon: "success"
+						  });
 					} catch (error) {
 						console.log(error);
 						return false;
@@ -486,7 +501,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserBookings: async () => {
 				const userId = sessionStorage.getItem('user_id');
 				if (!userId) {
-					alert("User ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please try again later.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+						
+					  });
 					return [];
 				}
 				const opts = {
@@ -512,7 +534,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserRequests: async () => {
 				const userId = sessionStorage.getItem('user_id');
 				if (!userId) {
-					alert("User ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please try to log in again..",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+						
+					  });
 					return [];
 				}
 				const opts = {
@@ -546,7 +575,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getCompanyBookings: async () => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return [];
 				}
 				const opts = {
@@ -578,7 +613,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getCompanyRequests: async () => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return [];
 				}
 				const opts = {
@@ -610,7 +651,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateRequestStatus: async (requestId, status, comment) => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return null;
 				}
 				const opts = {
