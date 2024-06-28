@@ -61,30 +61,27 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
     return (
         <div className="card mb-4">
             <div className="row no-gutters">
-                <div className="col-md-4">
+                <div className="col-md-4 d-none d-md-block">
                     <div className="card-img-left">
                         {myImage ? <AdvancedImage cldImg={myImage} className="img-cover" /> : <p>No image available</p>}
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 col-12">
                     <div className="card-body rounded m-2">
                         <h3 className="card-title text-center">{service.name}</h3>
-                        <p className="card-text">Description:{service.description}</p>
+                        <p className="card-text">Description: {service.description}</p>
                         <p className="card-text">Type: {serviceTypeName}</p>
-                        <p className="card-text">Price: ${service.price}</p>
+                        <p className="card-text">Price: {service.price}€</p>
                         <p className="card-text">Duration: {service.duration} minutes</p>
-                        <p className="card-text">Available: {service.available ? "Yes" : "No"}</p>
                         <p className="card-text">Location: {service.location}</p>
                     </div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-2 col-12">
                     <div className="mt-3">
                         {!hideCompanyButton && (
-                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={handleCompany}>Company</button>
+                            <button className="btn btn-outline-primary rounded py-1 px-2 m-2 w-100" onClick={handleCompany}>Company</button>
                         )}
-                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
-
-
+                        <button className="btn btn-outline-primary rounded py-1 px-2 m-2 w-100" onClick={() => { store.user_id ? setShow(true) : navigate("/login") }}>Reserve</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +95,7 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                             </div>
                             <div className="modal-body">
                                 <div className="form-group">
-                                    <p><strong>Description:</strong> {service.description}</p>
+                                    <p><strong>Description: </strong> {service.description}</p>
                                     <p><strong>Type:</strong> {serviceTypeName}</p>
                                     <p><strong>Price:</strong> ${service.price}</p>
                                     <p><strong>Duration:</strong> {service.duration} minutes</p>

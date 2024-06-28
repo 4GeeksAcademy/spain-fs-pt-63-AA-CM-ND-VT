@@ -45,7 +45,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="form-control mb-2"
                 />
-                <button onClick={handleOnClick} className="btn btnfos-5">
+                <button onClick={handleOnClick} className="btn btn-outline-primary btnwid">
                   Login
                 </button>
               </div>

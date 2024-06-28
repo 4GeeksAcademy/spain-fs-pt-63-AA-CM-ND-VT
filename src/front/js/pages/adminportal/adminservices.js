@@ -118,8 +118,8 @@ const AdminServices = () => {
 
     return (
         <div className="flex">
-            <button className="btn btn-outline-primary rounded py-1 px-2" onClick={() => setShowModal(true)}>
-                Create
+            <button className="btn btn-outline-primary rounded py-2 px-4 btnwid" onClick={() => setShowModal(true)}>
+                Create new service
             </button>
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
@@ -183,7 +183,6 @@ const AdminServices = () => {
             )}
 
             <div className="mt-4">
-                <h2>Services by Company</h2>
                 <div className="container">
                     <div className="row">
                         {services.map(service => (

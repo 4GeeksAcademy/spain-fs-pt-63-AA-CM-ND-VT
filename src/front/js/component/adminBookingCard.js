@@ -51,7 +51,6 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 <p className="card-text"><strong>Information of the request:</strong> The request starts on {booking.start_day_date} at {booking.start_time_date}</p>
                 {request && (
                     <>
-                        <h6 className="card-subtitle mb-2">Request</h6>
                         <p className="card-text"><strong>Status:</strong> {request.status}</p>
                         <p className="card-text"><strong>Comments:</strong> {request.comment}</p>
                     </>
@@ -69,17 +68,18 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 </div>
                 <div className="d-flex justify-content-between">
                     <button
-                        className="btn btn-outline-success"
-                        onClick={handleAccept}
-                    >
-                        Accept
-                    </button>
-                    <button
-                        className="btn btn-outline-danger"
+                        className="btn btn-outline-danger btnwid"
                         onClick={handleReject}
                     >
                         Decline
                     </button>
+                    <button
+                        className="btn btn-outline-success btnwid"
+                        onClick={handleAccept}
+                    >
+                        Accept
+                    </button>
+
                 </div>
             </div>
         </div>

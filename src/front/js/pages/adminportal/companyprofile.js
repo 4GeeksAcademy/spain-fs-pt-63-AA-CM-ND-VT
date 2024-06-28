@@ -82,8 +82,8 @@ const CompanyProfile = () => {
                         <p><strong>Ubicación:</strong> {formData.location}</p>
                         <p><strong>Dueño:</strong> {formData.owner}</p>
                         {formData.image && <img src={formData.image} alt="Company Logo" className="img-fluid" />}
-                        <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Editar Perfil</button>
-                        <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Company</button>
+                        <button className="btn btn-outline-primary me-2 btnwid" onClick={() => setEditMode(true)}>Editar Perfil</button>
+                        <button className="btn btn-outline-danger btnwid" onClick={handleDelete}>Delete Company</button>
                     </>
                 ) : (
                     <form onSubmit={handleSubmit}>

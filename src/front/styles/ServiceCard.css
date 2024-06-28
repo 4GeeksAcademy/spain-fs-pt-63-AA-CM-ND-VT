@@ -20,7 +20,6 @@
 .card-img-left .cld-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .row.no-gutters {
@@ -46,3 +45,4 @@
 .modal-content {
   border: 2px solid #f5e556;
 }
+

@@ -185,7 +185,7 @@ def get_services():
 
 @api.route('/all_services', methods=['GET'])
 def get_all_services():
-    services = Services.query.all()
+    services = Services.query.filter_by(available=True).all()
     return jsonify([service.serialize() for service in services]), 200
 
 @api.route('/services', methods=['POST'])
