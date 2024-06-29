@@ -22,15 +22,16 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <div className="row justify-content-center mt-5">
         <h1 className="text-center mb-5">Login</h1>
-        <div className="col-md-8 col-lg-10 loginDiv">
+        <div className="loginDiv col-10">
           <div className="text-center">
             {store.token && store.token !== "" && store.token !== undefined ? (
               <p>You are logged in with this token: {store.token}</p>
             ) : (
-              <div>
+              <div className="w-75">
+                <h6>Please, enter your email and password.</h6>
                 <input
                   type="text"
                   placeholder="Email"

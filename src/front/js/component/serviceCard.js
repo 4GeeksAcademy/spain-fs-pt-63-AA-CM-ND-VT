@@ -67,7 +67,6 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                 icon: "warning",
                 iconColor: "#f5e556",
                 confirmButtonColor: "#f5e556"
-                
               });
             
         }
