@@ -124,8 +124,8 @@ const ServiceCard = ({ service, companyId, hideCompanyButton }) => {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-outline-primary" onClick={() => setShow(false)}>Close</button>
-                                <button type="button" className="btn btn-outline-primary" onClick={handleReserve}>Reserve</button>
+                                <button type="button" className="btn btn-outline-primary btnwid m-1" onClick={() => setShow(false)}>Close</button>
+                                <button type="button" className="btn btn-outline-primary btnwid m-1" onClick={handleReserve}>Reserve</button>
                             </div>
                         </div>
                     </div>

@@ -61,7 +61,7 @@ export const Navbar = () => {
                         {store.token ? (
                             <div className="d-flex align-items-center">
                                 <button
-                                    className="btn btn-outline-primary nav-item custom-link text-truncate mx-1 btnwid"
+                                    className="btn btn-outline-primary mx-1 btnwid"
 
                                     onClick={handleProfile}
                                 >

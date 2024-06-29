@@ -32,11 +32,11 @@ export const About = () => {
                             <h5 className="fw-bolder">Adrián Alarcón</h5>
                         </div>
                         <div className="col-12 col-md-4 mb-5 text-center">
-                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Nacho Diez Lacruz" />
+                            <AdvancedImage cldImg={cld.image('03_vnikli')} className="img-fluid small-img mb-3" alt="Nacho Diez Lacruz" />
                             <h5 className="fw-bolder">Nacho Diez Lacruz </h5>
                         </div>
                         <div className="col-12 col-md-4 mb-5 text-center">
-                            <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Vanessa Taylor" />
+                            <AdvancedImage cldImg={cld.image('vanesa_ja9yrk')} className="img-fluid small-img mb-3" alt="Vanessa Taylor" />
                             <h5 className="fw-bolder">Vanessa Taylor</h5>
                         </div>
                     </div>
