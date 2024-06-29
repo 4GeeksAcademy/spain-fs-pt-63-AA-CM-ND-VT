@@ -33,7 +33,7 @@ export const About = () => {
                         </div>
                         <div className="col-12 col-md-4 mb-5 text-center">
                             <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Nacho Diez Lacruz" />
-                            <h5 className="fw-bolder">Nacho Diez Lacruz</h5>
+                            <h5 className="fw-bolder">Nacho Diez Lacruz </h5>
                         </div>
                         <div className="col-12 col-md-4 mb-5 text-center">
                             <AdvancedImage cldImg={cld.image('i4mlhsipvrzdolh24ly2')} className="img-fluid small-img mb-3" alt="Vanessa Taylor" />
