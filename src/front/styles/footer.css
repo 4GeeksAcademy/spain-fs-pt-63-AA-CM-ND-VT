@@ -1,0 +1,25 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-top: 2px solid #f5e556 !important;
+    text-align: center; /* Para centrar el texto */
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #f5e556 !important;
+}
+
+.text-body-secondary {
+    color: #6c757d !important;
+}
+
+.small-link {
+    font-size: 1rem; /* Tamaño de letra más pequeño */
+    margin-right: 10px; /* Espacio entre enlaces */
+}
