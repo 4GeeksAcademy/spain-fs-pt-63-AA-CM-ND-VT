@@ -17,7 +17,7 @@ const UserBookings = () => {
     
         fetchBookingsAndRequests();
     }, [actions]);
-    
+
     return (
         <div className="container">
             <h2 className="my-4">Bookings and Requests</h2>
@@ -25,7 +25,7 @@ const UserBookings = () => {
                 {bookings.map(booking => {
                     const relatedRequest = requests.find(req => req.bookings_id === booking.id);
                     return (
-                        <div key={booking.id} className="col-sm-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+                        <div key={booking.id} className="col-12 col-md-6 col-lg-6 mb-4">
                             <UserBookingCard booking={booking} request={relatedRequest} />
                         </div>
                     );
