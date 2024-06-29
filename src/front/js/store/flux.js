@@ -59,11 +59,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						companyname: data.companyname,
 						company_id: data.company_id
 					});
+					Swal.fire({
+						title: "Hello!",
+						text: "Welcome, have a good experience!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return true;
 				} catch (error) {
 					console.log(error);
 				}
 			},
+
+
 
 			signup: async (email, password, name, rol) => {
 				const opts = {
@@ -96,12 +105,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json();
 					Swal.fire({
-						title: "Hello!",
-						text: "Welcome, have a good experience!",
+						title: "Welcome!",
+						text: "Your account has been successfully created. Enjoy your experience!",
 						icon: "success",
 						iconColor: "#f5e556",
 						confirmButtonColor: "#f5e556"
-					  });
+					});					
 					return true;
 				} catch (error) {
 					return false;

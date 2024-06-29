@@ -43,7 +43,7 @@ const AdminBookings = () => {
                         >
                             <option value="Todas">All</option>
                             <option value="Accepted">Accepted</option>
-                            <option value="Declined">Declined</option>
+                            <option value="Rejected">Rejected</option>
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
