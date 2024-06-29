@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: [
@@ -44,5 +45,9 @@ module.exports = {
         template: 'template.html'
     }),
     new Dotenv({ safe: true, systemvars: true })
-  ]
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  }
 };
