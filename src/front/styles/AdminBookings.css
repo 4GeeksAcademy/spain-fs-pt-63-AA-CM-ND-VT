@@ -42,3 +42,12 @@
 .text-black {
     color: #000 !important;
 }
+
+.decline{
+    border: 1px solid red !important;
+}
+
+.decline:hover{
+    background-color: #ff4756;
+    color:white;
+}

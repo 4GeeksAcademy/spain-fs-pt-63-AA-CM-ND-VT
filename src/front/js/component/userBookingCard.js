@@ -22,11 +22,11 @@ const UserBookingCard = ({ booking, request }) => {
                 <div className="row">
                     <div className="col-6">
                         <h5 className="card-title">Booking ID: {booking.id}</h5>
-                        <p className="card-text">Date: {booking.start_day_date} {booking.start_time_date}h</p>
+                        <p className="card-text"><strong>Date:</strong> {booking.start_day_date} {booking.start_time_date}h</p>
                         {request && (
                             <>
-                                <p className="card-text">Request Status: {request.status}</p>
-                                <p className="card-text">Request Comment: {request.comment ? request.comment : "No comments"}</p>
+                                <p className="card-text"><strong>Request Status:</strong> {request.status}</p>
+                                <p className="card-text"><strong>Request Comment:</strong> {request.comment ? request.comment : "No comments"}</p>
                             </>
                         )}
                     </div>
@@ -34,10 +34,10 @@ const UserBookingCard = ({ booking, request }) => {
                         {service && (
                             <>
                                 <h5 className="card-title">Service Details</h5>
-                                <p className="card-text">Name: {service.name}</p>
-                                <p className="card-text">Description: {service.description}</p>
-                                <p className="card-text">Price: {service.price}€</p>
-                                <p className="card-text">Duration: {service.duration} minutes</p>
+                                <p className="card-text"><strong>Name:</strong> {service.name}</p>
+                                <p className="card-text"><strong>Description:</strong> {service.description}</p>
+                                <p className="card-text"><strong>Price:</strong> {service.price}€</p>
+                                <p className="card-text"><strong>Duration:</strong> {service.duration} minutes</p>
                             </>
                         )}
                     </div>

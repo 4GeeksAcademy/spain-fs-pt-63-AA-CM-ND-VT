@@ -70,9 +70,10 @@ const UserProfile = () => {
 
     return (
         <div>
+            <h1 className='text-center mt-5'>My Profile</h1>
             <div className="card mt-4">
                 <div className="card-body">
-                    <h2 className='text-center'>My Profile</h2>
+                    
                     {!editMode ? (
                         <>
                             <p><strong>Name:</strong> {store.user.name}</p>

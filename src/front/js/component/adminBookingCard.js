@@ -93,13 +93,13 @@ const AdminBookingCard = ({ booking, request, refreshData }) => {
                 </div>
                 <div className="d-flex justify-content-between">
                     <button
-                        className="btn btn-outline-danger btnwid"
+                        className="btn btn-outline-primary btnwid decline"
                         onClick={handleReject}
                     >
                         Decline
                     </button>
                     <button
-                        className="btn btn-outline-success btnwid"
+                        className="btn btn-outline-primary btnwid"
                         onClick={handleAccept}
                     >
                         Accept
