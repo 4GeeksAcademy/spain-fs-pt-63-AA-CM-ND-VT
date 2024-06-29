@@ -1,11 +1,1 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
-.container {
-    overflow: hidden;
-    max-width: 100%;
-}
-
-.btnwid {
-    min-width: 150px;
-  }
+.container{overflow:hidden;max-width:100%}.btnwid{min-width:150px}
