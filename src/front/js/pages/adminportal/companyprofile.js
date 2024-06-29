@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import { Context } from '../../store/appContext';
 
 const CompanyProfile = () => {
-    const navigate = useNavigate(); // Inicializa useNavigate
+    const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const [editMode, setEditMode] = useState(false);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
@@ -13,11 +13,13 @@ const CompanyProfile = () => {
         owner: '',
         image: ''
     });
+    const [ownerName, setOwnerName] = useState(''); // Estado para el nombre del propietario
 
     useEffect(() => {
         const fetchCompanyData = async () => {
-            if (store.company_id) {
-                const company = await actions.getCompany(store.company_id);
+            const comp_id = sessionStorage.getItem('company_id');
+            if (comp_id) {
+                const company = await actions.getCompany(comp_id);
                 if (company) {
                     setFormData({
                         name: company[0].name,
@@ -25,6 +27,10 @@ const CompanyProfile = () => {
                         owner: company[0].owner,
                         image: company[0].image
                     });
+                    const ownerData = await actions.getUser(company[0].owner);
+                    if (ownerData) {
+                        setOwnerName(ownerData.name);
+                    }
                 }
             }
         };
@@ -41,9 +47,13 @@ const CompanyProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedCompany = await actions.updateCompany(store.company_id, formData);
-        if (updatedCompany) {
-            setEditMode(false);
+        try {
+            const updatedCompany = await actions.updateCompany(sessionStorage.getItem('company_id'), formData);
+            if (updatedCompany) {
+                setEditMode(false);
+            }
+        } catch (error) {
+            console.error('Error updating company:', error);
         }
     };
 
@@ -51,10 +61,11 @@ const CompanyProfile = () => {
         const confirmed = window.confirm('Are you sure you want to delete this company? This action cannot be undone.');
         if (confirmed) {
             try {
-                const success = await actions.deleteCompanyWithDependencies(store.company_id);
+                const success = await actions.deleteCompanyWithDependencies(sessionStorage.getItem('company_id'));
                 if (success) {
                     setDeleteSuccess(true);
-                    navigate('/login'); // Navega al usuario a /login después de eliminar
+                    await actions.logout();
+                    navigate('/login');
                 }
             } catch (error) {
                 console.error('Error deleting company:', error);
@@ -64,25 +75,25 @@ const CompanyProfile = () => {
 
     if (deleteSuccess) return <div>Company profile deleted successfully. Redirecting...</div>;
 
-    if (!store.company) return <div>Loading...</div>;
+    if (!sessionStorage.getItem('company_id')) return <div>Loading...</div>;
 
     return (
         <div className="card mt-4">
             <div className="card-body">
-                <h2>Perfil de la Compañía</h2>
+                <h2>Company Profile</h2>
                 {!editMode ? (
                     <>
-                        <p><strong>Nombre:</strong> {formData.name}</p>
-                        <p><strong>Ubicación:</strong> {formData.location}</p>
-                        <p><strong>Dueño:</strong> {formData.owner}</p>
+                        <p><strong>Name:</strong> {formData.name}</p>
+                        <p><strong>Location:</strong> {formData.location}</p>
+                        <p><strong>Owner:</strong> {ownerName ? ownerName : 'Loading...'}</p>
                         {formData.image && <img src={formData.image} alt="Company Logo" className="img-fluid" />}
-                        <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Editar Perfil</button>
-                        <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Company</button>
+                        <button className="btn btn-outline-primary me-2 btnwid" onClick={() => setEditMode(true)}>Edit Profile</button>
+                        <button className="btn btn-outline-danger btnwid" onClick={handleDelete}>Delete Company</button>
                     </>
                 ) : (
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <label className="form-label">Nombre:</label>
+                            <label className="form-label">Name:</label>
                             <input
                                 type="text"
                                 name="name"
@@ -92,7 +103,7 @@ const CompanyProfile = () => {
                             />
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Ubicación:</label>
+                            <label className="form-label">Location:</label>
                             <input
                                 type="text"
                                 name="location"
@@ -101,33 +112,12 @@ const CompanyProfile = () => {
                                 className="form-control"
                             />
                         </div>
-                        <div className="mb-3">
-                            <label className="form-label">Dueño:</label>
-                            <input
-                                type="text"
-                                name="owner"
-                                value={formData.owner}
-                                onChange={handleChange}
-                                className="form-control"
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Logo URL:</label>
-                            <input
-                                type="text"
-                                name="image"
-                                value={formData.image}
-                                onChange={handleChange}
-                                className="form-control"
-                            />
-                        </div>
-                        <button type="submit" className="btn btn-outline-primary me-2">Guardar</button>
-                        <button type="button" className="btn btn-outline-secondary" onClick={() => setEditMode(false)}>Cancelar</button>
+                        <button type="submit" className="btn btn-outline-primary me-2">Save</button>
+                        <button type="button" className="btn btn-outline-danger" onClick={() => setEditMode(false)}>Cancel</button>
                     </form>
                 )}
             </div>
         </div>
-
     );
 };
 

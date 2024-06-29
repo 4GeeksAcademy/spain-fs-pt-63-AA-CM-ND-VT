@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../../store/appContext";
 import ServiceCardAdmin from "../../component/serviceCardAdmin";
+import ImageInput from "../../component/imageInput";
+import Swal from 'sweetalert2'
+
 
 const AdminServices = () => {
     const { actions } = useContext(Context);
@@ -15,7 +18,8 @@ const AdminServices = () => {
         price: "",
         duration: "",
         available: false,
-        companyid: sessionStorage.getItem('company_id')
+        image: "",
+        companyid: sessionStorage.getItem('company_id') || ""
     });
     const [refresh, setRefresh] = useState(false);
     const [services, setServices] = useState([]);
@@ -29,7 +33,7 @@ const AdminServices = () => {
         };
 
         fetchMasterServices();
-    }, [actions]);
+    }, [actions, refresh]);
 
     useEffect(() => {
         const fetchServicesByCompany = async () => {
@@ -54,8 +58,12 @@ const AdminServices = () => {
         setServiceData({ ...serviceData, available: e.target.checked });
     };
 
+    const handleImageUpload = (imgId) => {
+        setServiceData({ ...serviceData, image: imgId });
+    };
+
     const handleSubmit = async () => {
-        if (serviceData) {
+        if (serviceData.companyid) {
             if (isEditing) {
                 const success = await actions.updateService(editServiceId, serviceData);
                 if (success) {
@@ -70,14 +78,24 @@ const AdminServices = () => {
                 }
             }
         } else {
-            alert("Company ID is missing. Please try again later.");
+            Swal.fire({
+                title: "Oops...",
+                text: "Company ID is missing. Please try again later.",
+                icon: "warning",
+                iconColor: "#f5e556",
+                confirmButtonColor: "#f5e556"
+                
+              });
         }
     };
 
     const handleEdit = (service) => {
         setIsEditing(true);
         setEditServiceId(service.id);
-        setServiceData(service);
+        setServiceData({
+            ...service,
+            companyid: sessionStorage.getItem('company_id')
+        });
         setShowModal(true);
     };
 
@@ -91,7 +109,8 @@ const AdminServices = () => {
             price: "",
             duration: "",
             available: false,
-            companyid: sessionStorage.getItem('company_id')
+            image: "",
+            companyid: sessionStorage.getItem('company_id') || ""
         });
         setShowModal(false);
     };
@@ -108,8 +127,8 @@ const AdminServices = () => {
 
     return (
         <div className="flex">
-            <button className="btn btn-outline-primary rounded py-1 px-2" onClick={() => setShowModal(true)}>
-                Create
+            <button className="btn btn-outline-primary rounded py-2 px-4 btnwid" onClick={() => setShowModal(true)}>
+                Create new service
             </button>
             {showModal && (
                 <div className="modal show d-block" tabIndex="-1" role="dialog">
@@ -117,10 +136,9 @@ const AdminServices = () => {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{isEditing ? "Edit Service" : "Create New Service"}</h5>
-                                <button type="button" className="close" onClick={handleModalClose} aria-label="Close">
-
+                                {/* <button type="button" className="close" onClick={handleModalClose} aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
-                                </button>
+                                </button> */}
                             </div>
                             <div className="modal-body">
                                 <form>
@@ -158,12 +176,15 @@ const AdminServices = () => {
                                             <label className="form-check-label" htmlFor="available">Available</label>
                                         </div>
                                     </div>
+                                    <div className="form-group">
+                                        <label htmlFor="image">Image</label>
+                                        <ImageInput onUpload={handleImageUpload} />
+                                    </div>
                                 </form>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" onClick={handleModalClose}>Close</button>
-                                <button type="button" className="btn btn-primary" onClick={() => handleSubmit()}>Save changes</button>
-
+                                <button type="button" className="btn btn-outline-danger btnwid m-3" onClick={handleModalClose}>Close</button>
+                                <button type="button" className="btn btn-outline-primary btnwid" onClick={() => handleSubmit()}>Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -171,7 +192,6 @@ const AdminServices = () => {
             )}
 
             <div className="mt-4">
-                <h2>Services by Company</h2>
                 <div className="container">
                     <div className="row">
                         {services.map(service => (

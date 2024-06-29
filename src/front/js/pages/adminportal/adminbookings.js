@@ -32,19 +32,21 @@ const AdminBookings = () => {
     return (
         <div className="container">
             <div className="row my-4">
-                <div className="col-md-4 col-sm-6">
-                    <label htmlFor="filterStatus" className="form-label">Filter by status:</label>
-                    <select
-                        id="filterStatus"
-                        className="form-select"
-                        value={filterStatus}
-                        onChange={handleFilterChange}
-                    >
-                        <option value="Todas">All</option>
-                        <option value="Aceptada">Accepted</option>
-                        <option value="Rechazada">Declined</option>
-                        <option value="Pendiente">Pending</option>
-                    </select>
+                <div className="col-12 col-sm-6 col-md-4 mb-2">
+                    <div className="d-flex align-items-center">
+                        <label htmlFor="filterStatus" className="form-label mb-0 me-2">Filter by status:</label>
+                        <select
+                            id="filterStatus"
+                            className="form-select"
+                            value={filterStatus}
+                            onChange={handleFilterChange}
+                        >
+                            <option value="Todas">All</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div className="row">
@@ -52,7 +54,7 @@ const AdminBookings = () => {
                     const relatedRequest = filteredRequests.find(req => req.bookings_id === booking.id);
                     if (!relatedRequest && filterStatus !== 'Todas') return null;
                     return (
-                        <div key={booking.id} className="col-lg-6 col-md-12 mb-4">
+                        <div key={booking.id} className="col-12 col-md-6 col-lg-4 mb-4">
                             <AdminBookingCard booking={booking} request={relatedRequest} refreshData={fetchBookingsAndRequests} />
                         </div>
                     );

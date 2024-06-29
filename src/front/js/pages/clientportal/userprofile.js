@@ -14,8 +14,8 @@ const UserProfile = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            if (store.user_id) {
-                const user = await actions.getUser(store.user_id);
+            if (sessionStorage.getItem('user_id')) {
+                const user = await actions.getUser(sessionStorage.getItem('user_id'));
                 if (user) {
                     setFormData({
                         name: user.name,
@@ -40,8 +40,9 @@ const UserProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const updatedUser = await actions.updateUser(store.user_id, formData);
+            const updatedUser = await actions.updateUser(sessionStorage.getItem('user_id'), formData);
             if (updatedUser) {
+                await actions.getUser(sessionStorage.getItem('user_id'));
                 setEditMode(false);
             }
         } catch (error) {
@@ -53,7 +54,7 @@ const UserProfile = () => {
         const confirmed = window.confirm('Are you sure you want to delete your profile? This action cannot be undone.');
         if (confirmed) {
             try {
-                const success = await actions.deleteUser(store.user_id);
+                const success = await actions.deleteUser(sessionStorage.getItem('user_id'));
                 if (success) {
                     setDeleteSuccess(true);
                 }
@@ -69,16 +70,16 @@ const UserProfile = () => {
 
     return (
         <div>
+            <h1 className='text-center mt-5'>My Profile</h1>
             <div className="card mt-4">
                 <div className="card-body">
-                    <h2 className='text-center'>My Profile</h2>
+                    
                     {!editMode ? (
                         <>
                             <p><strong>Name:</strong> {store.user.name}</p>
                             <p><strong>Email:</strong> {store.user.email}</p>
-                            <p><strong>Rol:</strong> {store.user.rol}</p>
                             {store.user.image && <img src={store.user.image} alt="Profile" className="img-fluid" />}
-                            <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Edit Profile</button>
+                            {/* <button className="btn btn-outline-primary me-2" onClick={() => setEditMode(true)}>Edit Profile</button> */}
                             <button className="btn btn-outline-danger" onClick={handleDelete}>Delete Profile</button>
                         </>
                     ) : (
@@ -103,28 +104,8 @@ const UserProfile = () => {
                                     className="form-control"
                                 />
                             </div>
-                            <div className="mb-3">
-                                <label className="form-label">Rol:</label>
-                                <input
-                                    type="text"
-                                    name="rol"
-                                    value={formData.rol}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Image URL:</label>
-                                <input
-                                    type="text"
-                                    name="image"
-                                    value={formData.image}
-                                    onChange={handleChange}
-                                    className="form-control"
-                                />
-                            </div>
-                            <button type="submit" className="btn btn-outline-primary me-2">Save</button>
-                            <button type="button" className="btn btn-outline-secondary" onClick={() => setEditMode(false)}>Cancel</button>
+                            <button type="submit" className="btn btn-outline-primary me-2 btnwid">Save</button>
+                            <button type="button" className="btn btn-outline-danger btnwid" onClick={() => setEditMode(false)}>Cancel</button>
                         </form>
                     )}
                 </div>

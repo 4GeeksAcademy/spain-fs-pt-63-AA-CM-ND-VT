@@ -1,32 +1,48 @@
 /* ServiceCard.css */
 .card-body {
   cursor: default;
+  background-color: #ffffff;
 }
-.card-title{
-  border-bottom: 2px solid yellowgreen;
+
+.card-title {
+  border-bottom: 2px solid #f5e556;
 }
 
 .card-img-left {
   cursor: default;
   position: relative;
   overflow: hidden;
-  height: 100%; /* Ajusta la altura del contenedor */
+  height: 100%;
+  width: 100%;
 }
 
-.img-cover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%; /* Ajusta la altura de la imagen */
-  width: auto; /* Ajusta el ancho de la imagen */
-  object-fit: cover; /* Ajusta el modo de ajuste de la imagen */
+.card-img-left img,
+.card-img-left .cld-image {
+  width: 100%;
+  height: 100%;
 }
 
-.modal-content{
-  border: 2px solid yellowgreen;
+.row.no-gutters {
+  display: flex;
 }
-.btn-outline-primary:hover {
-  background-color: #580f9c;
-  color: white;
-  border-color: #580f9c;
+
+.col-md-4 {
+  flex: 0 0 auto;
+  width: 33.333333%;
+  height: auto;
+  display: flex;
+  align-items: center;
 }
+
+.col-md-8 {
+  flex: 0 0 auto;
+  width: 66.666667%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-content {
+  border: 2px solid #f5e556;
+}
+

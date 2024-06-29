@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2'
+
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -32,7 +34,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/login`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+							
+						  });
 						return false;
 					}
 					const data = await resp.json();
@@ -50,11 +59,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 						companyname: data.companyname,
 						company_id: data.company_id
 					});
+					Swal.fire({
+						title: "Hello!",
+						text: "Welcome, have a good experience!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return true;
 				} catch (error) {
 					console.log(error);
 				}
 			},
+
+
 
 			signup: async (email, password, name, rol) => {
 				const opts = {
@@ -74,15 +92,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 						`${process.env.BACKEND_URL}/api/signin`,
 						opts
 					);
-					if (resp.status !== 201) {
-						alert("There has been some error");
+					if (resp.status !== 200) {
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+
+						  });
 						return false;
 					}
 					const data = await resp.json();
-					alert(data.msg);
+					Swal.fire({
+						title: "Welcome!",
+						text: "Your account has been successfully created. Enjoy your experience!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					});					
 					return true;
 				} catch (error) {
-					console.log(error);
 					return false;
 				}
 			},
@@ -107,18 +137,37 @@ const getState = ({ getStore, getActions, setStore }) => {
 						`${process.env.BACKEND_URL}/api/signup_company`,
 						opts
 					);
-					if (resp.status !== 201) {
-						alert("There has been some error");
+					if (resp.status !== 200) {
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						});
 						return false;
 					}
-					const data = await resp.json();
-					alert(data.msg);
+					Swal.fire({
+						title: "Nice!",
+						text: "You signed up successfully!",
+						icon: "success",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					});
 					return true;
 				} catch (error) {
 					console.log(error);
+					Swal.fire({
+						title: "Error!",
+						text: "An error occurred, please try again later.",
+						icon: "error",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					});
 					return false;
 				}
 			},
+			
 
 			syncToken: () => {
 				const token = sessionStorage.getItem("token");
@@ -151,6 +200,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					sessionStorage.removeItem("user_id");
 					sessionStorage.removeItem("username");
 					sessionStorage.removeItem("rol");
+					sessionStorage.removeItem("companyname");
+					sessionStorage.removeItem("company_id");
 					setStore({
 						token: null,
 						username: null,
@@ -178,6 +229,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ company_id_service: company_id });
 			},
 
+			getService: async (service_id) => {
+				const store = getStore();
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/services/${service_id}`, {
+						headers: {
+							"Content-Type": "application/json"
+						}
+					});
+					if (!resp.ok) {
+						throw new Error('Failed to fetch service');
+					}
+					const data = await resp.json();
+					return data;
+				} catch (error) {
+					console.error('Error fetching service:', error);
+					return null;
+				}
+			},
+
 			getServicesByCompany: async (companyId) => {
 				const store = getStore();
 				const opts = {
@@ -190,7 +260,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/services?companies_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+							
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -214,7 +291,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/all_services`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -241,11 +324,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 						opts
 					);
 					if (resp.status !== 201) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 					const data = await resp.json();
-					alert("Service created successfully");
+					Swal.fire({
+						title: "Confirmed",
+						text: "Service created successfully.",
+						icon: "success"
+					  });
 					return true;
 				} catch (error) {
 					console.log(error);
@@ -265,7 +358,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/master_services`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -290,13 +389,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/bookings`, opts);
 					if (resp.status !== 201) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 					const data = await resp.json();
 					const dataRequest = {
 						booking_id: data.id,
-						status: "Pendiente",
+						status: "Pending",
 						comment: ""
 					};
 
@@ -312,10 +417,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					try {
 						const respRequest = await fetch(`${process.env.BACKEND_URL}/api/requests`, optsRequest);
 						if (respRequest.status !== 201) {
-							alert("There has been some error");
+							Swal.fire({
+								title: "Oops...",
+								text: "There has been some error, please try again!",
+								icon: "warning",
+								iconColor: "#f5e556",
+								confirmButtonColor: "#f5e556"
+							  });
 							return false;
 						}
-						alert("Service reserved successfully");
+						Swal.fire({
+							title: "Service reserved successfully.",
+							text: "We hope you enjoy it!",
+							icon: "success"
+						  });
 					} catch (error) {
 						console.log(error);
 						return false;
@@ -372,7 +487,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 
 					const data = await response.json();
-					console.log('User updated successfully:', data);
 					return data;
 				} catch (error) {
 					console.error('Fetch error:', error);
@@ -401,11 +515,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!response.ok) {
 						const errorData = await response.json();
 						console.error('Error:', errorData);
-						alert('Error deleting user');
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return false;
 					}
 
-					console.log('User deleted successfully');
 					setStore({ user: null });
 					return true;
 				} catch (error) {
@@ -419,7 +538,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserBookings: async () => {
 				const userId = sessionStorage.getItem('user_id');
 				if (!userId) {
-					alert("User ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please try again later.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+						
+					  });
 					return [];
 				}
 				const opts = {
@@ -431,7 +557,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_bookings?user_id=${userId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						
 						return [];
 					}
 					const data = await resp.json();
@@ -445,7 +571,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getUserRequests: async () => {
 				const userId = sessionStorage.getItem('user_id');
 				if (!userId) {
-					alert("User ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please try to log in again..",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+						
+					  });
 					return [];
 				}
 				const opts = {
@@ -457,7 +590,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/user_requests?user_id=${userId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -473,7 +612,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getCompanyBookings: async () => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return [];
 				}
 				const opts = {
@@ -485,7 +630,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_bookings?company_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -499,7 +650,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getCompanyRequests: async () => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return [];
 				}
 				const opts = {
@@ -511,7 +668,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/company_requests?company_id=${companyId}`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return [];
 					}
 					const data = await resp.json();
@@ -525,7 +688,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 			updateRequestStatus: async (requestId, status, comment) => {
 				const companyId = sessionStorage.getItem('company_id');
 				if (!companyId) {
-					alert("Company ID is missing. Please log in again.");
+					Swal.fire({
+						title: "Oops...",
+						text: "Company ID is missing. Please log in again.",
+						icon: "warning",
+						iconColor: "#f5e556",
+						confirmButtonColor: "#f5e556"
+					  });
 					return null;
 				}
 				const opts = {
@@ -538,7 +707,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/update_request`, opts);
 					if (resp.status !== 200) {
-						alert("There has been some error");
+						Swal.fire({
+							title: "Oops...",
+							text: "There has been some error, please try again!",
+							icon: "warning",
+							iconColor: "#f5e556",
+							confirmButtonColor: "#f5e556"
+						  });
 						return null;
 					}
 					const data = await resp.json();
@@ -554,8 +729,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						headers: {
-							"Content-Type": "application/json",
-							"Authorization": `Bearer ${store.token}`
+							"Content-Type": "application/json"
 						}
 					});
 					if (!resp.ok) {
@@ -566,20 +740,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return data;
 				} catch (error) {
 					console.error('Error fetching company:', error);
-					throw error;
+					return null; 
 				}
 			},
 
 			updateCompany: async (company_id, companyData) => {
 				const store = getStore();
-				const token = store.token;
 
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/adminportal/${company_id}`, {
 						method: 'PUT',
 						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${token}`
+							'Content-Type': 'application/json'
 						},
 						body: JSON.stringify(companyData)
 					});
@@ -597,16 +769,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
+			
 			deleteCompanyWithDependencies: async (company_id) => {
 				const store = getStore();
 				const token = store.token;
 				const backendUrl = process.env.BACKEND_URL;
-
+			
 				const headers = {
 					'Content-Type': 'application/json',
 					'Authorization': `Bearer ${token}`
 				};
-
+			
 				try {
 					// Step 1: Delete requests
 					let response = await fetch(`${backendUrl}/api/companies/${company_id}/requests`, {
@@ -614,28 +787,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 						headers
 					});
 					if (!response.ok) throw new Error('Failed to delete requests');
-
+			
 					// Step 2: Delete bookings
 					response = await fetch(`${backendUrl}/api/companies/${company_id}/bookings`, {
 						method: 'DELETE',
 						headers
 					});
 					if (!response.ok) throw new Error('Failed to delete bookings');
-
+			
 					// Step 3: Delete services
 					response = await fetch(`${backendUrl}/api/companies/${company_id}/services`, {
 						method: 'DELETE',
 						headers
 					});
 					if (!response.ok) throw new Error('Failed to delete services');
-
+			
 					// Step 4: Delete company
 					response = await fetch(`${backendUrl}/api/companies/${company_id}`, {
 						method: 'DELETE',
 						headers
 					});
 					if (!response.ok) throw new Error('Failed to delete company');
-
+			
+					// Step 5: Delete user
+					const user_id = sessionStorage.getItem('user_id');
+					response = await fetch(`${backendUrl}/api/users/${user_id}`, {
+						method: 'DELETE',
+						headers
+					});
+					if (!response.ok) throw new Error('Failed to delete user');
+			
 					setStore({ user: null }); // Or any other appropriate action
 					return true;
 				} catch (error) {
@@ -643,6 +824,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false;
 				}
 			},
+			
+			
 			getCompanyPublic: async (company_id) => {
 				const token = getStore().token;
 				try {
@@ -714,7 +897,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json',
 						}
 					});
-			
 					if (response.ok) {
 						const data = await response.json();
 						return data;

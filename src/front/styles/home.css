@@ -1,12 +1,54 @@
-/*
-    home.css: This website contains selectors only used in home.css
+.btn-custom {
+    padding: 10px 20px; /* Reduce la altura y aumenta el ancho */
+    font-size: 1rem; /* Ajusta el tamaño de la fuente para mejor apariencia */
+    border-radius: 5px; /* Ajusta el radio de borde */
+    min-width: 300px; /* Asegura una anchura mínima */
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+.btn-yellow {
+    background-color: #f5e556;
+    border: none;
+    color: #000;
+    transition: background-color 0.3s ease;
+}
 
-.perso {
-    width: 400px;
-    height: 400px;
+.btn-yellow:hover {
+    background-color: #e5d545;
+    color: #000;
+}
+
+.btn-outline-dark {
+    border: 2px solid #000;
+    color: #000;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+}
+
+.feature.bg-yellow {
+    background-color: #f5e556;
+}
+
+.bi {
+    font-size: 1.5rem;
+}
+
+header {
+    background-color: #f5e556;
+}
+
+.btnwidhome {
+    min-width: 250px;
 }

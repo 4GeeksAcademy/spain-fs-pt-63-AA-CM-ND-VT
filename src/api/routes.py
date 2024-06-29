@@ -10,6 +10,15 @@ from flask_bcrypt import Bcrypt
 
 api = Blueprint('api', __name__)
 
+@api.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://opulent-zebra-x7xr5xpprwfvqvw-3000.app.github.dev'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    response.headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
+    return response
+
+# Allow CORS requests to this API
+CORS(api)
 # Allow CORS requests to this API
 CORS(api)
 bcrypt=Bcrypt()
@@ -26,7 +35,7 @@ def signin():
     try:
         db.session.add(new_user)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
@@ -42,7 +51,7 @@ def signup_company():
         new_company = Companies(name=data['company_name'], location=data['location'], owner=new_user.id)
         db.session.add(new_company)
         db.session.commit()
-        return jsonify(new_user.serialize()), 201
+        return jsonify(new_user.serialize()), 200
     except Exception as ex:
         db.session.rollback()
         return jsonify({'error': 'User with this email already exists', 'error': str(ex)}), 400
@@ -79,6 +88,14 @@ def login():
         response['company_id'] = company.id
 
     return jsonify(response)
+
+@api.route('/clientportal/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    return jsonify(user.serialize()), 200
 
 @api.route('/clientportal/<int:user_id>', methods=['GET'])
 @jwt_required()
@@ -122,8 +139,6 @@ def update_user(user_id):
         return jsonify({'error': 'Unauthorized'}), 401
     user.name = data.get('name', user.name)
     user.email = data.get('email', user.email)
-    user.rol = data.get('rol', user.rol)
-    user.image_url = data.get('image_url', user.image_url)
 
     try:
         db.session.commit()
@@ -133,27 +148,24 @@ def update_user(user_id):
         return jsonify({'error': str(e)}), 500
 
 @api.route('/adminportal/<int:company_id>', methods=['GET'])
-@jwt_required()
 def company_portal(company_id):
     company = Companies.query.get_or_404(company_id)
     return jsonify([company.serialize()])
 
 @api.route('/adminportal/<int:company_id>', methods=['PUT'])
-@jwt_required()
 def update_company_admin(company_id):
-    current_user_id = get_jwt_identity()
-    current_user = Users.query.get(current_user_id)
-
-    if current_user.rol != 'company':
-        return jsonify({'error': 'User is not authorized'}), 403
-    
     company = Companies.query.get_or_404(company_id)
     data = request.get_json()
-    
-    company.name = data.get('name', company.name)
-    company.location = data.get('location', company.location)
-    company.owner = data.get('owner', company.owner)
-    company.image = data.get('image', company.image)
+
+    # Actualizar los campos de la compañía solo si existen en los datos recibidos
+    if 'name' in data:
+        company.name = data['name']
+    if 'location' in data:
+        company.location = data['location']
+    if 'owner' in data:
+        company.owner = data['owner']
+    if 'image' in data:
+        company.image = data['image']
 
     try:
         db.session.commit()
@@ -179,7 +191,7 @@ def get_services():
 
 @api.route('/all_services', methods=['GET'])
 def get_all_services():
-    services = Services.query.all()
+    services = Services.query.filter_by(available=True).all()
     return jsonify([service.serialize() for service in services]), 200
 
 @api.route('/services', methods=['POST'])
@@ -283,16 +295,30 @@ def update_request():
     db.session.commit()
     return jsonify({"msg": "Request updated successfully"}), 200
     
+@api.route('/users/<int:user_id>', methods=['DELETE'])
+def delete_user2(user_id):
+    user = Users.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    try:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 @api.route('/companies/<int:company_id>/requests', methods=['DELETE'])
-@jwt_required()
 def delete_requests(company_id):
     company = Companies.query.get_or_404(company_id)
-    services = Services.query.filter_by(companies_id=company_id).all()
+    services = Services.query.filter_by(company=company).all()
+
     for service in services:
-        bookings = Bookings.query.filter_by(services_id=service.id).all()
+        bookings = Bookings.query.filter_by(service=service).all()
         for booking in bookings:
-            Requests.query.filter_by(bookings_id=booking.id).delete()
+            Requests.query.filter_by(booking=booking).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Requests deleted successfully"}), 200
@@ -302,12 +328,13 @@ def delete_requests(company_id):
 
 
 @api.route('/companies/<int:company_id>/bookings', methods=['DELETE'])
-@jwt_required()
 def delete_bookings(company_id):
     company = Companies.query.get_or_404(company_id)
-    services = Services.query.filter_by(companies_id=company_id).all()
+    services = Services.query.filter_by(company=company).all()
+
     for service in services:
-        Bookings.query.filter_by(services_id=service.id).delete()
+        Bookings.query.filter_by(service=service).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Bookings deleted successfully"}), 200
@@ -317,10 +344,10 @@ def delete_bookings(company_id):
 
 
 @api.route('/companies/<int:company_id>/services', methods=['DELETE'])
-@jwt_required()
 def delete_services(company_id):
     company = Companies.query.get_or_404(company_id)
-    Services.query.filter_by(companies_id=company_id).delete()
+    Services.query.filter_by(company=company).delete()
+
     try:
         db.session.commit()
         return jsonify({"message": "Services deleted successfully"}), 200
@@ -330,10 +357,10 @@ def delete_services(company_id):
 
 
 @api.route('/companies/<int:company_id>', methods=['DELETE'])
-@jwt_required()
 def delete_company(company_id):
     company = Companies.query.get_or_404(company_id)
     db.session.delete(company)
+
     try:
         db.session.commit()
         return jsonify({"message": "Company deleted successfully"}), 200
@@ -360,6 +387,14 @@ def get_company_public(company_id):
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
 
+@api.route('/services/<int:service_id>', methods=['GET'])
+def get_service(service_id):
+    service = Services.query.get(service_id)
+    if not service:
+        return jsonify({"msg": "Service not found"}), 404
+
+    return jsonify(service.serialize()), 200
+
 @api.route('/services/<int:service_id>', methods=['PUT'])
 def update_service(service_id):
     data = request.get_json()
@@ -371,6 +406,7 @@ def update_service(service_id):
     service.price = data.get('price', service.price)
     service.duration = data.get('duration', service.duration)
     service.available = data.get('available', service.available)
+    service.image = data.get('image',service.image)
 
     try:
         db.session.commit()
