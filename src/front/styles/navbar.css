@@ -12,7 +12,7 @@ nav {
 }
 
 .nav-item:hover {
-    color: #f5e556;
+    color: #f5e556 !important;
 }
 
 .btn-outline-primary {
@@ -52,4 +52,8 @@ a {
 
 .navbar-light .navbar-toggler {
     color: rgba(0, 0, 0, .55);
+}
+
+svg:hover{
+    color:#f5e556;
 }
